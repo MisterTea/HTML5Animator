@@ -1,0 +1,44 @@
+<div>
+    <div style="float:right; width: 50px;">&nbsp;</div>
+    <div ng-controller="EditObjectController" style="float:right; width:auto; border:2px solid; box-shadow: 10px 10px 5px #888888;">
+      <div>EDITING OBJECT {{getEditObject()}}</div>
+    </div>
+    <div style="float:right; width: 50px;">&nbsp;</div>
+    <div ng-controller="EditPanelController" style="float:right; width:auto; border:2px solid; box-shadow: 10px 10px 5px #888888;">
+      <div>ON FRAME {{frame()}}</div>
+      <a
+        class="button"
+        ng-click="prevFrame()">Previous Frame</a>
+      <br />
+      <a
+        class="button"
+        ng-click="nextFrame()">Next Frame</a>
+      <br />
+      <a
+        class="button"
+        ng-click="play()">Play</a>
+      <br />
+      <a
+        class="button"
+        ng-click="stop()">Stop</a>
+      <br />
+      <a
+        class="button"
+        ng-click="save()">Save</a>
+      <br />
+      <a
+        class="button"
+        ng-click="load()">load</a>
+      <br />
+    </div>
+    
+    <div ng-controller="PaletteController" style="overflow:hidden;">
+      <canvas width="640" height="360" style="border:1px solid #ccc" palette></canvas>
+    </div>
+      
+    <div style="text-align:center;">
+      <canvas style="width:800px; height:300px; margin:auto;" id="timeline"></canvas>
+    </div>
+    
+</div>
+
