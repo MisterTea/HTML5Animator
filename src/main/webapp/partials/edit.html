@@ -1,30 +1,47 @@
 <div>
   <div style="float: right; width: 50px;">&nbsp;</div>
-  <div
-    ng-controller="EditObjectController"
-    style="float: right; width: auto; border: 2px solid; box-shadow: 10px 10px 5px #888888;">
-    <div>EDITING OBJECT {{getEditObject()}}</div>
-    <a
-      class="button"
-      ng-show="getEditObject()"
-      ng-click="eraseObject()">Erase (but keep history)</a>
-    <br />
-    <a
-      class="button"
-      ng-show="getEditObject()"
-      ng-click="deleteObject()">Delete (completely)</a>
-    <br />
-    <div ng-show="!getEditObject()">
-    <label>URL:</label> <input
-      type="text"
-      ng-model="newImageUrl"
-      placeholder="Enter a URL here" /> 
-    <a
-      class="button"
-      ng-click="addImage()">Add Image</a>
+  <div style="float: right; width: auto;">
+    <div
+      ng-controller="EditObjectController"
+      style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
+      <div ng-show="getEditObject()">
+        <div>EDITING {{getEditObject().id}}</div>
+        <div ng-show="getEditObjectType()=='text'">
+          <label>Text:</label> <input
+            type="text"
+            ng-change="updateText()"
+            ng-model="selectedText"
+            placeholder="Enter a URL here">
+        </div>
+        <a
+          class="button"
+          ng-click="eraseObject()">Erase (but keep history)</a>
+        <br />
+        <a
+          class="button"
+          ng-click="deleteObject()">Delete (completely)</a>
+        <br />
       </div>
+    </div>
+    <div height="100px">&nbsp;</div>
+    <div
+      ng-controller="AddObjectController"
+      style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
+      <label>URL:</label> <input
+        type="text"
+        ng-model="newImageUrl"
+        placeholder="Enter a URL here" />
+      <a
+        class="button"
+        ng-click="addImage()">Add Image</a>
       <br />
+      <a
+        class="button"
+        ng-click="addText()">Add Text</a>
+      <br />
+    </div>
   </div>
+
   <div style="float: right; width: 50px;">&nbsp;</div>
   <div
     ng-controller="EditPanelController"
@@ -54,6 +71,10 @@
       class="button"
       ng-click="load()">load</a>
     <br />
+    <a
+      class="button"
+      ng-click="makeGif()">To animated GIF</a>
+    <br />
   </div>
 
   <div
@@ -71,6 +92,10 @@
     <canvas
       style="width: 800px; height: 300px; margin: auto;"
       id="timeline"></canvas>
+  </div>
+
+  <div>
+    <img id="gifImage"></img>
   </div>
 
 </div>

@@ -20,3 +20,12 @@ window.requestAnimFrame = (function(){
 })();
 
 globals = {};
+
+globals.objectIdMap = {};
+globals.frame = null;
+globals.canvas = null;
+globals.movie = null;
+globals.selectedObjectId = null;
+globals.padding = 100;
+globals.canvas = null;
+globals.guidelines = null;
