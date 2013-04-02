@@ -13,756 +13,6 @@ Easing = {
 'EASE_OUT_CUBIC' : 5,
 'EASE_IN_OUT_CUBIC' : 6
 };
-User = function(args) {
-  this.id = '';
-  this.name = null;
-  this.ipAddress = null;
-  this.loggedIn = false;
-  if (args) {
-    if (args.id !== undefined) {
-      this.id = args.id;
-    }
-    if (args.name !== undefined) {
-      this.name = args.name;
-    }
-    if (args.ipAddress !== undefined) {
-      this.ipAddress = args.ipAddress;
-    }
-    if (args.loggedIn !== undefined) {
-      this.loggedIn = args.loggedIn;
-    }
-  }
-};
-User.prototype = {};
-User.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.id = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.name = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.STRING) {
-        this.ipAddress = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.BOOL) {
-        this.loggedIn = input.readBool().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-User.prototype.write = function(output) {
-  output.writeStructBegin('User');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.STRING, 1);
-    output.writeString(this.id);
-    output.writeFieldEnd();
-  }
-  if (this.name !== null && this.name !== undefined) {
-    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
-    output.writeString(this.name);
-    output.writeFieldEnd();
-  }
-  if (this.ipAddress !== null && this.ipAddress !== undefined) {
-    output.writeFieldBegin('ipAddress', Thrift.Type.STRING, 3);
-    output.writeString(this.ipAddress);
-    output.writeFieldEnd();
-  }
-  if (this.loggedIn !== null && this.loggedIn !== undefined) {
-    output.writeFieldBegin('loggedIn', Thrift.Type.BOOL, 4);
-    output.writeBool(this.loggedIn);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-UserData = function(args) {
-  this.id = '';
-  this.lastVisited = {
-};
-  this.bookmarks = {
-};
-  this.favoriteComics = [];
-  if (args) {
-    if (args.id !== undefined) {
-      this.id = args.id;
-    }
-    if (args.lastVisited !== undefined) {
-      this.lastVisited = args.lastVisited;
-    }
-    if (args.bookmarks !== undefined) {
-      this.bookmarks = args.bookmarks;
-    }
-    if (args.favoriteComics !== undefined) {
-      this.favoriteComics = args.favoriteComics;
-    }
-  }
-};
-UserData.prototype = {};
-UserData.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.id = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 128:
-      if (ftype == Thrift.Type.MAP) {
-        var _size0 = 0;
-        var _rtmp34;
-        this.lastVisited = {};
-        var _ktype1 = 0;
-        var _vtype2 = 0;
-        _rtmp34 = input.readMapBegin();
-        _ktype1 = _rtmp34.ktype;
-        _vtype2 = _rtmp34.vtype;
-        _size0 = _rtmp34.size;
-        for (var _i5 = 0; _i5 < _size0; ++_i5)
-        {
-          if (_i5 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
-          var key6 = null;
-          var val7 = null;
-          key6 = input.readString().value;
-          val7 = input.readString().value;
-          this.lastVisited[key6] = val7;
-        }
-        input.readMapEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 129:
-      if (ftype == Thrift.Type.MAP) {
-        var _size8 = 0;
-        var _rtmp312;
-        this.bookmarks = {};
-        var _ktype9 = 0;
-        var _vtype10 = 0;
-        _rtmp312 = input.readMapBegin();
-        _ktype9 = _rtmp312.ktype;
-        _vtype10 = _rtmp312.vtype;
-        _size8 = _rtmp312.size;
-        for (var _i13 = 0; _i13 < _size8; ++_i13)
-        {
-          if (_i13 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
-          var key14 = null;
-          var val15 = null;
-          key14 = input.readString().value;
-          var _size16 = 0;
-          var _rtmp320;
-          val15 = [];
-          var _etype19 = 0;
-          _rtmp320 = input.readSetBegin();
-          _etype19 = _rtmp320.etype;
-          _size16 = _rtmp320.size;
-          for (var _i21 = 0; _i21 < _size16; ++_i21)
-          {
-            var elem22 = null;
-            elem22 = input.readString().value;
-            val15.push(elem22);
-          }
-          input.readSetEnd();
-          this.bookmarks[key14] = val15;
-        }
-        input.readMapEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 130:
-      if (ftype == Thrift.Type.SET) {
-        var _size23 = 0;
-        var _rtmp327;
-        this.favoriteComics = [];
-        var _etype26 = 0;
-        _rtmp327 = input.readSetBegin();
-        _etype26 = _rtmp327.etype;
-        _size23 = _rtmp327.size;
-        for (var _i28 = 0; _i28 < _size23; ++_i28)
-        {
-          var elem29 = null;
-          elem29 = input.readString().value;
-          this.favoriteComics.push(elem29);
-        }
-        input.readSetEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-UserData.prototype.write = function(output) {
-  output.writeStructBegin('UserData');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.STRING, 1);
-    output.writeString(this.id);
-    output.writeFieldEnd();
-  }
-  if (this.lastVisited !== null && this.lastVisited !== undefined) {
-    output.writeFieldBegin('lastVisited', Thrift.Type.MAP, 128);
-    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.lastVisited));
-    for (var kiter30 in this.lastVisited)
-    {
-      if (this.lastVisited.hasOwnProperty(kiter30))
-      {
-        var viter31 = this.lastVisited[kiter30];
-        output.writeString(kiter30);
-        output.writeString(viter31);
-      }
-    }
-    output.writeMapEnd();
-    output.writeFieldEnd();
-  }
-  if (this.bookmarks !== null && this.bookmarks !== undefined) {
-    output.writeFieldBegin('bookmarks', Thrift.Type.MAP, 129);
-    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.SET, Thrift.objectLength(this.bookmarks));
-    for (var kiter32 in this.bookmarks)
-    {
-      if (this.bookmarks.hasOwnProperty(kiter32))
-      {
-        var viter33 = this.bookmarks[kiter32];
-        output.writeString(kiter32);
-        output.writeSetBegin(Thrift.Type.STRING, viter33.length);
-        for (var iter34 in viter33)
-        {
-          if (viter33.hasOwnProperty(iter34))
-          {
-            iter34 = viter33[iter34];
-            output.writeString(iter34);
-          }
-        }
-        output.writeSetEnd();
-      }
-    }
-    output.writeMapEnd();
-    output.writeFieldEnd();
-  }
-  if (this.favoriteComics !== null && this.favoriteComics !== undefined) {
-    output.writeFieldBegin('favoriteComics', Thrift.Type.SET, 130);
-    output.writeSetBegin(Thrift.Type.STRING, this.favoriteComics.length);
-    for (var iter35 in this.favoriteComics)
-    {
-      if (this.favoriteComics.hasOwnProperty(iter35))
-      {
-        iter35 = this.favoriteComics[iter35];
-        output.writeString(iter35);
-      }
-    }
-    output.writeSetEnd();
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-UserInternal = function(args) {
-  this.id = '';
-  this.password = null;
-  this.emailAddress = null;
-  this.facbeookId = null;
-  this.googleId = null;
-  this.friends = [];
-  if (args) {
-    if (args.id !== undefined) {
-      this.id = args.id;
-    }
-    if (args.password !== undefined) {
-      this.password = args.password;
-    }
-    if (args.emailAddress !== undefined) {
-      this.emailAddress = args.emailAddress;
-    }
-    if (args.facbeookId !== undefined) {
-      this.facbeookId = args.facbeookId;
-    }
-    if (args.googleId !== undefined) {
-      this.googleId = args.googleId;
-    }
-    if (args.friends !== undefined) {
-      this.friends = args.friends;
-    }
-  }
-};
-UserInternal.prototype = {};
-UserInternal.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.id = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.password = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.STRING) {
-        this.emailAddress = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.STRING) {
-        this.facbeookId = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.STRING) {
-        this.googleId = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 128:
-      if (ftype == Thrift.Type.SET) {
-        var _size36 = 0;
-        var _rtmp340;
-        this.friends = [];
-        var _etype39 = 0;
-        _rtmp340 = input.readSetBegin();
-        _etype39 = _rtmp340.etype;
-        _size36 = _rtmp340.size;
-        for (var _i41 = 0; _i41 < _size36; ++_i41)
-        {
-          var elem42 = null;
-          elem42 = input.readString().value;
-          this.friends.push(elem42);
-        }
-        input.readSetEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-UserInternal.prototype.write = function(output) {
-  output.writeStructBegin('UserInternal');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.STRING, 1);
-    output.writeString(this.id);
-    output.writeFieldEnd();
-  }
-  if (this.password !== null && this.password !== undefined) {
-    output.writeFieldBegin('password', Thrift.Type.STRING, 2);
-    output.writeString(this.password);
-    output.writeFieldEnd();
-  }
-  if (this.emailAddress !== null && this.emailAddress !== undefined) {
-    output.writeFieldBegin('emailAddress', Thrift.Type.STRING, 3);
-    output.writeString(this.emailAddress);
-    output.writeFieldEnd();
-  }
-  if (this.facbeookId !== null && this.facbeookId !== undefined) {
-    output.writeFieldBegin('facbeookId', Thrift.Type.STRING, 4);
-    output.writeString(this.facbeookId);
-    output.writeFieldEnd();
-  }
-  if (this.googleId !== null && this.googleId !== undefined) {
-    output.writeFieldBegin('googleId', Thrift.Type.STRING, 5);
-    output.writeString(this.googleId);
-    output.writeFieldEnd();
-  }
-  if (this.friends !== null && this.friends !== undefined) {
-    output.writeFieldBegin('friends', Thrift.Type.SET, 128);
-    output.writeSetBegin(Thrift.Type.STRING, this.friends.length);
-    for (var iter43 in this.friends)
-    {
-      if (this.friends.hasOwnProperty(iter43))
-      {
-        iter43 = this.friends[iter43];
-        output.writeString(iter43);
-      }
-    }
-    output.writeSetEnd();
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-UserSession = function(args) {
-  this.id = '';
-  this.userId = null;
-  this.createTime = null;
-  this.data = null;
-  this.expirationTime = 0;
-  this.accessTime = null;
-  if (args) {
-    if (args.id !== undefined) {
-      this.id = args.id;
-    }
-    if (args.userId !== undefined) {
-      this.userId = args.userId;
-    }
-    if (args.createTime !== undefined) {
-      this.createTime = args.createTime;
-    }
-    if (args.data !== undefined) {
-      this.data = args.data;
-    }
-    if (args.expirationTime !== undefined) {
-      this.expirationTime = args.expirationTime;
-    }
-    if (args.accessTime !== undefined) {
-      this.accessTime = args.accessTime;
-    }
-  }
-};
-UserSession.prototype = {};
-UserSession.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.id = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.userId = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I64) {
-        this.createTime = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.MAP) {
-        var _size44 = 0;
-        var _rtmp348;
-        this.data = {};
-        var _ktype45 = 0;
-        var _vtype46 = 0;
-        _rtmp348 = input.readMapBegin();
-        _ktype45 = _rtmp348.ktype;
-        _vtype46 = _rtmp348.vtype;
-        _size44 = _rtmp348.size;
-        for (var _i49 = 0; _i49 < _size44; ++_i49)
-        {
-          if (_i49 > 0 ) {
-            if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
-              input.rstack.pop();
-            }
-          }
-          var key50 = null;
-          var val51 = null;
-          key50 = input.readString().value;
-          val51 = input.readString().value;
-          this.data[key50] = val51;
-        }
-        input.readMapEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.I64) {
-        this.expirationTime = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 128:
-      if (ftype == Thrift.Type.I64) {
-        this.accessTime = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-UserSession.prototype.write = function(output) {
-  output.writeStructBegin('UserSession');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.STRING, 1);
-    output.writeString(this.id);
-    output.writeFieldEnd();
-  }
-  if (this.userId !== null && this.userId !== undefined) {
-    output.writeFieldBegin('userId', Thrift.Type.STRING, 2);
-    output.writeString(this.userId);
-    output.writeFieldEnd();
-  }
-  if (this.createTime !== null && this.createTime !== undefined) {
-    output.writeFieldBegin('createTime', Thrift.Type.I64, 3);
-    output.writeI64(this.createTime);
-    output.writeFieldEnd();
-  }
-  if (this.data !== null && this.data !== undefined) {
-    output.writeFieldBegin('data', Thrift.Type.MAP, 4);
-    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.data));
-    for (var kiter52 in this.data)
-    {
-      if (this.data.hasOwnProperty(kiter52))
-      {
-        var viter53 = this.data[kiter52];
-        output.writeString(kiter52);
-        output.writeString(viter53);
-      }
-    }
-    output.writeMapEnd();
-    output.writeFieldEnd();
-  }
-  if (this.expirationTime !== null && this.expirationTime !== undefined) {
-    output.writeFieldBegin('expirationTime', Thrift.Type.I64, 5);
-    output.writeI64(this.expirationTime);
-    output.writeFieldEnd();
-  }
-  if (this.accessTime !== null && this.accessTime !== undefined) {
-    output.writeFieldBegin('accessTime', Thrift.Type.I64, 128);
-    output.writeI64(this.accessTime);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-ClientErrorInfo = function(args) {
-  this.id = null;
-  this.browser = null;
-  this.version = null;
-  this.message = null;
-  this.url = null;
-  this.lineNumber = null;
-  if (args) {
-    if (args.id !== undefined) {
-      this.id = args.id;
-    }
-    if (args.browser !== undefined) {
-      this.browser = args.browser;
-    }
-    if (args.version !== undefined) {
-      this.version = args.version;
-    }
-    if (args.message !== undefined) {
-      this.message = args.message;
-    }
-    if (args.url !== undefined) {
-      this.url = args.url;
-    }
-    if (args.lineNumber !== undefined) {
-      this.lineNumber = args.lineNumber;
-    }
-  }
-};
-ClientErrorInfo.prototype = {};
-ClientErrorInfo.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.id = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.browser = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I32) {
-        this.version = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 4:
-      if (ftype == Thrift.Type.STRING) {
-        this.message = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
-      if (ftype == Thrift.Type.STRING) {
-        this.url = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 6:
-      if (ftype == Thrift.Type.I32) {
-        this.lineNumber = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-ClientErrorInfo.prototype.write = function(output) {
-  output.writeStructBegin('ClientErrorInfo');
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin('id', Thrift.Type.STRING, 1);
-    output.writeString(this.id);
-    output.writeFieldEnd();
-  }
-  if (this.browser !== null && this.browser !== undefined) {
-    output.writeFieldBegin('browser', Thrift.Type.STRING, 2);
-    output.writeString(this.browser);
-    output.writeFieldEnd();
-  }
-  if (this.version !== null && this.version !== undefined) {
-    output.writeFieldBegin('version', Thrift.Type.I32, 3);
-    output.writeI32(this.version);
-    output.writeFieldEnd();
-  }
-  if (this.message !== null && this.message !== undefined) {
-    output.writeFieldBegin('message', Thrift.Type.STRING, 4);
-    output.writeString(this.message);
-    output.writeFieldEnd();
-  }
-  if (this.url !== null && this.url !== undefined) {
-    output.writeFieldBegin('url', Thrift.Type.STRING, 5);
-    output.writeString(this.url);
-    output.writeFieldEnd();
-  }
-  if (this.lineNumber !== null && this.lineNumber !== undefined) {
-    output.writeFieldBegin('lineNumber', Thrift.Type.I32, 6);
-    output.writeI32(this.lineNumber);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
 Point = function(args) {
   this.x = null;
   this.y = null;
@@ -1166,19 +416,19 @@ Polygon.prototype.read = function(input) {
       break;
       case 100:
       if (ftype == Thrift.Type.LIST) {
-        var _size54 = 0;
-        var _rtmp358;
+        var _size0 = 0;
+        var _rtmp34;
         this.vertices = [];
-        var _etype57 = 0;
-        _rtmp358 = input.readListBegin();
-        _etype57 = _rtmp358.etype;
-        _size54 = _rtmp358.size;
-        for (var _i59 = 0; _i59 < _size54; ++_i59)
+        var _etype3 = 0;
+        _rtmp34 = input.readListBegin();
+        _etype3 = _rtmp34.etype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
         {
-          var elem60 = null;
-          elem60 = new Point();
-          elem60.read(input);
-          this.vertices.push(elem60);
+          var elem6 = null;
+          elem6 = new Point();
+          elem6.read(input);
+          this.vertices.push(elem6);
         }
         input.readListEnd();
       } else {
@@ -1220,12 +470,12 @@ Polygon.prototype.write = function(output) {
   if (this.vertices !== null && this.vertices !== undefined) {
     output.writeFieldBegin('vertices', Thrift.Type.LIST, 100);
     output.writeListBegin(Thrift.Type.STRUCT, this.vertices.length);
-    for (var iter61 in this.vertices)
+    for (var iter7 in this.vertices)
     {
-      if (this.vertices.hasOwnProperty(iter61))
+      if (this.vertices.hasOwnProperty(iter7))
       {
-        iter61 = this.vertices[iter61];
-        iter61.write(output);
+        iter7 = this.vertices[iter7];
+        iter7.write(output);
       }
     }
     output.writeListEnd();
@@ -1254,6 +504,7 @@ Keyframe = function(args) {
   this.scale = null;
   this.translation = null;
   this.opacity = null;
+  this.destroy = false;
   if (args) {
     if (args.frameTime !== undefined) {
       this.frameTime = args.frameTime;
@@ -1275,6 +526,9 @@ Keyframe = function(args) {
     }
     if (args.opacity !== undefined) {
       this.opacity = args.opacity;
+    }
+    if (args.destroy !== undefined) {
+      this.destroy = args.destroy;
     }
   }
 };
@@ -1343,6 +597,13 @@ Keyframe.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 104:
+      if (ftype == Thrift.Type.BOOL) {
+        this.destroy = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1387,6 +648,11 @@ Keyframe.prototype.write = function(output) {
   if (this.opacity !== null && this.opacity !== undefined) {
     output.writeFieldBegin('opacity', Thrift.Type.DOUBLE, 103);
     output.writeDouble(this.opacity);
+    output.writeFieldEnd();
+  }
+  if (this.destroy !== null && this.destroy !== undefined) {
+    output.writeFieldBegin('destroy', Thrift.Type.BOOL, 104);
+    output.writeBool(this.destroy);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -1511,19 +777,19 @@ Actor.prototype.read = function(input) {
       break;
       case 100:
       if (ftype == Thrift.Type.LIST) {
-        var _size62 = 0;
-        var _rtmp366;
+        var _size8 = 0;
+        var _rtmp312;
         this.keyFrameRenderables = [];
-        var _etype65 = 0;
-        _rtmp366 = input.readListBegin();
-        _etype65 = _rtmp366.etype;
-        _size62 = _rtmp366.size;
-        for (var _i67 = 0; _i67 < _size62; ++_i67)
+        var _etype11 = 0;
+        _rtmp312 = input.readListBegin();
+        _etype11 = _rtmp312.etype;
+        _size8 = _rtmp312.size;
+        for (var _i13 = 0; _i13 < _size8; ++_i13)
         {
-          var elem68 = null;
-          elem68 = new Renderable();
-          elem68.read(input);
-          this.keyFrameRenderables.push(elem68);
+          var elem14 = null;
+          elem14 = new Renderable();
+          elem14.read(input);
+          this.keyFrameRenderables.push(elem14);
         }
         input.readListEnd();
       } else {
@@ -1549,12 +815,12 @@ Actor.prototype.write = function(output) {
   if (this.keyFrameRenderables !== null && this.keyFrameRenderables !== undefined) {
     output.writeFieldBegin('keyFrameRenderables', Thrift.Type.LIST, 100);
     output.writeListBegin(Thrift.Type.STRUCT, this.keyFrameRenderables.length);
-    for (var iter69 in this.keyFrameRenderables)
+    for (var iter15 in this.keyFrameRenderables)
     {
-      if (this.keyFrameRenderables.hasOwnProperty(iter69))
+      if (this.keyFrameRenderables.hasOwnProperty(iter15))
       {
-        iter69 = this.keyFrameRenderables[iter69];
-        iter69.write(output);
+        iter15 = this.keyFrameRenderables[iter15];
+        iter15.write(output);
       }
     }
     output.writeListEnd();
@@ -1622,19 +888,19 @@ Layer.prototype.read = function(input) {
       break;
       case 100:
       if (ftype == Thrift.Type.LIST) {
-        var _size70 = 0;
-        var _rtmp374;
+        var _size16 = 0;
+        var _rtmp320;
         this.actors = [];
-        var _etype73 = 0;
-        _rtmp374 = input.readListBegin();
-        _etype73 = _rtmp374.etype;
-        _size70 = _rtmp374.size;
-        for (var _i75 = 0; _i75 < _size70; ++_i75)
+        var _etype19 = 0;
+        _rtmp320 = input.readListBegin();
+        _etype19 = _rtmp320.etype;
+        _size16 = _rtmp320.size;
+        for (var _i21 = 0; _i21 < _size16; ++_i21)
         {
-          var elem76 = null;
-          elem76 = new Actor();
-          elem76.read(input);
-          this.actors.push(elem76);
+          var elem22 = null;
+          elem22 = new Actor();
+          elem22.read(input);
+          this.actors.push(elem22);
         }
         input.readListEnd();
       } else {
@@ -1670,12 +936,12 @@ Layer.prototype.write = function(output) {
   if (this.actors !== null && this.actors !== undefined) {
     output.writeFieldBegin('actors', Thrift.Type.LIST, 100);
     output.writeListBegin(Thrift.Type.STRUCT, this.actors.length);
-    for (var iter77 in this.actors)
+    for (var iter23 in this.actors)
     {
-      if (this.actors.hasOwnProperty(iter77))
+      if (this.actors.hasOwnProperty(iter23))
       {
-        iter77 = this.actors[iter77];
-        iter77.write(output);
+        iter23 = this.actors[iter23];
+        iter23.write(output);
       }
     }
     output.writeListEnd();
@@ -1763,18 +1029,18 @@ Movie.prototype.read = function(input) {
       break;
       case 4:
       if (ftype == Thrift.Type.SET) {
-        var _size78 = 0;
-        var _rtmp382;
+        var _size24 = 0;
+        var _rtmp328;
         this.composerIds = [];
-        var _etype81 = 0;
-        _rtmp382 = input.readSetBegin();
-        _etype81 = _rtmp382.etype;
-        _size78 = _rtmp382.size;
-        for (var _i83 = 0; _i83 < _size78; ++_i83)
+        var _etype27 = 0;
+        _rtmp328 = input.readSetBegin();
+        _etype27 = _rtmp328.etype;
+        _size24 = _rtmp328.size;
+        for (var _i29 = 0; _i29 < _size24; ++_i29)
         {
-          var elem84 = null;
-          elem84 = input.readString().value;
-          this.composerIds.push(elem84);
+          var elem30 = null;
+          elem30 = input.readString().value;
+          this.composerIds.push(elem30);
         }
         input.readSetEnd();
       } else {
@@ -1783,18 +1049,18 @@ Movie.prototype.read = function(input) {
       break;
       case 5:
       if (ftype == Thrift.Type.SET) {
-        var _size85 = 0;
-        var _rtmp389;
+        var _size31 = 0;
+        var _rtmp335;
         this.accessIds = [];
-        var _etype88 = 0;
-        _rtmp389 = input.readSetBegin();
-        _etype88 = _rtmp389.etype;
-        _size85 = _rtmp389.size;
-        for (var _i90 = 0; _i90 < _size85; ++_i90)
+        var _etype34 = 0;
+        _rtmp335 = input.readSetBegin();
+        _etype34 = _rtmp335.etype;
+        _size31 = _rtmp335.size;
+        for (var _i36 = 0; _i36 < _size31; ++_i36)
         {
-          var elem91 = null;
-          elem91 = input.readString().value;
-          this.accessIds.push(elem91);
+          var elem37 = null;
+          elem37 = input.readString().value;
+          this.accessIds.push(elem37);
         }
         input.readSetEnd();
       } else {
@@ -1810,19 +1076,19 @@ Movie.prototype.read = function(input) {
       break;
       case 100:
       if (ftype == Thrift.Type.LIST) {
-        var _size92 = 0;
-        var _rtmp396;
+        var _size38 = 0;
+        var _rtmp342;
         this.layers = [];
-        var _etype95 = 0;
-        _rtmp396 = input.readListBegin();
-        _etype95 = _rtmp396.etype;
-        _size92 = _rtmp396.size;
-        for (var _i97 = 0; _i97 < _size92; ++_i97)
+        var _etype41 = 0;
+        _rtmp342 = input.readListBegin();
+        _etype41 = _rtmp342.etype;
+        _size38 = _rtmp342.size;
+        for (var _i43 = 0; _i43 < _size38; ++_i43)
         {
-          var elem98 = null;
-          elem98 = new Layer();
-          elem98.read(input);
-          this.layers.push(elem98);
+          var elem44 = null;
+          elem44 = new Layer();
+          elem44.read(input);
+          this.layers.push(elem44);
         }
         input.readListEnd();
       } else {
@@ -1873,12 +1139,12 @@ Movie.prototype.write = function(output) {
   if (this.composerIds !== null && this.composerIds !== undefined) {
     output.writeFieldBegin('composerIds', Thrift.Type.SET, 4);
     output.writeSetBegin(Thrift.Type.STRING, this.composerIds.length);
-    for (var iter99 in this.composerIds)
+    for (var iter45 in this.composerIds)
     {
-      if (this.composerIds.hasOwnProperty(iter99))
+      if (this.composerIds.hasOwnProperty(iter45))
       {
-        iter99 = this.composerIds[iter99];
-        output.writeString(iter99);
+        iter45 = this.composerIds[iter45];
+        output.writeString(iter45);
       }
     }
     output.writeSetEnd();
@@ -1887,12 +1153,12 @@ Movie.prototype.write = function(output) {
   if (this.accessIds !== null && this.accessIds !== undefined) {
     output.writeFieldBegin('accessIds', Thrift.Type.SET, 5);
     output.writeSetBegin(Thrift.Type.STRING, this.accessIds.length);
-    for (var iter100 in this.accessIds)
+    for (var iter46 in this.accessIds)
     {
-      if (this.accessIds.hasOwnProperty(iter100))
+      if (this.accessIds.hasOwnProperty(iter46))
       {
-        iter100 = this.accessIds[iter100];
-        output.writeString(iter100);
+        iter46 = this.accessIds[iter46];
+        output.writeString(iter46);
       }
     }
     output.writeSetEnd();
@@ -1906,12 +1172,12 @@ Movie.prototype.write = function(output) {
   if (this.layers !== null && this.layers !== undefined) {
     output.writeFieldBegin('layers', Thrift.Type.LIST, 100);
     output.writeListBegin(Thrift.Type.STRUCT, this.layers.length);
-    for (var iter101 in this.layers)
+    for (var iter47 in this.layers)
     {
-      if (this.layers.hasOwnProperty(iter101))
+      if (this.layers.hasOwnProperty(iter47))
       {
-        iter101 = this.layers[iter101];
-        iter101.write(output);
+        iter47 = this.layers[iter47];
+        iter47.write(output);
       }
     }
     output.writeListEnd();

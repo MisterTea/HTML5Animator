@@ -2,31 +2,31 @@ function EditPanelController($scope, $routeParams, $cookies, $http, $location,
     $rootScope, $timeout, tokenValidator) {
 
   $scope.frame = function() {
-    return $rootScope.frame;
+    return frame;
   };
   $scope.prevFrame = function() {
-    $rootScope.frame = Math.max(0, $rootScope.frame - 1);
+    frame = Math.max(0, frame - 1);
   };
   $scope.nextFrame = function() {
-    $rootScope.frame = Math.min(100, $rootScope.frame + 1);
+    frame = Math.min(100, frame + 1);
   };
   $scope.addBox = function() {
   };
   $scope.play = function() {
-    $rootScope.frame = 0;
+    frame = 0;
     $rootScope.animationStartTime = Date.now();
     $rootScope.playing = true;
     setTimeout(animloop,0);
   };
   $scope.stop = function() {
     $rootScope.playing = false;
-    $rootScope.frame = 0;
+    frame = 0;
   };
   $scope.save = function() {
-    client.saveMovie($rootScope.movie);
+    client.saveMovie(movie);
   };
   $scope.load = function() {
-    $rootScope.movie = client.loadMovie("Movie");
+    movie = client.loadMovie("Movie");
   };
 
   function animloop(timestamp){
@@ -37,7 +37,7 @@ function EditPanelController($scope, $routeParams, $cookies, $http, $location,
     requestAnimFrame(animloop);
 
     // Render
-    $rootScope.frame = (Date.now() - $rootScope.animationStartTime) / 100;
+    frame = (Date.now() - $rootScope.animationStartTime) / 100;
     $rootScope.$apply();
   };
 }
@@ -52,7 +52,52 @@ function EditObjectController($scope, $routeParams, $cookies, $http, $location,
   $scope.getEditObject = function() {
     return $rootScope.selectedObjectId;
   };
+  
+  $scope.eraseObject = function() {
+    var actor = getActorFromId(movie, $rootScope.selectedObjectId);
+    var keyFrame = upsertKeyFrame(actor, objectIdMap[$rootScope.selectedObjectId], frame);
+    keyFrame.destroy = true;
+    while (actor.keyFrameRenderables[actor.keyFrameRenderables.length - 1].keyFrame != frame) {
+      actor.keyFrameRenderables.splice(actor.keyFrameRenderables.length - 1);
+    }
+    updateAnimation();
+  };
 
+  $scope.deleteObject = function() {
+    var layer = getLayerWithActorId(movie, $rootScope.selectedObjectId);
+    layer.actors.splice(getActorIndexWithActorId(movie, $rootScope.selectedObjectId), 1);
+    canvas.remove(objectIdMap[$rootScope.selectedObjectId]);
+    delete objectIdMap[$rootScope.selectedObjectId];
+    updateAnimation();
+    $rootScope.selectedObjectId = null;
+  };
+  
+  $scope.addImage = function() {
+    var imageUrl = $scope.newImageUrl;
+    console.log(imageUrl);
+    fabric.Image.fromURL(imageUrl, function(oImg) {
+      oImg.left = oImg.width/2 + 100;
+      oImg.top = oImg.height/2 + 100;
+      
+      var layer = new Layer();
+      movie.layers.push(layer);
+
+      var actor = new Actor();
+      layer.actors.push(actor);
+
+      actor.id = "image"+randomString();
+
+      var renderable = new Renderable();
+      actor.keyFrameRenderables.push(renderable);
+
+      renderable.fabricJson = JSON.stringify(oImg.toObject());
+      console.log(renderable.fabricJson);
+      renderable.keyFrame = frame;
+      //$rootScope.canvas.add(oImg);
+      
+      updateAnimation();
+    });
+  };
 }
 
 EditObjectController.$inject = [ '$scope', '$routeParams', '$cookies', '$http',
