@@ -20,17 +20,6 @@ part "tween.dart";
 part "palette.dart";
 
 @observable
-class Point {
-  num x;
-  num y;
-  
-  Point(num x, num y) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
-@observable
 class Renderable {
   String fabricJson;
   num keyFrame;

@@ -386,6 +386,14 @@ void updateAnimation() {
   movieState.canvas.renderAll();
   movieState.canvas.calcOffset();
   });
+  
+  Element timelineEl = query('#timelinecomponent');
+  if (timelineEl != null) {
+    TimelineComponent timeline = timelineEl.xtag;
+    if (timeline != null) {
+      timeline.redrawFrames();
+    }
+  }
 }
 
 void makeGif() {

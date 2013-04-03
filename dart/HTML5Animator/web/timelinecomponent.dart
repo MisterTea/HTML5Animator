@@ -1,15 +1,13 @@
 library timeline;
 
 import 'dart:html';
+import 'html5animator.dart';
 import 'package:web_ui/web_ui.dart';
 
 /** Timeline to navigate between frames and show keyframes. */
 class TimelineComponent extends WebComponent {
   final int FRAME_WIDTH_PX = 12;
   final int SIDE_PADDING_PX = 6;
-  
-  int numFrames = 100;
-  int currentFrameIndex = 0;
   
   DivElement framesContainer;
   CanvasElement framesCanvas;
@@ -23,7 +21,7 @@ class TimelineComponent extends WebComponent {
   
   void redrawFrames() {
     // Update canvas width to accomodate number of frames + padding.
-    var width = numFrames * FRAME_WIDTH_PX + 2 * SIDE_PADDING_PX;
+    var width = movie.maxFrames * FRAME_WIDTH_PX + 2 * SIDE_PADDING_PX;
     framesContainer.style.width = width.toString() + 'px';
     framesCanvas.width = width;
     var height = framesCanvas.height;
@@ -36,7 +34,7 @@ class TimelineComponent extends WebComponent {
     
     // Highlight the current frame.
     context.fillStyle = '#aac';
-    context.fillRect(startX + currentFrameIndex * FRAME_WIDTH_PX, 0, 
+    context.fillRect(startX + movieState.frame * FRAME_WIDTH_PX, 0, 
         FRAME_WIDTH_PX, height);
     
     // Draw vertical lines for each frame.
@@ -61,14 +59,14 @@ class TimelineComponent extends WebComponent {
   void handleClick(MouseEvent e) {
     int frameIndex = getFrameIndexUnder(toCanvasCoordinates(e.page));
     
-    if (frameIndex != null && frameIndex != currentFrameIndex) {
+    if (frameIndex != null && frameIndex != movieState.frame) {
       switchToFrame(frameIndex);
     }
   }
   
   void switchToFrame(int frameIndex) {
-    if (frameIndex != currentFrameIndex) {
-      currentFrameIndex = frameIndex;
+    if (frameIndex != movieState.frame) {
+      movieState.frame = frameIndex;
       redrawFrames();
     }
   }
@@ -79,7 +77,7 @@ class TimelineComponent extends WebComponent {
   }
   
   double getFrameEndX() {
-    return getFrameStartX() + numFrames * FRAME_WIDTH_PX;
+    return getFrameStartX() + movie.maxFrames * FRAME_WIDTH_PX;
   }
   
   Point toCanvasCoordinates(Point screenPoint) {
