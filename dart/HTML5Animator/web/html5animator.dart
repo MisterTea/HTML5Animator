@@ -1,5 +1,6 @@
 library html5animator;
 
+import 'dart:async';
 import 'dart:html';
 import 'dart:math' as Math;
 import 'dart:json' as JSON;
@@ -60,7 +61,6 @@ class Movie {
   Point size;
   
   Movie() {
-    id = "movie1";
     name = "My Movie";
     musicId = null;
     layers = [];
@@ -71,13 +71,16 @@ class Movie {
 Movie movie = new Movie();
 
 class MovieState {
-  num frame = 0;
-  num maxFrames = 100;
+  num playFrame = 0; // Play frame is for interpolation only.
+  int frame = 0;
+  int maxFrames = 100;
   var canvas = null;
   var objectIdMap = new Map();
   num padding = 100;
   var guidelines = null;
   String selectedObjectId = "";
+  num animationStartTimeMS = 0.0;
+  bool playing = false;
   
   MovieState() {
   }
@@ -90,6 +93,13 @@ String currentTime;
  * http://www.dartlang.org/articles/dart-web-components/.
  */
 void main() {
+  print("HASH");
+  print(window.location.hash);
+  if (window.location.hash.length == 0) {
+    window.location.hash = randomString();
+  }
+  movie.id = window.location.hash;
+  
   js.scoped(() {
   window.console.debug('LOG');
   // Enable this to use Shadow DOM in the browser.
