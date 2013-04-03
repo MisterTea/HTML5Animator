@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Timeline</title>
+<!--  <link rel="stylesheet" href="timeline.css"> -->
+</head>
+<body>
+
+<element extends="div" name="x-timeline" constructor="TimelineComponent">
+  <template>
+    <div class="timeline">
+      Message: {{message}}
+    </div>
+    <button on-click="toggleMessage()">Toggle</button>
+  </template>
+  <script type="application/dart" src="timelinecomponent.dart"></script>
+</element>
+
+</body>
+</html>

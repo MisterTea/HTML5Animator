@@ -1,5 +1,6 @@
 *.class
 dart/HTML5Animator/web/out
+dart/HTML5Animator/packages/*
 
 # Package Files #
 *.jar
