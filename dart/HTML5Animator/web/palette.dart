@@ -78,7 +78,7 @@ void prevFrame() {
 }
 
 void nextFrame() {
-  movieState.frame = Math.min(movieState.maxFrames - 1, movieState.frame + 1);
+  movieState.frame = Math.min(movie.maxFrames - 1, movieState.frame + 1);
   updateAnimation();
 }
 

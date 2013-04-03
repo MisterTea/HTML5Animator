@@ -7590,13 +7590,30 @@ fabric.util.string = {
 
       var t = this._currentTransform,
           o = this._offset;
-
+      
       if (t.target.get('lockRotation')) return;
 
       var lastAngle = atan2(t.ey - t.top - o.top, t.ex - t.left - o.left),
           curAngle = atan2(y - t.top - o.top, x - t.left - o.left);
+          
+      if (t.rotShift == undefined) {
+      	t.rotShift = 0;
+      	t.lastCurAngle = curAngle;
+      }
+      
+      if (Math.abs(curAngle-t.lastCurAngle) > 1.0) {
+      	// Assume we wrapped around
+      	if (curAngle > t.lastCurAngle) {
+      		t.rotShift += (Math.PI*2);
+      	} else {
+      		t.rotShift -= (Math.PI*2);
+      	}
+      }
+      t.lastCurAngle = curAngle;
+      
+      console.log(lastAngle + " *** " + curAngle + " *** " + t.theta + " *** " + t.rotShift);
 
-      t.target.angle = radiansToDegrees(curAngle - lastAngle + t.theta);
+      t.target.angle = radiansToDegrees(curAngle - lastAngle + t.theta + t.rotShift);
     },
 
     /**
