@@ -1,0 +1,7 @@
+name: HTML5AnimatorServer
+description: A sample command-line application
+dependencies:
+  http: any
+
+#dependencies:
+#  unittest: any
