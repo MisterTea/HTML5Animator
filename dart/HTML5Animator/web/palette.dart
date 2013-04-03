@@ -293,6 +293,7 @@ void fabricImageCreated(var fabricObject) {
 }
 
 void updateAnimation() {
+  print(movie.backgroundColor);
   js.scoped(() {
   // Frame changed, redraw
     if (movieState.playing == false) {
@@ -383,6 +384,7 @@ void updateAnimation() {
     }
   }
 
+  movieState.canvas.backgroundColor = movie.backgroundColor;
   movieState.canvas.renderAll();
   movieState.canvas.calcOffset();
   });

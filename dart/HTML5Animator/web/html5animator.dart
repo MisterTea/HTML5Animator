@@ -7,6 +7,7 @@ import 'dart:json' as JSON;
 import 'package:web_ui/web_ui.dart';
 import 'package:web_ui/watcher.dart' as watcher;
 import 'package:js/js.dart' as js;
+
 import 'imagePalette.dart';
 
 part "b64.dart";
@@ -54,6 +55,7 @@ class Movie {
   List<Layer> layers;
   num frameMs;
   Point size;
+  String backgroundColor = "#ffffff";
   
   Movie() {
     name = "My Movie";
@@ -160,3 +162,4 @@ void onDropFn(MouseEvent e) {
   }
  }
 }
+ 

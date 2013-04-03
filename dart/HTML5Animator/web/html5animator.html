@@ -176,6 +176,8 @@
     ng-controller="EditPanelController"
     style="float: right; width: auto; border: 2px solid; box-shadow: 10px 10px 5px #888888;">
     <div>ON FRAME {{movieState.frame}}</div>
+    Background Color: <input type="color" bind-value="movie.backgroundColor">
+    <br />
     <a
       class="button"
       on-click="prevFrame()">Previous Frame</a>
