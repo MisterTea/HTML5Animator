@@ -7,6 +7,7 @@ import 'package:web_ui/web_ui.dart';
 import 'package:web_ui/watcher.dart' as watchers;
 import 'package:js/js.dart' as js;
 
+part "b64.dart";
 part "GIFEncoder.dart";
 part "LZWEncoder.dart";
 part "NeuQuant.dart";

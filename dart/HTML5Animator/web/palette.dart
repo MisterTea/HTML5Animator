@@ -250,6 +250,7 @@ void createFabricObject(serializedObject, id) {
 }
 
 void fabricImageCreated(var fabricObject) {
+    js.retain(fabricObject);
     fabricObject.id = NEXT_ID;
     fabricObject.left += movieState.padding;
     fabricObject.top += movieState.padding;
@@ -349,4 +350,35 @@ void updateAnimation() {
   movieState.canvas.renderAll();
   movieState.canvas.calcOffset();
   });
+}
+
+void makeGif() {
+  js.scoped(() {
+  movieState.canvas.setWidth(640);
+  movieState.canvas.setHeight(360);
+  movieState.padding = 0;
+  movieState.canvas.remove(movieState.guidelines);
+  updateAnimation();
+  var encoder = new js.Proxy(js.context.GIFEncoder);
+  encoder.setRepeat(0); // auto-loop
+  encoder.setDelay(10);
+  print("***");
+  print(encoder.start());
+  movieState.frame = 0;
+  for (; movieState.frame < 10; movieState.frame++) {
+    updateAnimation();
+    print("***");
+    print(encoder.addFrameFromId('palette'));
+  }
+  encoder.finish();
+  document.query('#gifImage').src = 'data:image/gif;base64,'
+      + encode64(encoder.stream().getData());
+  print(document.getElementById('gifImage').src);
+  movieState.canvas.add(movieState.guidelines);
+  movieState.canvas.setWidth(840);
+  movieState.canvas.setHeight(560);
+  movieState.padding = 100;
+  });
+  
+  updateAnimation();
 }

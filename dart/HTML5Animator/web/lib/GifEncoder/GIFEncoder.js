@@ -135,6 +135,10 @@
 		* BitmapData object to be treated as a GIF's frame
 		*/
 		
+		var addFrameFromId = exports.addFrameFromId = function addFrameFromId(id/*string*/) {
+			return addFrame(document.getElementById(id).getContext('2d'));
+		}
+		
 		var addFrame = exports.addFrame = function addFrame(im/*BitmapData*/, is_imageData)/*Boolean*/
 		{
 			

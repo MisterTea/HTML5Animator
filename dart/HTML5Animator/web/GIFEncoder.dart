@@ -139,6 +139,9 @@ class ByteArray {
     * @param
     * BitmapData object to be treated as a GIF's frame
     */
+    bool addFrameFromId(id/*string*/) {
+      return addFrame(document.query('#'+id).getContext('2d'));
+    }
     
     bool addFrame(var im/*BitmapData*/, bool is_imageData)/*Boolean*/
     {
