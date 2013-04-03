@@ -33,16 +33,16 @@ part of html5animator;
   
   class NeuQuant
   {
-    /*private_static*/ static var netsize/*int*/ = 256; /* number of colours used */
+    /*private_static*/ static int netsize/*int*/ = 256; /* number of colours used */
     
     /* four primes near 500 - assume no image has a length so large */
     /* that it is divisible by all four primes */
     
-    /*private_static*/ static var prime1/*int*/ = 499;
-    /*private_static*/ static var prime2/*int*/ = 491;
-    /*private_static*/ static var prime3/*int*/ = 487;
-    /*private_static*/ static var prime4/*int*/ = 503;
-    /*private_static*/ static var minpicturebytes/*int*/ = (3 * prime4);
+    /*private_static*/ static int prime1/*int*/ = 499;
+    /*private_static*/ static int prime2/*int*/ = 491;
+    /*private_static*/ static int prime3/*int*/ = 487;
+    /*private_static*/ static int prime4/*int*/ = 503;
+    /*private_static*/ static int minpicturebytes/*int*/ = (3 * prime4);
     
     /* minimum size for input image */
     /*
@@ -57,57 +57,57 @@ part of html5animator;
     * Network Definitions -------------------
     */
     
-    /*private_static*/ static var maxnetpos/*int*/ = (netsize - 1);
-    /*private_static*/ static var netbiasshift/*int*/ = 4; /* bias for colour values */
-    /*private_static*/ static var ncycles/*int*/ = 100; /* no. of learning cycles */
+    /*private_static*/ static int maxnetpos/*int*/ = (netsize - 1);
+    /*private_static*/ static int netbiasshift/*int*/ = 4; /* bias for colour values */
+    /*private_static*/ static int ncycles/*int*/ = 100; /* no. of learning cycles */
     
     /* defs for freq and bias */
-    /*private_static*/ static var intbiasshift/*int*/ = 16; /* bias for fractions */
-    /*private_static*/ static var intbias/*int*/ = (1 << intbiasshift);
-    /*private_static*/ static var gammashift/*int*/ = 10; /* gamma = 1024 */
-    /*private_static*/ static var gamma/*int*/ = (1 << gammashift);
-    /*private_static*/ static var betashift/*int*/ = 10;
-    /*private_static*/ static var beta/*int*/ = (intbias >> betashift); /* beta = 1/1024 */
-    /*private_static*/ static var betagamma/*int*/ = (intbias << (gammashift - betashift));
+    /*private_static*/ static int intbiasshift/*int*/ = 16; /* bias for fractions */
+    /*private_static*/ static int intbias/*int*/ = (1 << intbiasshift);
+    /*private_static*/ static int gammashift/*int*/ = 10; /* gamma = 1024 */
+    /*private_static*/ static int gamma/*int*/ = (1 << gammashift);
+    /*private_static*/ static int betashift/*int*/ = 10;
+    /*private_static*/ static int beta/*int*/ = (intbias >> betashift); /* beta = 1/1024 */
+    /*private_static*/ static int betagamma/*int*/ = (intbias << (gammashift - betashift));
     
     /* defs for decreasing radius factor */
-    /*private_static*/ static var initrad/*int*/ = (netsize >> 3); /*
+    /*private_static*/ static int initrad/*int*/ = (netsize >> 3); /*
                                                            * for 256 cols, radius
                                                            * starts
                                                            */
                                
-    /*private_static*/ static var radiusbiasshift/*int*/ = 6; /* at 32.0 biased by 6 bits */
-    /*private_static*/ static var radiusbias/*int*/ = (1 << radiusbiasshift);
-    /*private_static*/ static var initradius/*int*/ = (initrad * radiusbias); /*
+    /*private_static*/ static int radiusbiasshift/*int*/ = 6; /* at 32.0 biased by 6 bits */
+    /*private_static*/ static int radiusbias/*int*/ = (1 << radiusbiasshift);
+    /*private_static*/ static int initradius/*int*/ = (initrad * radiusbias); /*
                                                                      * and
                                                                      * decreases
                                                                      * by a
                                                                      */
                                      
-    /*private_static*/ static var radiusdec/*int*/ = 30; /* factor of 1/30 each cycle */
+    /*private_static*/ static int radiusdec/*int*/ = 30; /* factor of 1/30 each cycle */
     
     /* defs for decreasing alpha factor */
-    /*private_static*/ static var alphabiasshift/*int*/ = 10; /* alpha starts at 1.0 */
-    /*private_static*/ static var initalpha/*int*/ = (1 << alphabiasshift);
+    /*private_static*/ static int alphabiasshift/*int*/ = 10; /* alpha starts at 1.0 */
+    /*private_static*/ static int initalpha/*int*/ = (1 << alphabiasshift);
     /*private*/ var alphadec/*int*/; /* biased by 10 bits */
     
     /* radbias and alpharadbias used for radpower calculation */
-    /*private_static*/ static var radbiasshift/*int*/ = 8;
-    /*private_static*/ static var radbias/*int*/ = (1 << radbiasshift);
-    /*private_static*/ static var alpharadbshift/*int*/ = (alphabiasshift + radbiasshift);
+    /*private_static*/ static int radbiasshift/*int*/ = 8;
+    /*private_static*/ static int radbias/*int*/ = (1 << radbiasshift);
+    /*private_static*/ static int alpharadbshift/*int*/ = (alphabiasshift + radbiasshift);
     
-    /*private_static*/ static var alpharadbias/*int*/ = (1 << alpharadbshift);
+    /*private_static*/ static int alpharadbias/*int*/ = (1 << alpharadbshift);
     
     /*
     * Types and Global Variables --------------------------
     */
     
     /*private*/ var thepicture/*ByteArray*/;/* the input image itself */
-    /*private*/ var lengthcount/*int*/; /* lengthcount = H*W*3 */
-    /*private*/ var samplefac/*int*/; /* sampling factor 1..30 */
+    /*private*/ int lengthcount/*int*/; /* lengthcount = H*W*3 */
+    /*private*/ int samplefac/*int*/; /* sampling factor 1..30 */
     
     // typedef int pixel[4]; /* BGRc */
-    /*private*/ var network/*Array*/; /* the network itself - [netsize][4] */
+    /*private*/ List<List<num>> network/*Array*/; /* the network itself - [netsize][4] */
     /*protected*/ var netindex/*Array*/ = new List();
     
     /* for network lookup - really 256 */
@@ -117,7 +117,7 @@ part of html5animator;
     /*private*/ var freq/*Array*/ = new List();
     /*private*/ var radpower/*Array*/ = new List();
     
-    NeuQuant(ByteArray thepic/*ByteArray*/, num len/*int*/, num sample/*int*/)
+    NeuQuant(var thepic/*ByteArray*/, num len/*int*/, num sample/*int*/)
     {
       
       var i/*int*/;
@@ -132,11 +132,12 @@ part of html5animator;
       for (i = 0; i < netsize; i++)
       {
         
-        network[i] = new List(4);
+        network[i] = new List<num>(4);
         p = network[i];
-        p[0] = p[1] = p[2] = (i << (netbiasshift + 8)) / netsize;
-        freq[i] = intbias / netsize; /* 1/netsize */
-        bias[i] = 0;
+        p[0] = p[1] = p[2] = ((i << (netbiasshift + 8)) / netsize);
+        int newfreq = (intbias / netsize).floor();
+        freq.add(newfreq); /* 1/netsize */
+        bias.add(0);
       }
       
     }
@@ -148,12 +149,11 @@ part of html5animator;
         var index/*Array*/ = new List(netsize);
         for (var i/*int*/ = 0; i < netsize; i++)
           index[network[i][3]] = i;
-        var k/*int*/ = 0;
         for (var l/*int*/ = 0; l < netsize; l++) {
           var j/*int*/ = index[l];
-          map[k++] = (network[j][0]);
-          map[k++] = (network[j][1]);
-          map[k++] = (network[j][2]);
+          map.add(network[j][0]);
+          map.add(network[j][1]);
+          map.add(network[j][2]);
         }
         return map;
       
@@ -168,32 +168,34 @@ part of html5animator;
      void inxbuild()/*void*/
      {
        
-      var i/*int*/;
-      var j/*int*/;
-      var smallpos/*int*/;
-      var smallval/*int*/;
+      int i/*int*/;
+      int j/*int*/;
+      int smallpos/*int*/;
+      int smallval/*int*/;
       var p/*Array*/;
       var q/*Array*/;
-      var previouscol;/*int*/
-      var startpos;/*int*/
+      int previouscol;/*int*/
+      int startpos;/*int*/
       
       previouscol = 0;
       startpos = 0;
+      netindex = new List(1024*1024);
+      
       for (i = 0; i < netsize; i++)
       {
         
         p = network[i];
         smallpos = i;
-        smallval = p[1]; /* index on g */
+        smallval = p[1].floor(); /* index on g */
         /* find smallest in i..netsize-1 */
         for (j = i + 1; j < netsize; j++)
         {
           q = network[j];
-          if (q[1] < smallval)
+          if (q[1].floor() < smallval)
           { /* index on g */
           
           smallpos = j;
-          smallval = q[1]; /* index on g */
+          smallval = q[1].floor(); /* index on g */
         }
         }
         
@@ -203,16 +205,16 @@ part of html5animator;
         if (i != smallpos)
         {
           
-          j = q[0];
+          j = q[0].floor();
           q[0] = p[0];
           p[0] = j;
-          j = q[1];
+          j = q[1].floor();
           q[1] = p[1];
           p[1] = j;
-          j = q[2];
+          j = q[2].floor();
           q[2] = p[2];
           p[2] = j;
-          j = q[3];
+          j = q[3].floor();
           q[3] = p[3];
           p[3] = j;
           
@@ -226,7 +228,9 @@ part of html5animator;
           
         netindex[previouscol] = (startpos + i) >> 1;
           
-        for (j = previouscol + 1; j < smallval; j++) netindex[j] = i;
+        for (j = previouscol + 1; j < smallval; j++) {
+          netindex[j] = i;
+        }
           
         previouscol = smallval;
         startpos = i;
@@ -277,7 +281,8 @@ part of html5animator;
        rad = radius >> radiusbiasshift;
        if (rad <= 1) rad = 0;
        
-       for (i = 0; i < rad; i++) radpower[i] = alpha * (((rad * rad - i * i) * radbias) / (rad * rad));
+       radpower.clear();
+       for (i = 0; i < rad; i++) radpower.add( alpha * (((rad * rad - i * i) * radbias) / (rad * rad)) );
        
        
        if (lengthcount < minpicturebytes) step = 3;
@@ -487,9 +492,9 @@ part of html5animator;
   
       for (i = 0; i < netsize; i++)
     {
-        network[i][0] >>= netbiasshift;
-        network[i][1] >>= netbiasshift;
-        network[i][2] >>= netbiasshift;
+        network[i][0] = (network[i][0].floor() >> netbiasshift);
+        network[i][0] = (network[i][1].floor() >> netbiasshift);
+        network[i][0] = (network[i][2].floor() >> netbiasshift);
         network[i][3] = i; /* record colour no */
       }
     
@@ -607,7 +612,7 @@ part of html5animator;
       var bestbiasd/*int*/;
       var n/*Array*/;
       
-      bestd = ~(1 << 31);
+      bestd = 10000000;
       bestbiasd = bestd;
       bestpos = -1;
       bestbiaspos = bestpos;

@@ -82,6 +82,35 @@ void nextFrame() {
   updateAnimation();
 }
 
+void play() {
+  movieState.frame = 0;
+  movieState.animationStartTimeMS = -1.0;
+  movieState.playing = true;
+  window.requestAnimationFrame(animloop);
+}
+
+void stop() {
+  movieState.frame = 0;
+  movieState.playing = false;
+  updateAnimation();
+}
+
+void animloop(num highResTime) {
+  if (movieState.animationStartTimeMS<0) {
+    movieState.animationStartTimeMS = highResTime;
+  }
+  if (movieState.playing == false) {
+    print("NOT PLAYING");
+    return;
+  }
+  window.requestAnimationFrame(animloop);
+
+  // Render
+  movieState.playFrame = ((highResTime - movieState.animationStartTimeMS) / 100);
+  movieState.frame = ((highResTime - movieState.animationStartTimeMS) / 100).floor();
+  updateAnimation();
+}
+
 void addText() {
   js.scoped(() {
     var fabric = js.context.fabric;
@@ -262,7 +291,10 @@ void fabricImageCreated(var fabricObject) {
 void updateAnimation() {
   js.scoped(() {
   // Frame changed, redraw
-  window.console.debug(movieState.frame);
+    if (movieState.playing == false) {
+      movieState.playFrame = movieState.frame;
+    }
+  window.console.debug(movieState.playFrame);
 
   for ( var actor_i = 0; actor_i < movie.layers.length; actor_i++) {
     for ( var actor_j = 0; actor_j < movie.layers[actor_i].actors.length; actor_j++) {
@@ -270,13 +302,13 @@ void updateAnimation() {
       window.console.debug(actor);
 
       var removeObject = true;
-      if (actor.keyFrames[0].keyFrame <= movieState.frame) {
+      if (actor.keyFrames[0].keyFrame <= movieState.playFrame) {
         removeObject = false;
         var keyFrameBefore = actor.keyFrames.length - 1;
         var keyFrameAfter = -1;
         for ( var i = 0; i < actor.keyFrames.length - 1; i++) {
-          if (actor.keyFrames[i].keyFrame <= movieState.frame
-              && actor.keyFrames[i + 1].keyFrame > movieState.frame) {
+          if (actor.keyFrames[i].keyFrame <= movieState.playFrame
+              && actor.keyFrames[i + 1].keyFrame > movieState.playFrame) {
             keyFrameBefore = i;
             keyFrameAfter = i + 1;
             break;
@@ -296,7 +328,7 @@ void updateAnimation() {
             } else {
               createFabricObject(
                   tween(
-                      movieState.frame
+                      movieState.playFrame
                           - actor.keyFrames[keyFrameBefore].keyFrame,
                       actor.keyFrames[keyFrameAfter].keyFrame
                           - actor.keyFrames[keyFrameBefore].keyFrame,
@@ -321,7 +353,7 @@ void updateAnimation() {
             } else {
               fabricObject
                   .set(js.map(tween(
-                      movieState.frame
+                      movieState.playFrame
                           - actor.keyFrames[keyFrameBefore].keyFrame,
                       actor.keyFrames[keyFrameAfter].keyFrame
                           - actor.keyFrames[keyFrameBefore].keyFrame,
@@ -360,6 +392,7 @@ void makeGif() {
   movieState.canvas.remove(movieState.guidelines);
   updateAnimation();
   var encoder = new js.Proxy(js.context.GIFEncoder);
+  //var encoder = new GIFEncoder();
   encoder.setRepeat(0); // auto-loop
   encoder.setDelay(10);
   print("***");

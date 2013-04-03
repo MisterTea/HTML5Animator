@@ -185,11 +185,11 @@
     <br />
     <a
       class="button"
-      ng-click="play()">Play</a>
+      on-click="play()">Play</a>
     <br />
     <a
       class="button"
-      ng-click="stop()">Stop</a>
+      on-click="stop()">Stop</a>
     <br />
     <a
       class="button"
@@ -203,6 +203,10 @@
       class="button"
       on-click="makeGif()">To animated GIF</a>
     <br />
+  </div>
+  
+  <div id="paletteHeader" style="width:300px">
+      <input type="text" bind-value="movie.name" placeholder="Add a movie name">
   </div>
 
   <div

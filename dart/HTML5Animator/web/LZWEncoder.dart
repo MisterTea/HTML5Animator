@@ -42,7 +42,7 @@ part of html5animator;
     /*private*/ var maxcode/*int*/; // maximum code, given n_bits
     /*private*/ var maxmaxcode/*int*/ = 1 << BITS; // should NEVER generate this code
     /*private*/ var htab/*Array*/ = new List();
-    /*private*/ var codetab/*Array*/ = new List();
+    /*private*/ var codetab/*Array*/ = new List(256*1024);
     /*private*/ var hsize/*int*/ = HSIZE; // for dynamic table sizing
     /*private*/ var free_ent/*int*/ = 0; // first unused entry
     
@@ -89,9 +89,9 @@ part of html5animator;
     /*private*/ var a_count/*int*/;
     
     // Define the storage for the packet accumulator
-    /*private*/ var accum/*ByteArray*/ = [];
+    /*private*/ var accum/*ByteArray*/ = new List(256*1024);
     
-    LZWEncoder(num width/*int*/, num height/*int*/, ByteArray pixels/*ByteArray*/, num color_depth/*int*/)
+    LZWEncoder(num width/*int*/, num height/*int*/, var pixels/*ByteArray*/, num color_depth/*int*/)
     {
       
       imgW = width;
@@ -126,8 +126,8 @@ part of html5animator;
     // reset code table
     void cl_hash(num hsize/*int*/)/*void*/
     {
-      
-      for (var i/*int*/ = 0; i < hsize; ++i) htab[i] = -1;
+      htab.clear();
+      for (var i/*int*/ = 0; i < hsize; ++i) htab.add(-1);
       
     }
     
@@ -260,7 +260,7 @@ part of html5animator;
       
     }
     
-    void output(num code/*int*/, ByteArray outs/*ByteArray*/)/*void*/
+    void output(int code/*int*/, ByteArray outs/*ByteArray*/)/*void*/
     
     {
       cur_accum &= masks[cur_bits];

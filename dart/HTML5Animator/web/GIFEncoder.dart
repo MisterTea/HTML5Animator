@@ -7,15 +7,15 @@ part of html5animator;
 * @author Thibault Imbert (AS3 version - bytearray.org)
 * @version 0.1 AS3 implementation
 */
-var chr = {};
+var chr = [];
 
 class ByteArray {
     List<num> bin = [];
     
     String getData() {
       String v = '';
-      for(num i = 0; i < bin.length; i++)
-        v += chr[this.bin[i]];
+      for(int i = 0; i < bin.length; i++)
+        v += chr[this.bin[i].floor()];
       return v;
     }
     
@@ -25,7 +25,7 @@ class ByteArray {
 
     void writeUTFBytes(String string){
       for(var l = string.length, i = 0; i < l; i++)
-        this.writeByte(String.charCodeAt(i));
+        this.writeByte(string.codeUnits[i]);
     }
     
     void writeBytes(var array, num offset, num length){
@@ -47,7 +47,7 @@ class ByteArray {
     GIFEncoder() {
       if (chr.length == 0) {
         for(num i = 0; i < 256; i++)
-          chr[i] = String.fromCharCode(i);
+          chr.add(new String.fromCharCode(i));
       }
     }
         
@@ -64,7 +64,7 @@ class ByteArray {
       /*private*/ var indexedPixels/*ByteArray*/; // converted frame indexed to palette
       /*private*/ var colorDepth/*int*/; // number of bit planes
       /*private*/ var colorTab/*ByteArray*/; // RGB palette
-      /*private*/ var usedEntry/*Array*/ = new List(); // active palette entries
+      /*private*/ var usedEntry/*Array*/ = new List(256*1024); // active palette entries
       /*private*/ var palSize/*int*/ = 7; // color table size (bits-1)
       /*private*/ var dispose/*int*/ = -1; // disposal code (-1 = use default)
       /*private*/ var closeStream/*Boolean*/ = false; // close stream when finished
@@ -139,8 +139,8 @@ class ByteArray {
     * @param
     * BitmapData object to be treated as a GIF's frame
     */
-    bool addFrameFromId(id/*string*/) {
-      return addFrame(document.query('#'+id).getContext('2d'));
+    bool addFrameFromId(String id/*string*/) {
+      return addFrame(document.query('#'+id).getContext('2d'), false);
     }
     
     bool addFrame(var im/*BitmapData*/, bool is_imageData)/*Boolean*/
@@ -154,7 +154,6 @@ class ByteArray {
       
         var ok/*Boolean*/ = true;
       
-        try {
         if(!is_imageData){
           image = im.getImageData(0,0, im.canvas.width, im.canvas.height).data;
           if (!sizeSet) setSize(im.canvas.width, im.canvas.height);
@@ -180,9 +179,6 @@ class ByteArray {
           if (!firstFrame) writePalette(); // local color table
           writePixels(); // encode and write pixel data
           firstFrame = false;
-        } catch (e/*Error*/) {
-          ok = false;
-        }
         
       return ok;
       
@@ -293,14 +289,10 @@ class ByteArray {
     {
       
       reset(); 
-        var ok/*Boolean*/ = true;
+        bool ok = true;
         closeStream = false;
-        out = new ByteArray();
-        try {
-          out.writeUTFBytes("GIF89a"); // header
-        } catch (e/*Error*/) {
-          ok = false;
-        }
+        out = new ByteArray(); 
+        out.writeUTFBytes("GIF89a"); // header
       
         return started = ok;
       
@@ -336,7 +328,7 @@ class ByteArray {
         for (var j/*int*/ = 0; j < nPix; j++) {
           var index/*int*/ = nq.map(pixels[k++] & 0xff, pixels[k++] & 0xff, pixels[k++] & 0xff);
           usedEntry[index] = true;
-          indexedPixels[j] = index;
+          indexedPixels.add(index);
         }
         pixels = null;
         colorDepth = 8;
@@ -352,7 +344,7 @@ class ByteArray {
     *
     */
     
-    num findClosest(num c/*Number*/)/*int*/
+    num findClosest(int c/*Number*/)/*int*/
     {
       
       if (colorTab == null) return -1;
@@ -390,7 +382,6 @@ class ByteArray {
         var h/*int*/ = height;
         pixels = [];
         var data = image;
-        var count/*int*/ = 0;
         
         for ( var i/*int*/ = 0; i < h; i++ )
         {
@@ -399,9 +390,9 @@ class ByteArray {
           {
             
               var b = (i*w*4)+j*4;
-              pixels[count++] = data[b];
-              pixels[count++] = data[b+1];
-              pixels[count++] = data[b+2];
+              pixels.add(data[b]);
+              pixels.add(data[b+1]);
+              pixels.add(data[b+2]);
             
           }
           
@@ -515,13 +506,13 @@ class ByteArray {
     
     void writePalette()/*void*/
     {
-        out.writeBytes(colorTab);
+        out.writeBytes(colorTab, 0, colorTab.length);
         var n/*int*/ = (3 * 256) - colorTab.length;
         for (var i/*int*/ = 0; i < n; i++) out.writeByte(0);
       
     }
     
-    void WriteShort (num pValue/*int*/)/*void*/
+    void WriteShort (int pValue/*int*/)/*void*/
     {   
       
         out.writeByte( pValue & 0xFF );
