@@ -117,8 +117,7 @@ void addImage() {
   js.scoped(() {
     var fabric = js.context.fabric;
     
-    var imageUrl = "https://www.google.com/images/srpr/logo4w.png";
-    print(imageUrl);
+    var imageUrl = LOADED_IMAGE;
     fabric.Image.fromURL(imageUrl, new js.Callback.many(fabricImageLoaded));
   });
 }
@@ -128,24 +127,20 @@ void fabricImageLoaded(var oImg) {
   oImg.left = oImg.width / 2;
   oImg.top = oImg.height / 2;
 
-  print("LOADED IMAGE");
   var layer = new Layer();
   movie.layers.add(layer);
 
   var actor = new Actor();
   layer.actors.add(actor);
 
-  print("LOADED IMAGE");
   actor.id = "image" + randomString();
 
   var renderable = new Renderable();
   actor.keyFrames.add(renderable);
 
-  print("LOADED IMAGE");
   js.scoped(() {
     renderable.fabricJson = js.context.JSON.stringify(oImg.toObject());
   });
-  print(renderable.fabricJson);
   renderable.keyFrame = movieState.frame;
   // $rootScope.canvas.add(oImg);
 

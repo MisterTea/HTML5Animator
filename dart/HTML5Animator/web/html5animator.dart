@@ -119,6 +119,7 @@ void onDragOverFn(MouseEvent e) {
     e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 }
 
+var LOADED_IMAGE = null;
 void onDropFn(MouseEvent e) {
   window.console.debug("ON DROP");
   e.stopPropagation(); // Stops some browsers from redirecting.
@@ -136,6 +137,7 @@ void onDropFn(MouseEvent e) {
         // Render thumbnail.
         ImageElement img = new ImageElement();
         img.src = reader.result;
+        LOADED_IMAGE = reader.result;
         document.query('#droppedImage').children.add(img);
         print('DROPPED IMAGE');
     });

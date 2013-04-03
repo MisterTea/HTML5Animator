@@ -1,6 +1,7 @@
 *.class
 dart/HTML5Animator/web/out
 dart/HTML5Animator/packages/*
+dart/HTML5Animator/pubspec.lock
 
 # Package Files #
 *.jar
