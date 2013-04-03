@@ -48,6 +48,9 @@ void initPalette() {
   movieState.canvas.on('object:selected', new js.Callback.many(objectSelected));
 
   movieState.canvas.on('selection:cleared', new js.Callback.many(selectionCleared));
+  
+  // Update animation when frame changes.
+  watcher.watch(() => movieState.frame, (_) => updateAnimation());
 }
 
 void objectModified(var params) {
@@ -74,12 +77,10 @@ void selectionCleared() {
 
 void prevFrame() {
   movieState.frame = Math.max(0, movieState.frame - 1);
-  updateAnimation();
 }
 
 void nextFrame() {
   movieState.frame = Math.min(movie.maxFrames - 1, movieState.frame + 1);
-  updateAnimation();
 }
 
 void play() {
@@ -386,14 +387,6 @@ void updateAnimation() {
   movieState.canvas.renderAll();
   movieState.canvas.calcOffset();
   });
-  
-  Element timelineEl = query('#timelinecomponent');
-  if (timelineEl != null) {
-    TimelineComponent timeline = timelineEl.xtag;
-    if (timeline != null) {
-      timeline.redrawFrames();
-    }
-  }
 }
 
 void makeGif() {
