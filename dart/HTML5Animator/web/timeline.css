@@ -1,5 +1,14 @@
 .timeline {
+  background-color: #ccf;
   border: 1px solid #ccc;
+  border-radius: 6px;
   margin: 5px;
-  padding: 5px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 800px;
+}
+
+.frames {
+  height: 24px;
+  width: 100%;  /* starting, updated dynamically */
 }
