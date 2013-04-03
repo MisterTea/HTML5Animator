@@ -5,7 +5,7 @@ import 'dart:html';
 import 'dart:math' as Math;
 import 'dart:json' as JSON;
 import 'package:web_ui/web_ui.dart';
-import 'package:web_ui/watcher.dart' as watchers;
+import 'package:web_ui/watcher.dart' as watcher;
 import 'package:js/js.dart' as js;
 
 import 'imagePalette.dart';
@@ -107,7 +107,7 @@ void main() {
   HttpRequest.getString("partials/edit.html").then(
       (responseText) {
     div.children.add(new Element.html(responseText));
-    watchers.dispatch();
+    watcher.dispatch();
   });
   */
   
