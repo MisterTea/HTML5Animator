@@ -19,6 +19,7 @@ part "util.dart";
 part "tween.dart";
 part "palette.dart";
 
+@observable
 class Point {
   num x;
   num y;
@@ -29,6 +30,7 @@ class Point {
   }
 }
 
+@observable
 class Renderable {
   String fabricJson;
   num keyFrame;
@@ -36,12 +38,14 @@ class Renderable {
   bool destroy = false;
 }
 
+@observable
 class Actor {
   String id;
   
   List<Renderable> keyFrames = [];
 }
 
+@observable
 class Layer {
   String id;
   bool visible = false;
@@ -52,8 +56,10 @@ class Layer {
   }
 }
 
+@observable
 class Movie {
   String id;
+  int maxFrames = 100;
   String name;
   String musicId;
   List<Layer> layers;
@@ -70,10 +76,10 @@ class Movie {
 }
 Movie movie = new Movie();
 
+@observable
 class MovieState {
   num playFrame = 0; // Play frame is for interpolation only.
   int frame = 0;
-  int maxFrames = 100;
   var canvas = null;
   var objectIdMap = new Map();
   num padding = 100;

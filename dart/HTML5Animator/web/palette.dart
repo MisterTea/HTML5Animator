@@ -109,6 +109,10 @@ void animloop(num highResTime) {
   movieState.playFrame = ((highResTime - movieState.animationStartTimeMS) / 100);
   movieState.frame = ((highResTime - movieState.animationStartTimeMS) / 100).floor();
   updateAnimation();
+  
+  if (movieState.frame >= movie.maxFrames) {
+    stop();
+  }
 }
 
 void addText() {
