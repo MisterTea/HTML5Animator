@@ -130,7 +130,12 @@ void onDropFn(MouseEvent e) {
 
   var files = e.dataTransfer.files;
   var f;
-  for (var i = 0; (f = files[i]) != null; i++) {
+  
+  var imageUri = e.dataTransfer.getData("text/uri-list");
+  if (imageUri != null && imageUri.length > 1){
+    addImage(imageUri);
+  } else{
+   for (var i = 0; (f = files[i]) != null; i++) {
     // Read the File objects in this FileList.
     print('FILE: ${f.size} *** ${f.name} *** $f');
     //window.console.debug("FILE: " + f.size + " *** " + f.name + " *** " + f.toString());
@@ -142,10 +147,11 @@ void onDropFn(MouseEvent e) {
         img.src = reader.result;
         LOADED_IMAGE = reader.result;
         document.query('#droppedImage').children.add(img);
+        addImageToPalette(reader.result);
         print('DROPPED IMAGE');
     });
-
     // Read in the image file as a data URL.
     reader.readAsDataUrl(f);
   }
+ }
 }
