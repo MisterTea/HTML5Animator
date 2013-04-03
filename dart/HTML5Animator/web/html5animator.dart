@@ -7,6 +7,7 @@ import 'dart:json' as JSON;
 import 'package:web_ui/web_ui.dart';
 import 'package:web_ui/watcher.dart' as watchers;
 import 'package:js/js.dart' as js;
+import 'imagePalette.dart';
 
 part "b64.dart";
 part "GIFEncoder.dart";
@@ -14,6 +15,7 @@ part "LZWEncoder.dart";
 part "NeuQuant.dart";
 
 part "util.dart";
+
 part "tween.dart";
 part "palette.dart";
 
@@ -85,7 +87,7 @@ class MovieState {
 }
 MovieState movieState = new MovieState();
 String currentTime;
-
+  
 /**
  * Learn about the Web UI package by visiting
  * http://www.dartlang.org/articles/dart-web-components/.
