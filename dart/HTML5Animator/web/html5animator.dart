@@ -7,6 +7,10 @@ import 'package:web_ui/web_ui.dart';
 import 'package:web_ui/watcher.dart' as watchers;
 import 'package:js/js.dart' as js;
 
+part "GIFEncoder.dart";
+part "LZWEncoder.dart";
+part "NeuQuant.dart";
+
 part "tween.dart";
 part "palette.dart";
 
@@ -101,5 +105,43 @@ void main() {
   
   initPalette();
   });
+  
+  document.onDrop.listen(onDropFn);
+  window.onDrop.listen(onDropFn);
+  
+  window.onDragOver.listen(onDragOverFn);
+  document.onDragOver.listen(onDragOverFn);
   updateAnimation();
+}
+
+void onDragOverFn(MouseEvent e) {
+    e.stopPropagation();
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+void onDropFn(MouseEvent e) {
+  window.console.debug("ON DROP");
+  e.stopPropagation(); // Stops some browsers from redirecting.
+  e.preventDefault();
+
+  var files = e.dataTransfer.files;
+  var f;
+  for (var i = 0; (f = files[i]) != null; i++) {
+    // Read the File objects in this FileList.
+    print('FILE: ${f.size} *** ${f.name} *** $f');
+    //window.console.debug("FILE: " + f.size + " *** " + f.name + " *** " + f.toString());
+    
+    FileReader reader = new FileReader();
+    reader.onLoad.listen((var theFile) {
+        // Render thumbnail.
+        ImageElement img = new ImageElement();
+        img.src = reader.result;
+        document.query('#droppedImage').children.add(img);
+        print('DROPPED IMAGE');
+    });
+
+    // Read in the image file as a data URL.
+    reader.readAsDataUrl(f);
+  }
 }

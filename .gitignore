@@ -1,6 +1,9 @@
 *.class
+dart/HTML5Animator/web/out
 
 # Package Files #
 *.jar
 *.war
 *.ear
+
+.buildlog
