@@ -258,3 +258,11 @@ opacity
 	-webkit-animation: myfirst 5s; /* Safari and Chrome */
 	-o-animation: myfirst 5s; /* Opera */
 }
+
+.x-imagePalette {
+  text-align: center;
+  background-color: LemonChiffon;
+  margin: 10px;
+  padding: 10px;
+  border: inset;
+}

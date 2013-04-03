@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>imagePalette</title>
+  </head>
+<body>
+  <element extends="div" name="x-image-palette" constructor="ImagePalette">
+    <template> 
+      <div class="x-image-palette">
+        <h3>Image Palette</h3>
+        <span> <content select=".label-one"></content> </span>
+        <input type="text"
+               bind-value="input_value"
+               style="text-align:right">
+        <button on-click="addEntry()">
+               </button>
+        <template iterate="name in image_names">
+           {{name}}
+        </template> 
+      </div>
+    </template>
+    <script type="application/dart" src="imagePalette.dart"> </script>
+  </element>
+</html>
