@@ -146,12 +146,11 @@ void addText() {
   updateAnimation();
 }
 
-void addImage() {
-  print("ADDING IMAGE");
+void addImage(String imageUrl) {
+  print("ADDING IMAGE "+imageUrl + ".");
   js.scoped(() {
     var fabric = js.context.fabric;
     
-    var imageUrl = LOADED_IMAGE;
     fabric.Image.fromURL(imageUrl, new js.Callback.many(fabricImageLoaded));
   });
 }

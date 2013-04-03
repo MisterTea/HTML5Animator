@@ -1,6 +1,13 @@
-.palette-image{
-    margin: 5%;
-    width: 20%;
+.x-image-palette {
+  text-align: center;
+  background-color: grey;
+  margin: 10px;
+  padding: 10px;
+  border: inset;
+}
+.x-image-palette-element{
+    margin: 2.5%;
+    width: 10%;
     height: 100%;
 }
  
