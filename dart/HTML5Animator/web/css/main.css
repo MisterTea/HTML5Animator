@@ -1,0 +1,260 @@
+html,body { /*font-family: Comic Sans MS;*/
+}
+
+table { 
+  border-spacing:0;
+  border-collapse:collapse;
+}
+
+td {
+  padding: 0px;
+}
+
+/* Force scrollbars to show up in osx */
+div::-webkit-scrollbar {
+-webkit-appearance:none !important;
+width:11px !important
+}
+div::-webkit-scrollbar {
+border-radius:8px !important;
+border:2px solid white !important;
+background-color:#ccc !important
+}
+div::-webkit-scrollbar-thumb {
+border-radius:8px !important;
+border:2px solid white !important;
+background-color:rgba(0,0,0,.5) !important
+}
+table::-webkit-scrollbar {
+-webkit-appearance:none !important;
+width:11px !important
+}
+table::-webkit-scrollbar {
+border-radius:8px !important;
+border:2px solid white !important;
+background-color:#ccc !important
+}
+table::-webkit-scrollbar-thumb {
+border-radius:8px !important;
+border:2px solid white !important;
+background-color:rgba(0,0,0,.5) !important
+}
+
+td 
+{
+  vertical-align: top;
+}
+
+/**
+ * 3-row page with middle row occupying maximum height
+ */
+/** UNUSED
+.full-page-wrapper {
+    height:100%;
+    width:100%;
+    display:table;
+}
+
+.full-page-header {
+    display:table-row;
+}
+
+.full-page-content {
+    height:100%;
+    display:table-row;
+    overflow:scroll;
+}
+
+.full-page-footer {
+    display:table-row;
+}
+
+.full-page-content-cell {
+    display:table-cell;
+}
+**/
+
+/**
+ * Comic page specific CSS
+ */
+.comic-page-header {
+	position: relative;
+	left: 50px;
+	font-size: 2.0em;
+}
+
+.comic-page-tile {
+	width: 50px;
+	height: 50px;
+}
+
+.comic-image {
+	max-width: none;
+}
+
+.comic-image-container {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.news-container {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.center-content {
+	padding-bottom: 120px;
+}
+
+.center-content.fixed-width {
+	padding-bottom: 120px;
+	max-width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fixed-size-bottom-bar-tab {
+	width: 400px;
+	left: 50%;
+	margin-left: -200px; /* Half of the width */
+	-webkit-transition: all 0.5s ease-out;
+	-webkit-transform: translateY(0%);
+}
+
+.fixed-size-tab-item {
+	width: 25px;
+}
+
+/**
+ * Transitions
+ */
+.backwardTransition,.forwardTransition,.noTransition {
+	position: absolute;
+	width: 100%;
+}
+
+.backwardTransition.in {
+	-webkit-transform: translateX(-100%);
+}
+
+.forwardTransition.in {
+	-webkit-transform: translateX(100%);
+}
+
+.backwardTransition.done,.forwardTransition.done {
+	-webkit-transition: all 0.5s ease-out;
+	-webkit-transform: translateX(0%);
+}
+
+.backwardTransition.out {
+	-webkit-transition: all 0.5s ease-out;
+	-webkit-transform: translateX(100%);
+}
+
+.forwardTransition.out {
+	-webkit-transition: all 0.5s ease-out;
+	-webkit-transform: translateX(-100%);
+}
+
+/* Override some of bootstrap to better fit mobile */
+input,textarea,.uneditable-input {
+	width: 100%;
+}
+
+input[type="file"],input[type="image"],input[type="submit"],input[type="reset"],input[type="button"],input[type="radio"],input[type="checkbox"]
+	{
+	width: 100%;
+}
+
+/* Give inset components in the iphone correct margin */
+.inset-form {
+	margin: 20px;
+}
+
+@
+keyframes myfirst { 0% {
+	opacity: 1;
+}
+
+80%
+{
+opacity
+:
+ 
+1;
+}
+100%
+{
+opacity
+:
+ 
+0;
+}
+}
+@
+-moz-keyframes myfirst /* Firefox */ { 0% {
+	opacity: 1;
+}
+
+80%
+{
+opacity
+:
+ 
+1;
+}
+100%
+{
+opacity
+:
+ 
+0;
+}
+}
+@
+-webkit-keyframes myfirst /* Safari and Chrome */ { 0% {
+	opacity: 1;
+}
+
+80%
+{
+opacity
+:
+ 
+1;
+}
+100%
+{
+opacity
+:
+ 
+0;
+}
+}
+@
+-o-keyframes myfirst /* Opera */ { 0% {
+	opacity: 1;
+}
+
+80%
+{
+opacity
+:
+ 
+1;
+}
+100%
+{
+opacity
+:
+ 
+0;
+}
+}
+.alert-fade {
+	opacity: 0;
+	animation: myfirst 5s;
+	-moz-animation: myfirst 5s; /* Firefox */
+	-webkit-animation: myfirst 5s; /* Safari and Chrome */
+	-o-animation: myfirst 5s; /* Opera */
+}

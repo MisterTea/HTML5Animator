@@ -1,0 +1,237 @@
+<!doctype html>
+<html
+   lang="en"
+   >
+  <head>
+    <meta charset="utf-8">
+    <title>HTML5 Animator</title>
+
+    <meta
+       property="og:title"
+       content="HTML5 Animator" />
+    <meta
+       property="og:type"
+       content="website" />
+    <meta
+       property="og:url"
+       content="TODO(ADD URL)" />
+    <meta
+       property="og:site_name"
+       content="HTML5 Animator" />
+    <meta
+       property="og:image"
+       content="" />
+    <meta
+       property="fb:admins"
+       content="20901205" />
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta
+       name="viewport"
+       content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- See http://developer.apple.com/library/safari/#documentation/appleapplications/reference/SafariHTMLRef/Articles/MetaTags.html -->
+    <meta
+       name="apple-mobile-web-app-capable"
+       content="yes" />
+    <meta
+       name="apple-mobile-web-app-status-bar-style"
+       content="default" />
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta
+       name="apple-mobile-web-app-capable"
+       content="yes">
+    <meta
+       name="apple-mobile-web-app-status-bar-style"
+       content="black">
+
+    <!-- See https://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+    <link
+       rel="apple-touch-icon"
+       href="http://www.facebookmobileweb.com/hackbook/img/iphone_icon.png" />
+    <link
+       rel="apple-touch-startup-image"
+       href="http://www.facebookmobileweb.com/hackbook/img/iphone_splash.png" />
+    <link
+       rel="apple-touch-icon-precomposed"
+       href="http://www.facebookmobileweb.com/hackbook/img/iphone_icon.png" />
+
+    <!-- Set Apple icons for when prototype is saved to home screen -->
+    <link
+       rel="apple-touch-icon-precomposed"
+       sizes="114x114"
+       href="touch-icons/apple-touch-icon-114x114.png">
+    <link
+       rel="apple-touch-icon-precomposed"
+       sizes="72x72"
+       href="touch-icons/apple-touch-icon-72x72.png">
+    <link
+       rel="apple-touch-icon-precomposed"
+       sizes="57x57"
+       href="touch-icons/apple-touch-icon-57x57.png">
+
+
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="css/normalize.css" />
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="lib/bootstrap/css/bootstrap.css">
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="lib/bootstrap/css/bootstrap-responsive.css">
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="css/jqueryui-smoothness/jquery-ui-1.10.0.custom.css" />
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="css/mobile.css" />
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="css/main.css" />
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="css/auth-buttons.css" />
+    <link
+       type="text/css"
+       rel="stylesheet"
+       media="all"
+       href="css/fixed-header-table.css" />
+
+    <script src="lib/fabric/fabric.js"></script>
+
+    <script src="lib/GifEncoder/b64.js"></script>
+    <script src="lib/GifEncoder/LZWEncoder.js"></script>
+    <script src="lib/GifEncoder/NeuQuant.js"></script>
+    <script src="lib/GifEncoder/GIFEncoder.js"></script>
+
+  </head>
+  <body>
+<div>
+  <div style="float: right; width: 50px;">&nbsp;</div>
+  <div style="float: right; width: auto;">
+    <div
+      ng-controller="EditObjectController"
+      style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
+      <div ng-show="getEditObject()">
+        <div>EDITING {{movieState.selectedObjectId}}</div>
+        <div ng-show="getEditObjectType()=='text'">
+          <label>Text:</label> <input
+            type="text"
+            ng-change="updateText()"
+            ng-model="selectedText"
+            placeholder="Enter a URL here">
+        </div>
+        <a
+          class="button"
+          ng-click="eraseObject()">Erase (but keep history)</a>
+        <br />
+        <a
+          class="button"
+          ng-click="deleteObject()">Delete (completely)</a>
+        <br />
+      </div>
+    </div>
+    <div height="100px">&nbsp;</div>
+    <div
+      ng-controller="AddObjectController"
+      style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
+      <label>URL:</label> <input
+        type="text"
+        ng-model="newImageUrl"
+        placeholder="Enter a URL here" />
+      <a
+        class="button"
+        ng-click="addImage()">Add Image</a>
+      <br />
+      <a
+        class="button"
+        ng-click="addText()">Add Text</a>
+      <br />
+      <a
+        class="button"
+        ng-click="addLine()">Add Line</a>
+      <br />
+    </div>
+  </div>
+
+  <div style="float: right; width: 50px;">&nbsp;</div>
+  <div
+    ng-controller="EditPanelController"
+    style="float: right; width: auto; border: 2px solid; box-shadow: 10px 10px 5px #888888;">
+    <div>ON FRAME {{movieState.frame}}</div>
+    <a
+      class="button"
+      on-click="prevFrame()">Previous Frame</a>
+    <br />
+    <a
+      class="button"
+      on-click="nextFrame()">Next Frame</a>
+    <br />
+    <a
+      class="button"
+      ng-click="play()">Play</a>
+    <br />
+    <a
+      class="button"
+      ng-click="stop()">Stop</a>
+    <br />
+    <a
+      class="button"
+      ng-click="save()">Save</a>
+    <br />
+    <a
+      class="button"
+      ng-click="load()">load</a>
+    <br />
+    <a
+      class="button"
+      ng-click="makeGif()">To animated GIF</a>
+    <br />
+  </div>
+
+  <div
+    ng-controller="PaletteController"
+    style="overflow: hidden;">
+    <canvas
+      width="840"
+      height="560"
+      style="border: 1px solid #ccc"
+      palette
+      id="palette"></canvas>
+  </div>
+
+  <div style="text-align: center;">
+    <canvas
+      style="width: 800px; height: 300px; margin: auto;"
+      id="timeline"></canvas>
+  </div>
+
+  <div>
+    <img id="gifImage">
+  </div>
+
+</div>
+
+      <div>
+      The current time is: {{currentTime}}
+    </div>
+    <script type="application/dart" src="html5animator.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>
