@@ -1,7 +1,5 @@
-<!doctype html>
-<html
-   lang="en"
-   >
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>HTML5 Animator</title>
@@ -112,6 +110,8 @@
        rel="stylesheet"
        media="all"
        href="css/fixed-header-table.css" />
+
+    <link rel="components" href="timeline.html" />
 
     <script src="lib/fabric/fabric.js"></script>
 
@@ -231,8 +231,9 @@
   
 </div>
 
-      <div>
-      The current time is: {{currentTime}}
+    <div>
+      Timeline:<br />
+      <x-timeline></x-timeline>
     </div>
     <script type="application/dart" src="html5animator.dart"></script>
     <script src="packages/browser/dart.js"></script>
