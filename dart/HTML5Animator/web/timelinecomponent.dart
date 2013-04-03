@@ -2,6 +2,7 @@ library timeline;
 
 import 'dart:html';
 import 'html5animator.dart';
+import 'package:web_ui/watcher.dart' as watcher;
 import 'package:web_ui/web_ui.dart';
 
 /** Timeline to navigate between frames and show keyframes. */
@@ -17,6 +18,10 @@ class TimelineComponent extends WebComponent {
     framesContainer = query('#framesContainer');
     framesCanvas = query('#frames');
     redrawFrames();
+    
+    // Listen for changes to movie state and redraw.
+    watcher.watch(() => movie.maxFrames, (_) => redrawFrames());
+    watcher.watch(() => movieState.frame, (_) => redrawFrames());
   }
   
   void redrawFrames() {
