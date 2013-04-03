@@ -2,16 +2,21 @@
 <html>
 <head>
   <title>Timeline</title>
-<!--  <link rel="stylesheet" href="timeline.css"> -->
+  <link rel="stylesheet" type="text/css" href="timeline.css">
 </head>
 <body>
 
 <element extends="div" name="x-timeline" constructor="TimelineComponent">
   <template>
-    <div class="timeline">
-      Message: {{message}}
+    <style scoped media="all">
+      @import "timeline.css"
+    </style>
+    <div class="x-timeline timeline">
+      <div id="framesContainer" class="framesContainer">
+        <canvas id="frames" class="frames" height="40px"
+            on-click="handleClick($event)"></canvas>
+      </div>
     </div>
-    <button on-click="toggleMessage()">Toggle</button>
   </template>
   <script type="application/dart" src="timelinecomponent.dart"></script>
 </element>

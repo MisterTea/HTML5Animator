@@ -9,3 +9,5 @@ dart/HTML5Animator/pubspec.lock
 *.ear
 
 .buildlog
+
+.DS_Store
