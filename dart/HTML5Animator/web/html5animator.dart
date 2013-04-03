@@ -11,6 +11,7 @@ part "GIFEncoder.dart";
 part "LZWEncoder.dart";
 part "NeuQuant.dart";
 
+part "util.dart";
 part "tween.dart";
 part "palette.dart";
 
@@ -106,11 +107,9 @@ void main() {
   initPalette();
   });
   
-  document.onDrop.listen(onDropFn);
   window.onDrop.listen(onDropFn);
   
   window.onDragOver.listen(onDragOverFn);
-  document.onDragOver.listen(onDragOverFn);
   updateAnimation();
 }
 

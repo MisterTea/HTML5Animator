@@ -82,6 +82,76 @@ void nextFrame() {
   updateAnimation();
 }
 
+void addText() {
+  js.scoped(() {
+    var fabric = js.context.fabric;
+    
+  var text = new js.Proxy(fabric.Text, 'Dart Rocks!', {
+    'left' : 100,
+    'top' : 100,
+  });
+  js.retain(text);
+
+  var layer = new Layer();
+  movie.layers.add(layer);
+
+  var actor = new Actor();
+  layer.actors.add(actor);
+
+  actor.id = "text" + randomString();
+
+  var renderable = new Renderable();
+  actor.keyFrames.add(renderable);
+
+  renderable.fabricJson = js.context.JSON.stringify(text.toObject());
+  print(renderable.fabricJson);
+  renderable.keyFrame = movieState.frame;
+  // $rootScope.canvas.add(oImg);
+  });
+  
+  updateAnimation();
+}
+
+void addImage() {
+  print("ADDING IMAGE");
+  js.scoped(() {
+    var fabric = js.context.fabric;
+    
+    var imageUrl = "https://www.google.com/images/srpr/logo4w.png";
+    print(imageUrl);
+    fabric.Image.fromURL(imageUrl, new js.Callback.many(fabricImageLoaded));
+  });
+}
+
+void fabricImageLoaded(var oImg) {
+  print("LOADED IMAGE");
+  oImg.left = oImg.width / 2;
+  oImg.top = oImg.height / 2;
+
+  print("LOADED IMAGE");
+  var layer = new Layer();
+  movie.layers.add(layer);
+
+  var actor = new Actor();
+  layer.actors.add(actor);
+
+  print("LOADED IMAGE");
+  actor.id = "image" + randomString();
+
+  var renderable = new Renderable();
+  actor.keyFrames.add(renderable);
+
+  print("LOADED IMAGE");
+  js.scoped(() {
+    renderable.fabricJson = js.context.JSON.stringify(oImg.toObject());
+  });
+  print(renderable.fabricJson);
+  renderable.keyFrame = movieState.frame;
+  // $rootScope.canvas.add(oImg);
+
+  updateAnimation();
+}
+
 Layer getLayerWithActorId(id) {
   for ( var i = 0; i < movie.layers.length; i++) {
     for ( var j = 0; j < movie.layers[i].actors.length; j++) {
@@ -146,7 +216,9 @@ Renderable upsertKeyFrame(actor, fabricObject, frame) {
   }
 }
 
+String NEXT_ID = "";
 void createFabricObject(serializedObject, id) {
+  NEXT_ID = id;
   var fabric = js.context.fabric;
   var serializedObjectJs = js.map(serializedObject);
   window.console.log(serializedObject);
@@ -176,18 +248,19 @@ void createFabricObject(serializedObject, id) {
     movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'image') {
     // Images must load asynchronously
-    fabric.Image.fromObject(serializedObjectJs, (fabricObject) {
-      js.retain(fabricObject);
-      fabricObject.id = id;
-      fabricObject.left += movieState.padding;
-      fabricObject.top += movieState.padding;
-      movieState.objectIdMap[id] = fabricObject;
-      movieState.canvas.add(fabricObject);
-      updateAnimation();
-    });
+    fabric.Image.fromObject(serializedObjectJs, new js.Callback.many(fabricImageCreated));
   } else {
     throw "Invalid fabric object type " + serializedObject;
   }
+}
+
+void fabricImageCreated(var fabricObject) {
+    fabricObject.id = NEXT_ID;
+    fabricObject.left += movieState.padding;
+    fabricObject.top += movieState.padding;
+    movieState.objectIdMap[NEXT_ID] = fabricObject;
+    movieState.canvas.add(fabricObject);
+    updateAnimation();
 }
 
 void updateAnimation() {
