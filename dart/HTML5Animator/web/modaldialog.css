@@ -1,0 +1,37 @@
+.modalDialogOverlayMask {
+  background-color: #000;
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+
+.modaldialog {
+  background-color: #fff;
+  border: 12px solid #ccf;
+  display: block;
+  left: 25%;
+  height: 50%;
+  overflow: auto;
+  padding: 20px;
+  position: absolute;
+  text-align: center;
+  top: 25%;
+  width: 50%;
+  z-index: 10001;
+}
+
+.modalDialogDismiss {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.modalDialogDismiss:hover {
+  opacity: 0.6;
+}

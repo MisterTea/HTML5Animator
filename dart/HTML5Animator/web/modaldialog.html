@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Modal Dialog</title>
+  <link rel="stylesheet" type="text/css" href="modaldialog.css">
+</head>
+<body>
+
+<element extends="div" name="x-modaldialog" constructor="ModalDialogComponent">
+  <template>
+    <style scoped media="all">
+      @import "modaldialog.css"
+    </style>
+    <div class="x-modaldialog modaldialog">
+      <img class="modalDialogDismiss" src="close_x.png" width="24" height="24"
+          on-click="handleClose()" />
+      <content></content>
+    </div>
+  </template>
+  <script type="application/dart" src="modaldialogcomponent.dart"></script>
+</element>
+
+</body>
+</html>
