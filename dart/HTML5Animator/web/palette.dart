@@ -201,6 +201,7 @@ void addLine() {
   actor.keyFrames.add(renderable);
 
   renderable.fabricJson = js.context.JSON.stringify(line.toObject());
+  print("ADDED JSON: " + renderable.fabricJson);
   print(renderable.fabricJson);
   renderable.keyFrame = movieState.frame;
   // $rootScope.canvas.add(oImg);
@@ -245,6 +246,7 @@ Actor getActorFromId(id) {
 Renderable upsertKeyFrame(actor, fabricObject, int frame) {
   // TODO(Eric): Deal with keyframe removal.
   movie.keyFrames.add(frame);
+  print("UPDATING " + actor.id);
   
   fabricObject.left -= movieState.padding;
   fabricObject.top -= movieState.padding;
@@ -287,7 +289,11 @@ void createFabricObject(serializedObject, id) {
   var serializedObjectJs = js.map(serializedObject);
   window.console.log(serializedObject);
   if (serializedObject['type'] == 'line') {
+    print("CREATING LINE WITH JS ");
+    print(serializedObject);
+    var serializedObjectJs = js.map(serializedObject);
     var fabricObject = js.context.fabric.Line.fromObject(serializedObjectJs);
+    fabricObject._setWidthHeight(serializedObjectJs);
     print(fabricObject);
     js.retain(fabricObject);
     print(fabricObject.left);
@@ -343,7 +349,7 @@ void updateAnimation() {
   for ( var actor_i = 0; actor_i < movie.layers.length; actor_i++) {
     for ( var actor_j = 0; actor_j < movie.layers[actor_i].actors.length; actor_j++) {
       var actor = movie.layers[actor_i].actors[actor_j];
-      window.console.debug(actor);
+      window.console.debug(actor.id);
 
       var removeObject = true;
       if (actor.keyFrames[0].keyFrame <= movieState.playFrame) {
@@ -386,7 +392,6 @@ void updateAnimation() {
           } else {
             var fabricObject = movieState.objectIdMap[actor.id];
 
-            window.console.debug("UPDATING OBJECT");
             // Update the object based on a new tween.
             // TODO: For performance, cache these objects so we don't
             // keep
