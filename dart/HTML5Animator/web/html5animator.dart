@@ -1,5 +1,6 @@
 library html5animator;
 
+import 'package:serialization/serialization.dart';
 import 'dart:async';
 import 'dart:html';
 import 'dart:math' as Math;
@@ -303,4 +304,10 @@ void updateScaffold() {
   }));
 }
 
+void save() {
+  var serialization = new Serialization()
+  ..addRuleFor(movie);
+  Map output = serialization.write(movie);
+  print(JSON.stringify(output));
+}
 
