@@ -41,11 +41,11 @@ class TimelineComponent extends WebComponent {
     context.fillStyle = '#aac';
     context.fillRect(startX + movieState.frame * FRAME_WIDTH_PX, 0, 
         FRAME_WIDTH_PX, height);
-    // TODO(Eric): Scroll the timeline if current frame is out of view.
+    maybeScrollIntoView();
     
     // Draw vertical lines for each frame.
     context.beginPath();
-    for (int i = 0; i < movie.maxFrames; i++) {
+    for (int i = 0; i < movie.maxFrames + 1; i++) {
       var x = startX + i * FRAME_WIDTH_PX;
       context.moveTo(x, 0);
       context.lineTo(x, height);
@@ -74,6 +74,32 @@ class TimelineComponent extends WebComponent {
     context.stroke();
   }
   
+  void maybeScrollIntoView() {
+    int minXInView = getScrollLeft();
+    double maxXInView = minXInView + getViewableWidth();
+    
+    double frameStartX = getFrameStartX() + movieState.frame * FRAME_WIDTH_PX;
+    double frameEndX = frameStartX + FRAME_WIDTH_PX;
+    
+    if (frameStartX < minXInView) {
+      setScrollLeft(frameStartX - SIDE_PADDING_PX);
+    } else if (maxXInView < frameEndX) {
+      setScrollLeft(frameEndX + SIDE_PADDING_PX - getViewableWidth());
+    }
+  }
+  
+  int getScrollLeft() {
+    return framesContainer.parent.scrollLeft;
+  }
+  
+  void setScrollLeft(double scrollLeft) {
+    framesContainer.parent.scrollLeft = scrollLeft.floor();
+  }
+  
+  num getViewableWidth() {
+    return framesContainer.parent.getBoundingClientRect().width;
+  }
+  
   void handleClick(MouseEvent e) {
     int frameIndex = getFrameIndexUnder(toCanvasCoordinates(e.page));
     
@@ -97,11 +123,10 @@ class TimelineComponent extends WebComponent {
   double getFrameEndX() {
     return getFrameStartX() + movie.maxFrames * FRAME_WIDTH_PX;
   }
-  
+    
   Point toCanvasCoordinates(Point screenPoint) {
     return new Point(
-        screenPoint.x + framesContainer.parent.scrollLeft
-            - framesCanvas.offsetLeft,
+        screenPoint.x + getScrollLeft() - framesCanvas.offsetLeft,
         screenPoint.y - framesCanvas.offsetTop);
   }
   
