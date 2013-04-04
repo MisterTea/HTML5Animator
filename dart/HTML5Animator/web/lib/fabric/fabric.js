@@ -7833,7 +7833,7 @@ fabric.util.string = {
           if (this.perPixelTargetFind || this._objects[i].perPixelTargetFind) {
             possibleTargets[possibleTargets.length] = this._objects[i];
           }
-          else {
+          else if(this._objects[i].selectable) {
             target = this._objects[i];
             this.relatedTarget = target;
             break;
@@ -7843,13 +7843,13 @@ fabric.util.string = {
       for (var j = 0, len = possibleTargets.length; j < len; j++) {
         pointer = this.getPointer(e);
         var isTransparent = this._isTargetTransparent(possibleTargets[j], pointer.x, pointer.y);
-        if (!isTransparent) {
+        if (!isTransparent && possibleTargets[j].selectable) {
           target = possibleTargets[j];
           this.relatedTarget = target;
           break;
         }
       }
-      if (target && target.selectable) {
+      if (target) {
         return target;
       }
     },

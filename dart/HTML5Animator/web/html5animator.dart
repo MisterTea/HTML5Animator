@@ -80,7 +80,7 @@ class Layer {
 @observable
 class Movie {
   String id;
-  int maxFrames = 100;
+  int maxFrames = 2100;
   int lastKeyFrameTime = 20; //TODO: This is becuse we put a rect with keyframe 20 at startup.
   Set<int> keyFrames = toObservable(new Set());
   String name = "My Movie";
@@ -89,6 +89,7 @@ class Movie {
   num frameMs = 100;
   Point size = new Point(640, 360);  
   String backgroundColor = '#ffffff';
+  var audioSrc = null;
   
   void deleteActor(Actor actor) {
     for(Layer l in layers) {
@@ -132,6 +133,7 @@ class MovieState {
   num animationStartTimeMS = 0.0;
   bool playing = false;
   List<dynamic> darkBorders = [];
+  bool selectable = true;
   
   MovieState() {
   }
@@ -183,14 +185,13 @@ void onDragOverFn(MouseEvent e) {
     e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 }
 
-var LOADED_IMAGE = null;
 void onDropFn(MouseEvent e) {
   window.console.debug("ON DROP");
   e.stopPropagation(); // Stops some browsers from redirecting.
   e.preventDefault();
 
   var files = e.dataTransfer.files;
-  var f;
+  File f;
   
   var imageUri = e.dataTransfer.getData("text/uri-list");
   if (imageUri != null && imageUri.length > 1){
@@ -202,9 +203,17 @@ void onDropFn(MouseEvent e) {
     //window.console.debug("FILE: " + f.size + " *** " + f.name + " *** " + f.toString());
     
     FileReader reader = new FileReader();
-    reader.onLoad.listen((var theFile) {
-        addImageToPalette(reader.result);
-    });
+    if (f.name.endsWith("\.mp3") || f.name.endsWith("\.wav") || f.name.endsWith("\.ogg")) {
+      reader.onLoad.listen((var theFile) {
+        AudioElement bgMusicElement = document.query("#BGMusic");
+        bgMusicElement.src = reader.result;
+        movie.audioSrc = reader.result;
+      });
+    } else {
+      reader.onLoad.listen((var theFile) {
+          addImageToPalette(reader.result);
+      });
+    }
     // Read in the image file as a data URL.
     reader.readAsDataUrl(f);
   }

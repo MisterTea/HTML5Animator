@@ -157,15 +157,27 @@ void nextFrame() {
   movieState.frame = Math.min(movie.maxFrames - 1, movieState.frame + 1);
 }
 
+void setAllSelected(bool selected) {
+  print("SET ALL SELECTED");
+  print(selected);
+  movieState.selectable = selected;
+  js.scoped(() {
+  for (String key in movieState.objectIdMap.keys) {
+       movieState.objectIdMap[key].selectable = selected;
+  }
+  });
+}
+
 void play() {
   movieState.anchorFrame = movieState.frame;
-  movieState.animationStartTimeMS = -1.0;
+  movieState.animationStartTimeMS = 0.0;
   movieState.playing = true;
   js.scoped(() {
   for (int a=0;a<movieState.darkBorders.length;a++) {
     var border = movieState.darkBorders[a];
     movieState.canvas.add(border);
   }
+  setAllSelected(false);
   movieState.canvas.remove(movieState.guidelines);
   });
   window.requestAnimationFrame(animloop);
@@ -175,7 +187,12 @@ void pause() {
   if (movieState.playing == false) {
     return;
   }
+  setAllSelected(true);
   movieState.playing = false;
+  if (movie.audioSrc != null) {
+    AudioElement bgMusicElement = document.query("#BGMusic");
+    bgMusicElement.pause();
+  }
   js.scoped(() {
   for (int a=0;a<movieState.darkBorders.length;a++) {
     var border = movieState.darkBorders[a];
@@ -187,8 +204,13 @@ void pause() {
 }
 
 void animloop(num highResTime) {
-  if (movieState.animationStartTimeMS<0) {
+  if (movieState.animationStartTimeMS==0.0) {
     movieState.animationStartTimeMS = highResTime - 100 * movieState.frame;
+    AudioElement bgMusicElement = document.query("#BGMusic");
+    if (movie.audioSrc != null) {
+      bgMusicElement.currentTime = movieState.frame / 10.0;
+      bgMusicElement.play();
+    }
   }
   if (movieState.playing == false) {
     print("NOT PLAYING");
@@ -214,6 +236,10 @@ void addText() {
   var text = new js.Proxy(fabric.Text, 'Dart Rocks!', {
     'left' : 100,
     'top' : 100,
+    'borderColor': 'red',
+    'cornerColor': 'green',
+    'cornerSize': 6,
+    'transparentCorners': false,
   });
   js.retain(text);
 
@@ -247,6 +273,13 @@ void addImage(String imageUrl, num x, num y) {
       oImg.left = x-oImg.width / 2;
       oImg.top = y-oImg.height / 2;
 
+      oImg.set(js.map({
+        'borderColor': 'red',
+        'cornerColor': 'green',
+        'cornerSize': 6,
+        'transparentCorners': false,
+      }));
+      
       var layer = new Layer();
       movie.layers.add(layer);
 
@@ -275,6 +308,10 @@ void addLine() {
     
   var line = new js.Proxy(fabric.Line, js.array([300,100,500,100]), js.map({
     'strokeWidth': 10,
+    'borderColor': 'red',
+    'cornerColor': 'green',
+    'cornerSize': 6,
+    'transparentCorners': false,
   }));
   js.retain(line);
 
@@ -308,6 +345,10 @@ void addBox() {
     'top': 100,
     'width': 100,
     'height': 100,
+    'borderColor': 'red',
+    'cornerColor': 'green',
+    'cornerSize': 6,
+    'transparentCorners': false,
   }));
   js.retain(rect);
 
@@ -341,6 +382,10 @@ void addEllipse() {
     'top': 100,
     'rx': 100,
     'ry': 100,
+    'borderColor': 'red',
+    'cornerColor': 'green',
+    'cornerSize': 6,
+    'transparentCorners': false,
   }));
   js.retain(rect);
 
@@ -374,6 +419,10 @@ void addTriangle() {
     'top': 100,
     'width': 100,
     'height': 100,
+    'borderColor': 'red',
+    'cornerColor': 'green',
+    'cornerSize': 6,
+    'transparentCorners': false,
   }));
   js.retain(rect);
 
@@ -637,6 +686,8 @@ void updateAnimation() {
                       JSON.parse(actor.keyFrames[keyFrameAfter].fabricJson),
                       actor.keyFrames[keyFrameBefore].easeAfter)));
             }
+            fabricObject.selectable = movieState.selectable;
+            print("FABRIC OBJECT SELECTABLE: ${fabricObject.selectable}");
             fabricObject.left += movieState.padding;
             fabricObject.top += movieState.padding;
             fabricObject.setCoords();
