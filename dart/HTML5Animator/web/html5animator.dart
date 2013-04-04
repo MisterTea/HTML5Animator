@@ -218,16 +218,17 @@ void onDropFn(MouseEvent e) {
     if (f.name.endsWith("\.mp3") || f.name.endsWith("\.wav") || f.name.endsWith("\.ogg")) {
       reader.onLoad.listen((var theFile) {
         AudioElement bgMusicElement = document.query("#BGMusic");
+        bgMusicElement.onCanPlay.listen((_) {
+          print("MUSIC LOADED");
+          // Extend frames if audio is longer.
+          //if (bgMusicElement.duration*1000 > movie.frameMs * movie.maxFrames) {
+          print((bgMusicElement.duration*1000 / movie.frameMs).ceil());
+            movie.maxFrames =
+                (bgMusicElement.duration*1000 / movie.frameMs).ceil();
+          //}
+        });
         bgMusicElement.src = reader.result;
         movie.audioSrc = reader.result;
-        bgMusicElement.onLoad.listen((_) {
-          // Extend frames if audio is longer.
-          var audioDuration = new Duration(seconds: bgMusicElement.duration);
-          if (audioDuration.inMilliseconds > movie.frameMs * movie.maxFrames) {
-            movie.maxFrames =
-                (audioDuration.inMilliseconds * movie.frameMs).ceil();
-          }
-        });
       });
     } else {
       reader.onLoad.listen((var theFile) {
