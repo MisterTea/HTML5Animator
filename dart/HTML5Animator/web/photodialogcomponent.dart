@@ -3,7 +3,7 @@ library photodialog;
 import 'dart:async'
 import 'dart:html';
 import 'html5animator.dart';
-import 'imagepalette.dart';
+import 'imagePalette.dart';
 import 'modaldialogcomponent.dart';
 import 'package:web_ui/web_ui.dart';
 
