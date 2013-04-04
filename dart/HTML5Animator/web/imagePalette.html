@@ -12,10 +12,10 @@
     <style scoped media="all">
       @import "css/image-palette.css"
     </style>
-    <div class="x-image-palette">        
-       <template iterate="uri in image_uris">
-         <img src="{{new SafeUri.unsafe(uri)}}" />
-       </template>
+    <div class="x-image-palette toolboxGrid">        
+      <template iterate="uri in image_uris">
+        <img src="{{new SafeUri.unsafe(uri)}}" class="toolboxGridImageEl" />
+      </template>
     </div>
   </template>
   <script type="application/dart" src="imagePalette.dart"> </script>
