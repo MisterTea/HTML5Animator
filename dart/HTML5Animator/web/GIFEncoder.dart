@@ -5,12 +5,8 @@ var chr = [];
 class ByteArray {
     List<int> bin = [];
     
-    String getData() {
-      String v = '';
-      for(int i = 0; i < bin.length; i++) {
-        v += chr[this.bin[i]];
-      }
-      return v;
+    List<int> getData() {
+      return bin;
     }
     
     void writeByte(int byte) {

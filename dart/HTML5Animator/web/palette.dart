@@ -681,6 +681,7 @@ void makeGif() {
   print(encoder2.start());
   movieState.playing = true;
   movieState.playFrame = 0;
+  //TODO: use requestanimframe;
   for (; movieState.playFrame <= movie.lastKeyFrameTime+10 && movieState.playFrame < movie.maxFrames+10; movieState.playFrame+=0.5) {
     updateAnimation();
     print("***");

@@ -1,6 +1,7 @@
 part of html5animator;
 
-String encode64(String input) {
+String encode64(List<int> input) {
+  print("PERFORMING ENCODE64");
   int i = 0;
   int l = input.length;
   List<String> output = new List<String>(((l*4 + 6) / 3.0).ceil());
@@ -8,9 +9,9 @@ String encode64(String input) {
   int chr1, chr2, chr3, enc1, enc2, enc3, enc4;
   int a=0;
   while (i < l) {
-    chr1 = input.codeUnits[i++];
-    chr2 = input.length>i ? input.codeUnits[i++] : -999;
-    chr3 = input.length>i ? input.codeUnits[i++] : -999;
+    chr1 = input[i++];
+    chr2 = input.length>i ? input[i++] : -999;
+    chr3 = input.length>i ? input[i++] : -999;
     enc1 = chr1 >> 2;
     enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
     enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
