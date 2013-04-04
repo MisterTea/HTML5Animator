@@ -184,7 +184,7 @@ void addLine() {
   js.scoped(() {
     var fabric = js.context.fabric;
     
-  var line = new js.Proxy(fabric.Line, js.array([100,100,300,100]), js.map({
+  var line = new js.Proxy(fabric.Line, js.array([300,100,500,100]), js.map({
     'strokeWidth': 10,
   }));
   js.retain(line);
@@ -201,6 +201,105 @@ void addLine() {
   actor.keyFrames.add(renderable);
 
   renderable.fabricJson = js.context.JSON.stringify(line.toObject());
+  print("ADDED JSON: " + renderable.fabricJson);
+  print(renderable.fabricJson);
+  renderable.keyFrame = movieState.frame;
+  // $rootScope.canvas.add(oImg);
+  });
+  
+  updateAnimation();
+}
+
+void addBox() {
+  js.scoped(() {
+    var fabric = js.context.fabric;
+    
+  var rect = new js.Proxy(fabric.Rect, js.map({
+    'left': 100,
+    'top': 100,
+    'width': 100,
+    'height': 100,
+  }));
+  js.retain(rect);
+
+  var layer = new Layer();
+  movie.layers.add(layer);
+
+  var actor = new Actor();
+  layer.actors.add(actor);
+
+  actor.id = "rect" + randomString();
+
+  var renderable = new Renderable();
+  actor.keyFrames.add(renderable);
+
+  renderable.fabricJson = js.context.JSON.stringify(rect.toObject());
+  print("ADDED JSON: " + renderable.fabricJson);
+  print(renderable.fabricJson);
+  renderable.keyFrame = movieState.frame;
+  // $rootScope.canvas.add(oImg);
+  });
+  
+  updateAnimation();
+}
+
+void addEllipse() {
+  js.scoped(() {
+    var fabric = js.context.fabric;
+    
+  var rect = new js.Proxy(fabric.Ellipse, js.map({
+    'left': 100,
+    'top': 100,
+    'rx': 100,
+    'ry': 100,
+  }));
+  js.retain(rect);
+
+  var layer = new Layer();
+  movie.layers.add(layer);
+
+  var actor = new Actor();
+  layer.actors.add(actor);
+
+  actor.id = "ellipse" + randomString();
+
+  var renderable = new Renderable();
+  actor.keyFrames.add(renderable);
+
+  renderable.fabricJson = js.context.JSON.stringify(rect.toObject());
+  print("ADDED JSON: " + renderable.fabricJson);
+  print(renderable.fabricJson);
+  renderable.keyFrame = movieState.frame;
+  // $rootScope.canvas.add(oImg);
+  });
+  
+  updateAnimation();
+}
+
+void addTriangle() {
+  js.scoped(() {
+    var fabric = js.context.fabric;
+    
+  var rect = new js.Proxy(fabric.Triangle, js.map({
+    'left': 100,
+    'top': 100,
+    'width': 100,
+    'height': 100,
+  }));
+  js.retain(rect);
+
+  var layer = new Layer();
+  movie.layers.add(layer);
+
+  var actor = new Actor();
+  layer.actors.add(actor);
+
+  actor.id = "rect" + randomString();
+
+  var renderable = new Renderable();
+  actor.keyFrames.add(renderable);
+
+  renderable.fabricJson = js.context.JSON.stringify(rect.toObject());
   print("ADDED JSON: " + renderable.fabricJson);
   print(renderable.fabricJson);
   renderable.keyFrame = movieState.frame;
@@ -311,6 +410,22 @@ void createFabricObject(serializedObject, id) {
       fabricObject.id = id;
       movieState.objectIdMap[id] = fabricObject;
       movieState.canvas.add(fabricObject);
+  } else if (serializedObject['type'] == 'ellipse') {
+    var fabricObject = new js.Proxy(fabric.Ellipse, serializedObjectJs);
+    js.retain(fabricObject);
+    fabricObject.left += movieState.padding;
+    fabricObject.top += movieState.padding;
+    fabricObject.id = id;
+    movieState.objectIdMap[id] = fabricObject;
+    movieState.canvas.add(fabricObject);
+  } else if (serializedObject['type'] == 'triangle') {
+    var fabricObject = new js.Proxy(fabric.Triangle, serializedObjectJs);
+    js.retain(fabricObject);
+    fabricObject.left += movieState.padding;
+    fabricObject.top += movieState.padding;
+    fabricObject.id = id;
+    movieState.objectIdMap[id] = fabricObject;
+    movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'text') {
     var fabricObject = fabric.Text.fromObject(serializedObjectJs);
     js.retain(fabricObject);
