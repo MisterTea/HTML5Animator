@@ -1,6 +1,6 @@
 library photodialog;
 
-import 'dart:async'
+import 'dart:async';
 import 'dart:html';
 import 'html5animator.dart';
 import 'imagePalette.dart';
