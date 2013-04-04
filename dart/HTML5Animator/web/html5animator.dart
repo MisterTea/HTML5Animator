@@ -50,6 +50,7 @@ class Layer {
 class Movie {
   String id;
   int maxFrames = 100;
+  int lastKeyFrameTime = 20; //TODO: This is becuse we put a rect with keyframe 20 at startup.
   Set<int> keyFrames = toObservable(new Set());
   String name = "My Movie";
   String musicId = null;

@@ -113,7 +113,7 @@ void animloop(num highResTime) {
   movieState.frame = ((highResTime - movieState.animationStartTimeMS) / 100).floor();
   updateAnimation();
   
-  if (movieState.frame >= movie.maxFrames) {
+  if (movieState.frame>movie.lastKeyFrameTime || movieState.frame >= movie.maxFrames) {
     stop();
   }
 }
@@ -345,6 +345,13 @@ Actor getActorFromId(id) {
 Renderable upsertKeyFrame(actor, fabricObject, int frame) {
   // TODO(Eric): Deal with keyframe removal.
   movie.keyFrames.add(frame);
+  
+  movie.lastKeyFrameTime = -1;
+  var it = movie.keyFrames.iterator;
+  while (it.moveNext()) {
+    movie.lastKeyFrameTime = Math.max(movie.lastKeyFrameTime, it.current);
+  }
+
   print("UPDATING " + actor.id);
   
   fabricObject.left -= movieState.padding;
@@ -392,6 +399,8 @@ void createFabricObject(serializedObject, id) {
     print(serializedObject);
     var serializedObjectJs = js.map(serializedObject);
     var fabricObject = js.context.fabric.Line.fromObject(serializedObjectJs);
+    fabricObject.perPixelTargetFind = true;
+    fabricObject.targetFindTolerance = 4;
     fabricObject._setWidthHeight(serializedObjectJs);
     print(fabricObject);
     js.retain(fabricObject);
@@ -404,6 +413,8 @@ void createFabricObject(serializedObject, id) {
     movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'rect') {
       var fabricObject = new js.Proxy(fabric.Rect, serializedObjectJs);
+      fabricObject.perPixelTargetFind = true;
+      fabricObject.targetFindTolerance = 4;
       js.retain(fabricObject);
       fabricObject.left += movieState.padding;
       fabricObject.top += movieState.padding;
@@ -412,6 +423,8 @@ void createFabricObject(serializedObject, id) {
       movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'ellipse') {
     var fabricObject = new js.Proxy(fabric.Ellipse, serializedObjectJs);
+    fabricObject.perPixelTargetFind = true;
+    fabricObject.targetFindTolerance = 4;
     js.retain(fabricObject);
     fabricObject.left += movieState.padding;
     fabricObject.top += movieState.padding;
@@ -420,6 +433,8 @@ void createFabricObject(serializedObject, id) {
     movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'triangle') {
     var fabricObject = new js.Proxy(fabric.Triangle, serializedObjectJs);
+    fabricObject.perPixelTargetFind = true;
+    fabricObject.targetFindTolerance = 4;
     js.retain(fabricObject);
     fabricObject.left += movieState.padding;
     fabricObject.top += movieState.padding;
@@ -428,6 +443,8 @@ void createFabricObject(serializedObject, id) {
     movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'text') {
     var fabricObject = fabric.Text.fromObject(serializedObjectJs);
+    fabricObject.perPixelTargetFind = true;
+    fabricObject.targetFindTolerance = 4;
     js.retain(fabricObject);
     fabricObject.left += movieState.padding;
     fabricObject.top += movieState.padding;
@@ -444,6 +461,8 @@ void createFabricObject(serializedObject, id) {
 
 void fabricImageCreated(var fabricObject) {
     js.retain(fabricObject);
+    fabricObject.perPixelTargetFind = true;
+    fabricObject.targetFindTolerance = 4;
     fabricObject.id = NEXT_ID;
     fabricObject.left += movieState.padding;
     fabricObject.top += movieState.padding;
@@ -568,7 +587,7 @@ void makeGif() {
   //print(encoder.start());
   print(encoder2.start());
   movieState.frame = 0;
-  for (; movieState.frame < 10; movieState.frame++) {
+  for (; movieState.frame <= movie.lastKeyFrameTime && movieState.frame < movie.maxFrames; movieState.frame++) {
     updateAnimation();
     print("***");
     //print(encoder.addFrameFromId('palette'));
