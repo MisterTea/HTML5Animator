@@ -11,4 +11,12 @@ class PlayControlsComponent extends WebComponent {
   /** Called once this component enters the DOM. */
   void inserted() {
   }
+  
+  void handlePress() {
+    if (movieState.playing) {
+      pause();
+    } else {
+      play();
+    }
+  }
 }

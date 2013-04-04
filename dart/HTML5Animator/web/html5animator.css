@@ -13,4 +13,6 @@
 
 #playcontrolscomponent {
   display: inline-block;
+  position: relative;
+  top: -8px;
 }

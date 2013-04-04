@@ -13,7 +13,14 @@
       @import "playcontrols.css"
     </style>
     <div class="x-playcontrols playcontrols">
-      &#9656;
+      <a class="button playPauseButton" on-click="handlePress()">
+        <template instantiate="if movieState.playing">
+          <span class="pause">&#10073;&#10073;</span>
+        </template>
+        <template instantiate="if !movieState.playing">
+          <span class="play">&#9656;</span>
+        </template>
+      </a>
     </div>
   </template>
   <script type="application/dart" src="playcontrolscomponent.dart"></script>

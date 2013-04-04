@@ -2,6 +2,7 @@
   background-color: #ccf;
   border: 1px solid #ccc;
   border-radius: 6px;
+  cursor: pointer;
   margin: 10px;
   overflow-x: scroll;
   overflow-y: hidden;

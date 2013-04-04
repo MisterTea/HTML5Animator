@@ -134,7 +134,7 @@ void nextFrame() {
 }
 
 void play() {
-  movieState.frame = 0;
+  movieState.anchorFrame = movieState.frame;
   movieState.animationStartTimeMS = -1.0;
   movieState.playing = true;
   js.scoped(() {
@@ -147,11 +147,10 @@ void play() {
   window.requestAnimationFrame(animloop);
 }
 
-void stop() {
+void pause() {
   if (movieState.playing == false) {
     return;
   }
-  movieState.frame = 0;
   movieState.playing = false;
   js.scoped(() {
   for (int a=0;a<movieState.darkBorders.length;a++) {
@@ -165,7 +164,7 @@ void stop() {
 
 void animloop(num highResTime) {
   if (movieState.animationStartTimeMS<0) {
-    movieState.animationStartTimeMS = highResTime;
+    movieState.animationStartTimeMS = highResTime - 100 * movieState.frame;
   }
   if (movieState.playing == false) {
     print("NOT PLAYING");
@@ -175,11 +174,12 @@ void animloop(num highResTime) {
 
   // Render
   movieState.playFrame = ((highResTime - movieState.animationStartTimeMS) / 100);
-  movieState.frame = ((highResTime - movieState.animationStartTimeMS) / 100).floor();
+  movieState.frame = movieState.playFrame.floor();
   updateAnimation();
   
   if (movieState.frame>movie.lastKeyFrameTime || movieState.frame >= movie.maxFrames) {
-    stop();
+    movieState.frame = movieState.anchorFrame;
+    pause();
   }
 }
 

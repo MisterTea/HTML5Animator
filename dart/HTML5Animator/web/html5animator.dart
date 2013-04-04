@@ -64,6 +64,7 @@ Movie movie = new Movie();
 @observable
 class MovieState {
   num playFrame = 0; // Play frame is for interpolation only.
+  int anchorFrame = 0;  // Frame that movie returns to after playing.
   int frame = 0;
   var canvas = null;
   var objectIdMap = new Map();
