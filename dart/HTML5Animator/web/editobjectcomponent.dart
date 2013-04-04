@@ -61,7 +61,7 @@ class EditObjectComponent extends WebComponent {
   void deleteKeyFrame() {
     js.scoped(() {
       getSelectedActor().deleteKeyFrame(movieState.frame);
-      movie.updateKeyFrames();
+      movieState.updateKeyFrames();
     });
     print("DELETE KEYFRAME");
     movieState.selectedObjectId = null;
