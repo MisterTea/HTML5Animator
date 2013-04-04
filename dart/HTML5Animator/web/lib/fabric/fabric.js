@@ -10323,8 +10323,8 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, {
       this.set('width', (this.x2 - this.x1) || 1);
       this.set('height', (this.y2 - this.y1) || 1);
 
-      this.set('left', 'left' in options ? options.left : this.left);
-      this.set('top', 'top' in options ? options.top : this.top);
+      this.set('left', 'left' in options ? options.left : ('left' in this ? this.left : (this.x1 + this.width / 2)));
+      this.set('top', 'top' in options ? options.top : ('top' in this ? this.top : (this.y1 + this.height / 2)));
     },
 
     /**
