@@ -7,6 +7,7 @@ import 'package:web_ui/web_ui.dart';
 /** Basic modal dialog. */
 class ModalDialogComponent extends WebComponent {
   final String OVERLAY_MASK_ID = 'dialogoverlay';
+  Function onCloseFn;
   
   /** Called once this component enters the DOM. */
   void inserted() {
@@ -34,6 +35,7 @@ class ModalDialogComponent extends WebComponent {
   }
   
   void handleClose() {
+    onCloseFn();
     removed();  // Make sure to cleanup overlay.
     remove();
   }

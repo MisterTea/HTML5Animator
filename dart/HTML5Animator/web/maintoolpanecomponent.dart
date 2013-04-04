@@ -7,7 +7,7 @@ import 'package:web_ui/web_ui.dart';
 
 /** Main panel of tool buttons and images. */
 class MainToolPaneComponent extends WebComponent {
-  addImage() => animator.addImage();
+  addImage() => animator.movieState.isPhotoDialogShowing = true;
   addText() => animator.addText();
   addLine() => animator.addLine();
   addBox() => animator.addBox();

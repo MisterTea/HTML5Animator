@@ -135,6 +135,9 @@ class MovieState {
   List<dynamic> darkBorders = [];
   bool selectable = true;
   
+  // Application state:
+  bool isPhotoDialogShowing = false;
+  
   MovieState() {
   }
 }
