@@ -110,8 +110,11 @@
        rel="stylesheet"
        media="all"
        href="css/fixed-header-table.css" />
+    
+    <link rel="stylesheet" href="html5animator.css" />
 
     <link rel="components" href="timeline.html" />
+    <link rel="components" href="playcontrols.html" />
     <link rel="components" href="imagePalette.html"/>
 
     <script src="lib/fabric/fabric.js"></script>
@@ -123,7 +126,7 @@
 
   </head>
   <body>
-<div>
+<div class="mainContainer">
   <div style="float: right; width: 50px;">&nbsp;</div>
   <div style="float: right; width: auto;">
     <div
@@ -223,16 +226,20 @@
   <div id="paletteHeader" style="width:300px">
       <input type="text" bind-value="movie.name" placeholder="Add a movie name">
   </div>
-
-  <div
-    ng-controller="PaletteController"
-    style="overflow: hidden;">
+  
+  <div class="canvasWrapper"
+      ng-controller="PaletteController">
     <canvas
       width="840"
       height="560"
       style="border: 1px solid #ccc"
       palette
       id="palette"></canvas>
+  </div>
+
+  <div class="timelineAndPlayControls">
+    <x-timeline id="timelinecomponent"></x-timeline>
+    <x-playcontrols id="playcontrolscomponent"></x-playcontrols>
   </div>
   <x-image-palette id="image-palette"></x-image-palette>
 
@@ -244,8 +251,6 @@
   </div>
   
 </div>
-
-    <x-timeline id="timelinecomponent"></x-timeline>
     <script type="application/dart" src="html5animator.dart"></script>
     <script src="packages/browser/dart.js"></script>
   </body>

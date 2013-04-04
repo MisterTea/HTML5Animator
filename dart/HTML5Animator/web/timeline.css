@@ -2,10 +2,10 @@
   background-color: #ccf;
   border: 1px solid #ccc;
   border-radius: 6px;
-  margin: 5px;
+  margin: 10px;
   overflow-x: scroll;
   overflow-y: hidden;
-  width: 800px;
+  width: 700px;
 }
 
 .frames {
