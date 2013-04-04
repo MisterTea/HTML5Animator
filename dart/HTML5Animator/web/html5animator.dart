@@ -74,7 +74,11 @@ class Layer {
   }
   
   void deleteActor(Actor actor) {
+    movieState.canvas.remove(movieState.objectIdMap[actor.id]);
+    movieState.objectIdMap.remove(actor.id);
     actors.remove(actor);
+    movieState.updateKeyFrames();
+    updateAnimation();
   }
 }
 

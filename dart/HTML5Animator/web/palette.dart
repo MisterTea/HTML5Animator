@@ -294,6 +294,7 @@ void addImage(String imageUrl, num x, num y) {
         renderable.fabricJson = js.context.JSON.stringify(oImg.toObject());
       });
       renderable.keyFrame = movieState.frame;
+      movieState.keyFrames.add(movieState.frame);
       // $rootScope.canvas.add(oImg);
 
       updateAnimation();
@@ -717,6 +718,9 @@ void makeGif() {
   movieState.canvas.setHeight(movie.size.y);
   movieState.padding = 0;
   movieState.canvas.remove(movieState.guidelines);
+  for (int i = 0; i < movieState.darkBorders.length; i++) {
+    movieState.canvas.remove(movieState.darkBorders[i]);
+  }
   });
   updateAnimation();
   //js.scoped(() {
@@ -744,6 +748,9 @@ void makeGif() {
   document.query('#gifImage').src = 'data:image/gif;base64,'
       + encode64(encoder2.stream().getData());
   js.scoped(() {
+    for (int i = 0; i < movieState.darkBorders.length; i++) {
+      movieState.canvas.add(movieState.darkBorders[i]);
+    }
   movieState.canvas.add(movieState.guidelines);
   movieState.canvas.setWidth(movie.size.x + 200);
   movieState.canvas.setHeight(movie.size.y + 200);
