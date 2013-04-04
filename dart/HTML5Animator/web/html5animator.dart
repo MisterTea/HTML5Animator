@@ -133,7 +133,7 @@ void onDropFn(MouseEvent e) {
   
   var imageUri = e.dataTransfer.getData("text/uri-list");
   if (imageUri != null && imageUri.length > 1){
-    addImage(imageUri);
+    addImage(imageUri,e.clientX, e.clientY);
   } else{
    for (var i = 0; (f = files[i]) != null; i++) {
     // Read the File objects in this FileList.
