@@ -219,7 +219,7 @@ void animloop(num highResTime) {
   movieState.frame = movieState.playFrame.floor();
   updateAnimation();
   
-  if (movieState.frame>movie.lastKeyFrameTime+10 || movieState.frame >= movie.maxFrames+10) {
+  if (movieState.frame>movieState.lastKeyFrameTime+10 || movieState.frame >= movie.maxFrames+10) {
     movieState.frame = movieState.anchorFrame;
     pause();
   }
@@ -732,7 +732,7 @@ void makeGif() {
   movieState.playing = true;
   movieState.playFrame = 0;
   //TODO: use requestanimframe;
-  for (; movieState.playFrame <= movie.lastKeyFrameTime+10 && movieState.playFrame < movie.maxFrames+10; movieState.playFrame+=0.5) {
+  for (; movieState.playFrame <= movieState.lastKeyFrameTime+10 && movieState.playFrame < movie.maxFrames+10; movieState.playFrame+=0.5) {
     updateAnimation();
     print("***");
     //print(encoder.addFrameFromId('palette'));
