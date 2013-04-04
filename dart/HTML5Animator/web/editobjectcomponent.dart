@@ -6,6 +6,7 @@ import 'dart:json' as JSON;
 import 'html5animator.dart';
 import 'package:web_ui/watcher.dart' as watcher;
 import 'package:web_ui/web_ui.dart';
+import 'package:js/js.dart' as js;
 
 class EditObjectComponent extends WebComponent {
   /** Called once this component enters the DOM. */
@@ -19,13 +20,35 @@ class EditObjectComponent extends WebComponent {
     }
     String fabricJson = getSelectedActor().keyFrames[0].fabricJson;
     InputElement element = query('#selectedText');
-    element.value = JSON.parse(fabricJson)['text'];
+    var v = JSON.parse(fabricJson);
+    if (v.containsKey('text')) {
+      element.value = v['text'];
+    }
   }
   
   void selectedTextChanged(Event e) {
     print("TEXT CHANGED TO " + query('#selectedText').value);
     getSelectedActor().updateAllRenderables({'text':query('#selectedText').value});
     updateAnimation();
+  }
+  
+  void eraseObject() {
+    js.scoped(() {
+    upsertKeyFrame(getSelectedActor(), movieState.objectIdMap[movieState.selectedObjectId], movieState.frame);
+    getSelectedActor().destroyOnLastKeyFrame = !(getSelectedActor().destroyOnLastKeyFrame);
+    });
+  }
+
+  void deleteObject() {
+    js.scoped(() {
+      movie.deleteActor(getSelectedActor());
+    });
+    print("DELETE OBJECT");
+    movieState.selectedObjectId = null;
+  }
+  
+  void deleteKeyFrame() {
+    print("DELETE KEYFRAME");
   }
 }
 

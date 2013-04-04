@@ -25,7 +25,6 @@ class Renderable {
   String fabricJson;
   int keyFrame;
   String easeAfter = "linear";
-  bool destroy = false;
   
   void update(Map updates) {
     print("CHANGING " + fabricJson);
@@ -41,6 +40,7 @@ class Renderable {
 @observable
 class Actor {
   String id;
+  bool destroyOnLastKeyFrame = false;
   
   List<Renderable> keyFrames = [];
   
@@ -61,6 +61,10 @@ class Layer {
   
   Layer() {
   }
+  
+  void deleteActor(Actor actor) {
+    actors.remove(actor);
+  }
 }
 
 @observable
@@ -75,6 +79,33 @@ class Movie {
   num frameMs = 100;
   Point size = new Point(640, 360);  
   String backgroundColor = '#ffffff';
+  
+  void deleteActor(Actor actor) {
+    for(Layer l in layers) {
+      l.deleteActor(actor);
+    }
+    if (movieState.objectIdMap.containsKey(actor.id)) {
+      window.console.debug("REMOVING OBJECT");
+      window.console.debug(actor);
+      movieState.canvas.remove(movieState.objectIdMap[actor.id]);
+      movieState.objectIdMap.remove(actor.id);
+    }
+    updateKeyFrames();
+    updateAnimation();
+  }
+  
+  void updateKeyFrames() {
+    keyFrames.clear();
+    lastKeyFrameTime = -1;
+    for (Layer l in layers) {
+      for (Actor a in l.actors) {
+        for (Renderable r in a.keyFrames) {
+          keyFrames.add(r.keyFrame);
+          lastKeyFrameTime = Math.max(lastKeyFrameTime, r.keyFrame);
+        }
+      }
+    }
+  }
 }
 Movie movie = new Movie();
 

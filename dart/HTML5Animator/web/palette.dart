@@ -570,7 +570,7 @@ void updateAnimation() {
         }
 
         if (keyFrameAfter == -1
-            && actor.keyFrames[keyFrameBefore].destroy == true) {
+            && actor.destroyOnLastKeyFrame == true) {
           removeObject = true;
         } else {
 
