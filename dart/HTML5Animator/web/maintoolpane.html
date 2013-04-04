@@ -2,7 +2,8 @@
 <html>
 <head>
   <title>Main Tool Pane</title>
-  <link rel="stylesheet" type="text/css" href="toolboxgrid.css">
+  <link rel="stylesheet" type="text/css" href="toolboxgrid.css" />
+  <link rel="components" href="imagePalette.html" />
 </head>
 <body>
 
@@ -22,6 +23,7 @@
         <button class="toolboxGridEl" on-click="addTriangle()">Triangle</button>
       </div>
     </div>
+    <x-image-palette id="image-palette"></x-image-palette>
   </template>
   <script type="application/dart" src="maintoolpanecomponent.dart"></script>
 </element>

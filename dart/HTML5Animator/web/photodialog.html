@@ -3,14 +3,30 @@
 <head>
   <title>Photo Dialog</title>
   <link rel="components" href="modalDialog.html" />
+  <link rel="stylesheet" type="text/css" href="photodialog.css">
 </head>
 <body>
 
 <element extends="div" name="x-photodialog" constructor="PhotoDialogComponent">
   <template>
+    <style scoped media="all">
+      @import "photodialog.css"
+    </style>
     <div class="x-photodialog">
       <x-modaldialog id="photoDialog">
-        Do photo stuff here!
+        <div class="photoDialogContents">
+          <div>
+            <input id="photoUrlInput" type="text"
+                placeholder="Enter an image URL" />
+            <a class="button" on-click="addPhoto()">Add</a>
+          </div>
+          <div class="photoDragPrompt">
+            or just drag an image from your computer
+          </div>
+          <div class="photoDragBox">
+            Drag image here
+          </div>
+        </div>
       </x-modaldialog>
     </div>
   </template>
