@@ -1,5 +1,16 @@
-.playcontrols {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin: 10px;
+.playcontrols { margin: 5px; }
+
+.playcontrols .playPauseButton {
+  border-radius: 36px;
+  min-height: 26px;
+  min-width: 18px;
+  padding: 8px 12px 5px 12px;
+}
+
+.play { font-size: 32px; }
+
+.pause {
+  font-size: 22px;
+  position: relative;
+  top: 2px;
 }

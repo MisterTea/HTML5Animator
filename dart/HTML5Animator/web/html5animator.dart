@@ -74,13 +74,14 @@ class Movie {
   List<Layer> layers = [];
   num frameMs = 100;
   Point size = new Point(640, 360);  
-  String backgroundColor = '#fff';
+  String backgroundColor = '#ffffff';
 }
 Movie movie = new Movie();
 
 @observable
 class MovieState {
   num playFrame = 0; // Play frame is for interpolation only.
+  int anchorFrame = 0;  // Frame that movie returns to after playing.
   int frame = 0;
   var canvas = null;
   var objectIdMap = new Map();
