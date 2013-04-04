@@ -23,7 +23,7 @@ class TimelineComponent extends WebComponent {
     // Listen for changes to movie state and redraw.
     watcher.watch(() => movie.maxFrames, (_) => redrawFrames());
     watcher.watch(() => movieState.frame, (_) => redrawFrames());
-    watcher.watch(() => movie.keyFrames, (_) => redrawFrames());
+    watcher.watch(() => movieState.keyFrames, (_) => redrawFrames());
   }
   
   void redrawFrames() {
@@ -54,7 +54,7 @@ class TimelineComponent extends WebComponent {
     context.stroke();
 
     // Draw circles for any keyframes.
-    for (int keyFrame in movie.keyFrames) {
+    for (int keyFrame in movieState.keyFrames) {
       var x = startX + keyFrame * FRAME_WIDTH_PX + FRAME_WIDTH_PX / 2;
       
       context.beginPath();

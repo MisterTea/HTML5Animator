@@ -82,8 +82,6 @@ class Layer {
 class Movie {
   String id;
   int maxFrames = 2100;
-  int lastKeyFrameTime = 20; //TODO: This is becuse we put a rect with keyframe 20 at startup.
-  Set<int> keyFrames = toObservable(new Set());
   String name = "My Movie";
   String musicId = null;
   List<Layer> layers = [];
@@ -103,27 +101,16 @@ class Movie {
       movieState.canvas.remove(movieState.objectIdMap[actor.id]);
       movieState.objectIdMap.remove(actor.id);
     }
-    updateKeyFrames();
+    movieState.updateKeyFrames();
     updateAnimation();
-  }
-  
-  void updateKeyFrames() {
-    keyFrames.clear();
-    lastKeyFrameTime = -1;
-    for (Layer l in layers) {
-      for (Actor a in l.actors) {
-        for (Renderable r in a.keyFrames) {
-          keyFrames.add(r.keyFrame);
-          lastKeyFrameTime = Math.max(lastKeyFrameTime, r.keyFrame);
-        }
-      }
-    }
   }
 }
 Movie movie = new Movie();
 
 @observable
 class MovieState {
+  Set<int> keyFrames = toObservable(new Set());
+  int lastKeyFrameTime = 20; //TODO: This is becuse we put a rect with keyframe 20 at startup.
   num playFrame = 0; // Play frame is for interpolation only.
   int anchorFrame = 0;  // Frame that movie returns to after playing.
   int frame = 0;
@@ -142,6 +129,19 @@ class MovieState {
   bool isPhotoDialogShowing = false;
   
   MovieState() {
+  }
+
+  void updateKeyFrames() {
+    keyFrames.clear();
+    lastKeyFrameTime = -1;
+    for (Layer l in movie.layers) {
+      for (Actor a in l.actors) {
+        for (Renderable r in a.keyFrames) {
+          keyFrames.add(r.keyFrame);
+          lastKeyFrameTime = Math.max(lastKeyFrameTime, r.keyFrame);
+        }
+      }
+    }
   }
 }
 MovieState movieState = new MovieState();

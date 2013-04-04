@@ -148,13 +148,14 @@
     <input class="movieName" type="text" bind-value="movie.name"
         placeholder="Add a movie name">
     
+    <a class="button gifButton" on-click="save()">Save</a>
     <a class="button gifButton" on-click="makeGif()">To GIF</a>
     <div class="bgcolorSelect">
       BG Color:
       <input class="colorInput" type="color" bind-value="movie.backgroundColor">
       <select style="display: inline-block; width:150px;" id="backgroundImageSelect" on-change="backgroundImageChanged()">
         <option value="none">None</option>
-        <option value="template-asianfather.jpg">Hide Yo Kids</option>
+        <option value="template-asianfather.jpg">Asian Father</option>
         <option value="template-evil_kid.jpg">Evil Kid</option>
         <option value="template-fry_squint.jpg">Fry Squint</option>
         <option value="template-hideyo.jpg">Hide Yo Kids</option>
