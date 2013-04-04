@@ -1,30 +1,25 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <title>imagePalette</title>
-    <link rel="stylesheet" href="css/image-palette.css"/>
-  </head>
+<head>
+  <title>imagePalette</title>
+  <link rel="stylesheet" href="css/image-palette.css"/>
+</head>
+
 <body>
-  <element extends="div" name="x-image-palette" constructor="ImagePalette">
-    <template> 
-      <style scoped media="all">
-        @import "css/image-palette.css"
-      </style>
-      <div class="x-image-palette">
-        <span> <content select=".label-one"></content> </span>
-        
-         <template iterate="uri in image_uris">
-           <img src="{{new SafeUri.unsafe(uri)}}" class="x-image-palette-element"/>
-         </template>
-      
-        <input type="text"
-               bind-value="input_value"
-               style="text-align:right">
-        <button on-click="addEntry()">Add Image
-               </button>
-      </div>
-    </template>
-    <script type="application/dart" src="imagePalette.dart"> </script>
-  </element>
+<element extends="div" name="x-image-palette" constructor="ImagePalette">
+  <template> 
+    <style scoped media="all">
+      @import "css/image-palette.css"
+    </style>
+    <div class="x-image-palette toolboxGrid">        
+      <template iterate="uri in image_uris">
+        <img src="{{new SafeUri.unsafe(uri)}}" class="toolboxGridImageEl" />
+      </template>
+    </div>
+  </template>
+  <script type="application/dart" src="imagePalette.dart"> </script>
+</element>
+
+</body>
 </html>

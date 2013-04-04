@@ -1,0 +1,15 @@
+.photoDialogContents {
+  margin-top: 12px;
+}
+
+.photoDragPrompt {
+  color: #333;
+  padding: 12px 0;
+  text-align: left;
+}
+
+.photoDragBox {
+  border: 1px dashed #ccc;
+  color: #ccc;
+  padding: 40px;
+}

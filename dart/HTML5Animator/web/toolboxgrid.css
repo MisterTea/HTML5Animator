@@ -6,7 +6,6 @@
 }
 
 .toolboxGridContainer {
-  overflow-y: auto;
   width: 245px;
 }
 
@@ -15,9 +14,13 @@
   width: 230px;
 }
 
-.toolboxGridEl {
+.toolboxGridEl,
+.toolboxGridImageEl {
   display: inline-block;
   height: 80px;
   margin: 8px;
   width: 80px;
 }
+
+.toolboxGridImageEl { cursor: -webkit-grab; }
+.toolboxGridImageEl:active { cursor: -webkit-grabbing; }

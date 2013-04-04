@@ -36,8 +36,11 @@ class EditObjectComponent extends WebComponent {
     String newText = query('#selectedText').value.replaceAll("\\n","\n");
     
     print("TEXT CHANGED TO " + newText);
-    getSelectedActor().updateAllRenderables({'text':newText});
-    updateAnimation();
+    var selectedActor = getSelectedActor();
+    if (selectedActor != null) {
+      selectedActor.updateAllRenderables({'text':newText});
+      updateAnimation();
+    }
   }
   
   void eraseObject() {
