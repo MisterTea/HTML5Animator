@@ -33,3 +33,8 @@
   position: relative;
   top: -8px;
 }
+
+a.button:hover {
+  color: inherit !important;
+  text-decoration: none !important;
+}
