@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Object</title>
+</head>
+<body>
+
+<element extends="div" name="x-editobject" constructor="EditObjectComponent">
+  <template>
+    <style scoped media="all">
+    </style>
+    <div class="x-editobject editobject">
+      <div ng-show="getEditObject()">
+        <div>EDITING {{movieState.selectedObjectId}}</div>
+        <div>
+          <label>Text:</label>
+          <input type="text" id="selectedText" on-key-up="selectedTextChanged($event)" placeholder="Enter a URL here" />
+        </div>
+        <a
+          class="button"
+          ng-click="eraseObject()">Erase (but keep history)</a>
+        <br />
+        <a
+          class="button"
+          ng-click="deleteObject()">Delete (completely)</a>
+        <br />
+      </div>
+    </div>
+  </template>
+  <script type="application/dart" src="editobjectcomponent.dart"></script>
+</element>
+
+</body>
+</html>

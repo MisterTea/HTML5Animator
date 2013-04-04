@@ -1,12 +1,5 @@
 part of html5animator;
 
-/**
-* This class lets you encode animated GIF files
-* Base class :  http://www.java2s.com/Code/Java/2D-Graphics-GUI/AnimatedGifEncoder.htm
-* @author Kevin Weiner (original Java version - kweiner@fmsware.com)
-* @author Thibault Imbert (AS3 version - bytearray.org)
-* @version 0.1 AS3 implementation
-*/
 var chr = [];
 
 class ByteArray {

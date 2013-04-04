@@ -22,13 +22,6 @@ part of html5animator;
 * that this copyright notice remain intact.
 */
  
-/*
-* This class handles Neural-Net quantization algorithm
-* @author Kevin Weiner (original Java version - kweiner@fmsware.com)
-* @author Thibault Imbert (AS3 version - bytearray.org)
-* @version 0.1 AS3 implementation
-*/
-
   //import flash.utils.ByteArray;
   
   class NeuQuant

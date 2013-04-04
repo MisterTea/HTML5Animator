@@ -113,6 +113,7 @@
     
     <link rel="stylesheet" href="html5animator.css" />
 
+    <link rel="components" href="editobjectcomponent.html" />
     <link rel="components" href="timeline.html" />
     <link rel="components" href="playcontrols.html" />
     <link rel="components" href="imagePalette.html"/>
@@ -130,30 +131,14 @@
   <div style="float: right; width: 50px;">&nbsp;</div>
   <div style="float: right; width: auto;">
     <div
-      ng-controller="EditObjectController"
+      class="editObjectController"
       style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
-      <div ng-show="getEditObject()">
-        <div>EDITING {{movieState.selectedObjectId}}</div>
-        <div ng-show="getEditObjectType()=='text'">
-          <label>Text:</label> <input
-            type="text"
-            ng-change="updateText()"
-            ng-model="selectedText"
-            placeholder="Enter a URL here">
-        </div>
-        <a
-          class="button"
-          ng-click="eraseObject()">Erase (but keep history)</a>
-        <br />
-        <a
-          class="button"
-          ng-click="deleteObject()">Delete (completely)</a>
-        <br />
-      </div>
+      <x-editobject id="editobjectcomponent"></x-editobject>
     </div>
     <div height="100px">&nbsp;</div>
+    
     <div
-      ng-controller="AddObjectController"
+      class="timelineAndPlayControls"
       style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
       <label>URL:</label> <input
         type="text"

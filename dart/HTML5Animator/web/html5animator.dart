@@ -26,6 +26,16 @@ class Renderable {
   int keyFrame;
   String easeAfter = "linear";
   bool destroy = false;
+  
+  void update(Map updates) {
+    print("CHANGING " + fabricJson);
+    var current = JSON.parse(fabricJson);
+    for (String key in updates.keys) {
+      current[key] = updates[key];
+    }
+    fabricJson = JSON.stringify(current);
+    print("CHANGING TO " + fabricJson);
+  }
 }
 
 @observable
@@ -33,6 +43,13 @@ class Actor {
   String id;
   
   List<Renderable> keyFrames = [];
+  
+  void updateAllRenderables(Map updates) {
+    print("UPDATING ALL KEYFRAMES");
+    for (int i = 0; i < keyFrames.length; i++) {
+      keyFrames[i].update(updates);
+    }
+  }
 }
 
 @observable
@@ -69,7 +86,7 @@ class MovieState {
   var objectIdMap = new Map();
   num padding = 100;
   var guidelines = null;
-  String selectedObjectId = "";
+  String selectedObjectId = null;
   num animationStartTimeMS = 0.0;
   bool playing = false;
   List<dynamic> darkBorders = [];

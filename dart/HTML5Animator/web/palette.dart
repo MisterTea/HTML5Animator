@@ -396,7 +396,11 @@ num getActorIndexWithActorId(id) {
   return null;
 }
 
-Actor getActorFromId(id) {
+Actor getSelectedActor() {
+  return getActorFromId(movieState.selectedObjectId);
+}
+
+Actor getActorFromId(String id) {
   for ( var i = 0; i < movie.layers.length; i++) {
     for ( var j = 0; j < movie.layers[i].actors.length; j++) {
       if (movie.layers[i].actors[j].id == id) {
