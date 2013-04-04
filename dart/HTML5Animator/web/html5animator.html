@@ -116,6 +116,7 @@
     <link rel="components" href="editobjectcomponent.html" />
     <link rel="components" href="timeline.html" />
     <link rel="components" href="playcontrols.html" />
+    <link rel="components" href="maintoolpane.html" />
     <link rel="components" href="imagePalette.html"/>
 
     <script src="lib/fabric/fabric.js"></script>
@@ -128,46 +129,14 @@
   </head>
   <body>
 <div class="mainContainer">
-  <div style="float: right; width: 50px;">&nbsp;</div>
-  <div style="float: right; width: auto;">
-    <div
-      class="editObjectController"
-      style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
-      <x-editobject id="editobjectcomponent"></x-editobject>
-    </div>
-    <div height="100px">&nbsp;</div>
-    
-    <div
-      class="timelineAndPlayControls"
-      style="border: 2px solid; box-shadow: 10px 10px 5px #888888;">
-      <label>URL:</label> <input
-        type="text"
-        ng-model="newImageUrl"
-        placeholder="Enter a URL here" />
-      <a
-        class="button"
-        on-click="addImage()">Add Image</a>
-      <br />
-      <a
-        class="button"
-        on-click="addText()">Add Text</a>
-      <br />
-      <a
-        class="button"
-        on-click="addLine()">Add Line</a>
-      <br />
-      <a
-        class="button"
-        on-click="addBox()">Add Box</a>
-      <br />
-      <a
-        class="button"
-        on-click="addEllipse()">Add Ellipse</a>
-      <br />
-      <a
-        class="button"
-        on-click="addTriangle()">Add Triangle</a>
-      <br />
+  <div class="innerContainer">
+    <div class="toolbox">
+      <div class="EditObjectController">
+        <x-editobject id="editobjectcomponent"></x-editobject>
+      </div>
+      <div height="100px">&nbsp;</div>
+      
+      <x-maintoolpane></x-maintoolpane>
     </div>
   </div>
 

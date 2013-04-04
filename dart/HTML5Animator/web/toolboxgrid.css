@@ -1,0 +1,23 @@
+.toolbox {
+  border: 1px solid #000;
+  float: right;
+  height: 600px;
+  width: 245px;
+}
+
+.toolboxGridContainer {
+  overflow-y: auto;
+  width: 245px;
+}
+
+.toolboxGrid {
+  text-align: center;
+  width: 230px;
+}
+
+.toolboxGridEl {
+  display: inline-block;
+  height: 80px;
+  margin: 8px;
+  width: 80px;
+}

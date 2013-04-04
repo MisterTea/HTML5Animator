@@ -1,5 +1,6 @@
 .mainContainer {
-  margin: 20px;
+  margin: 20px auto;
+  width: 1200px;
 }
 
 .bgcolorSelect {
