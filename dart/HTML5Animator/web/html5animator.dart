@@ -220,6 +220,14 @@ void onDropFn(MouseEvent e) {
         AudioElement bgMusicElement = document.query("#BGMusic");
         bgMusicElement.src = reader.result;
         movie.audioSrc = reader.result;
+        bgMusicElement.onLoad.listen((_) {
+          // Extend frames if audio is longer.
+          var audioDuration = new Duration(seconds: bgMusicElement.duration);
+          if (audioDuration.inMilliseconds > movie.frameMs * movie.maxFrames) {
+            movie.maxFrames =
+                (audioDuration.inMilliseconds * movie.frameMs).ceil();
+          }
+        });
       });
     } else {
       reader.onLoad.listen((var theFile) {

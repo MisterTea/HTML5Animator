@@ -199,13 +199,22 @@ void pause() {
   updateAnimation();
 }
 
+void startMusic(AudioElement bgMusicElement) {
+  bgMusicElement.currentTime = movieState.frame / 10.0;
+  bgMusicElement.play();
+}
+
 void animloop(num highResTime) {
   if (movieState.animationStartTimeMS==0.0) {
     movieState.animationStartTimeMS = highResTime - 100 * movieState.frame;
     AudioElement bgMusicElement = document.query("#BGMusic");
     if (movie.audioSrc != null) {
-      bgMusicElement.currentTime = movieState.frame / 10.0;
-      bgMusicElement.play();
+      if (bgMusicElement.readyState == 4) {
+        startMusic(bgMusicElement);
+      } else {
+        bgMusicElement.onCanPlayThrough.listen(
+            (_) => startMusic(bgMusicElement));
+      }
     }
   }
   if (movieState.playing == false) {
