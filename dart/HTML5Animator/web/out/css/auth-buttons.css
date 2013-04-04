@@ -21,12 +21,9 @@
   -moz-box-sizing: content-box;
   box-sizing: content-box;
   -webkit-appearance: none;
-}
-overflow:visible {
-}
-display:inline {
-}
-zoom: {
+  *overflow: visible;
+  *display: inline;
+  *zoom: 1;
 }
 .btn-auth:hover, .btn-auth:focus, .btn-auth:active {
   color: #222;
