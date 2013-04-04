@@ -6,13 +6,14 @@ import 'dart:uri';
 
 class ImagePalette extends WebComponent {
   
-  List<SafeUri> image_urls = new List<SafeUri>();
+  @observable
+  List<String> image_uris = toObservable(new List<String>());
+  @observable
   String input_value = "";
-  
-
 
   void addEntry() {
-    image_urls.add(new SafeUri.unsafe(input_value));
+    window.console.debug("Adding url "+input_value);
+    image_uris.add(input_value);
     input_value = "";
   }
 }
@@ -21,8 +22,7 @@ class ImagePalette extends WebComponent {
 void addImageToPalette(String url){
   var palette = query("#image-palette");
   if (palette != null && palette.xtag != null){
-    SafeUri uri = new SafeUri.unsafe(url);
-    palette.xtag.image_urls.add(uri);
+    palette.xtag.image_uris.add(url);
   }
 }
 

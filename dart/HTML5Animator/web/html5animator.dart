@@ -142,13 +142,7 @@ void onDropFn(MouseEvent e) {
     
     FileReader reader = new FileReader();
     reader.onLoad.listen((var theFile) {
-        // Render thumbnail.
-        ImageElement img = new ImageElement();
-        img.src = reader.result;
-        LOADED_IMAGE = reader.result;
-        document.query('#droppedImage').children.add(img);
         addImageToPalette(reader.result);
-        print('DROPPED IMAGE');
     });
     // Read in the image file as a data URL.
     reader.readAsDataUrl(f);
