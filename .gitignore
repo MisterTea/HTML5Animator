@@ -11,3 +11,5 @@ dart/HTML5Animator/pubspec.lock
 .buildlog
 
 .DS_Store
+
+dart/HTML5Animator/web/out/css/auth-buttons.css
