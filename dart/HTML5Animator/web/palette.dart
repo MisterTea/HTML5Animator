@@ -72,7 +72,7 @@ void objectSelected(var params) {
   movieState.selectedObjectId = fabricObject.id;
 }
 
-void selectionCleared() {
+void selectionCleared(var params) {
   window.console.debug("UNSELECTED");
   movieState.selectedObjectId = null;
 }
@@ -180,7 +180,33 @@ void addImage(String imageUrl) {
   });
 }
 
-void fabricImageLoaded(var oImg) {
+void addLine() {
+  js.scoped(() {
+    var fabric = js.context.fabric;
+    
+  var line = new js.Proxy(fabric.Line, js.array([100,100,300,100]), js.map({
+    'strokeWidth': 10,
+  }));
+  js.retain(line);
+
+  var layer = new Layer();
+  movie.layers.add(layer);
+
+  var actor = new Actor();
+  layer.actors.add(actor);
+
+  actor.id = "line" + randomString();
+
+  var renderable = new Renderable();
+  actor.keyFrames.add(renderable);
+
+  renderable.fabricJson = js.context.JSON.stringify(line.toObject());
+  print(renderable.fabricJson);
+  renderable.keyFrame = movieState.frame;
+  // $rootScope.canvas.add(oImg);
+  });
+  
+  updateAnimation();
 }
 
 Layer getLayerWithActorId(id) {
@@ -233,8 +259,12 @@ Renderable upsertKeyFrame(actor, fabricObject, int frame) {
       fabricObject.top += movieState.padding;
       return renderable;
     } else if (actor.keyFrames[i].keyFrame == frame) {
+      print("UPDATING");
+      print(actor.keyFrames[i].fabricJson);
       actor.keyFrames[i].fabricJson = js.context.JSON.stringify(fabricObject
           .toObject());
+      print("TO");
+      print(actor.keyFrames[i].fabricJson);
       fabricObject.left += movieState.padding;
       fabricObject.top += movieState.padding;
       return actor.keyFrames[i];
@@ -257,8 +287,11 @@ void createFabricObject(serializedObject, id) {
   var serializedObjectJs = js.map(serializedObject);
   window.console.log(serializedObject);
   if (serializedObject['type'] == 'line') {
-    var fabricObject = fabric.Line.fromObject(serializedObject);
+    var fabricObject = js.context.fabric.Line.fromObject(serializedObjectJs);
+    print(fabricObject);
     js.retain(fabricObject);
+    print(fabricObject.left);
+    print(movieState.padding);
     fabricObject.left += movieState.padding;
     fabricObject.top += movieState.padding;
     fabricObject.id = id;
