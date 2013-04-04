@@ -4,16 +4,16 @@ import 'dart:html';
 import 'dart:uri';
 
 
+@observable
 class ImagePalette extends WebComponent {
   
-  @observable
-  List<String> image_uris = toObservable(new List<String>());
-  @observable
+  List<String> image_uris = new ObservableList<String>();
   String input_value = "";
 
   void addEntry() {
-    window.console.debug("Adding url "+input_value);
-    image_uris.add(input_value);
+    String final_url = "http://" + window.location.host + "/out/___IMAGE___" + input_value;
+    window.console.debug("Adding url "+input_value + " (" + final_url + ")");
+    image_uris.add(final_url);
     input_value = "";
   }
 }
