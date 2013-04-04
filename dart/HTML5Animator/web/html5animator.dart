@@ -72,6 +72,7 @@ class MovieState {
   String selectedObjectId = "";
   num animationStartTimeMS = 0.0;
   bool playing = false;
+  List<dynamic> darkBorders = [];
   
   MovieState() {
   }

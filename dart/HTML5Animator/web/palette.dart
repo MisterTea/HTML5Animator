@@ -31,7 +31,7 @@ void initPalette() {
   js.retain(movieState.canvas);
 
   // Create guidelines
-  movieState.guidelines = new js.Proxy(fabric.Rect, {
+  movieState.guidelines = new js.Proxy(fabric.Rect, js.map({
     'left' : 320 + 100,
     'top' : 180 + 100,
     'width' : 640,
@@ -40,9 +40,57 @@ void initPalette() {
     'strokeWidth' : 2,
     'fill' : null,
     'selectable' : false,
-  });
+    'strokeDashArray' : [10,10]
+  }));
   js.retain(movieState.guidelines);
   movieState.canvas.add(movieState.guidelines);
+  
+  // Create dark borders
+  var border;
+  border = new js.Proxy(fabric.Rect, js.map({
+    'left' : 320 + 100,
+    'top' : 50,
+    'width' : 640,
+    'height' : 100,
+    'fill' : '#000000',
+    'opacity': 0.5,
+    'selectable' : false,
+  }));
+  js.retain(border);
+  movieState.darkBorders.add(border);
+  border = new js.Proxy(fabric.Rect, js.map({
+    'left' : 50,
+    'top' : 280,
+    'width' : 100,
+    'height' : 560,
+    'fill' : '#000000',
+    'opacity': 0.5,
+    'selectable' : false,
+  }));
+  js.retain(border);
+  movieState.darkBorders.add(border);
+  border = new js.Proxy(fabric.Rect, js.map({
+    'left' : 50 + 640 + 100,
+    'top' : 280,
+    'width' : 100,
+    'height' : 560,
+    'fill' : '#000000',
+    'opacity': 0.5,
+    'selectable' : false,
+  }));
+  js.retain(border);
+  movieState.darkBorders.add(border);
+  border = new js.Proxy(fabric.Rect, js.map({
+    'left' : 320 + 100,
+    'top' : 50 + 460,
+    'width' : 640,
+    'height' : 100,
+    'fill' : '#000000',
+    'opacity': 0.5,
+    'selectable' : false,
+  }));
+  js.retain(border);
+  movieState.darkBorders.add(border);
 
   window.console.debug(movieState.canvas);
   movieState.canvas.on('object:modified', new js.Callback.many(objectModified));
@@ -89,12 +137,29 @@ void play() {
   movieState.frame = 0;
   movieState.animationStartTimeMS = -1.0;
   movieState.playing = true;
+  js.scoped(() {
+  for (int a=0;a<movieState.darkBorders.length;a++) {
+    var border = movieState.darkBorders[a];
+    movieState.canvas.add(border);
+  }
+  movieState.canvas.remove(movieState.guidelines);
+  });
   window.requestAnimationFrame(animloop);
 }
 
 void stop() {
+  if (movieState.playing == false) {
+    return;
+  }
   movieState.frame = 0;
   movieState.playing = false;
+  js.scoped(() {
+  for (int a=0;a<movieState.darkBorders.length;a++) {
+    var border = movieState.darkBorders[a];
+    movieState.canvas.remove(border);
+  }
+  movieState.canvas.add(movieState.guidelines);
+  });
   updateAnimation();
 }
 
