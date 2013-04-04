@@ -33,10 +33,10 @@ void initPalette() {
 
   // Create guidelines
   movieState.guidelines = new js.Proxy(fabric.Rect, js.map({
-    'left' : 320 + 100,
-    'top' : 180 + 100,
-    'width' : 640,
-    'height' : 360,
+    'left' : movie.size.x/2 + 100,
+    'top' : movie.size.y/2 + 100,
+    'width' : movie.size.x,
+    'height' : movie.size.y,
     'stroke' : 'grey',
     'strokeWidth' : 2,
     'fill' : null,
@@ -49,9 +49,9 @@ void initPalette() {
   // Create dark borders
   var border;
   border = new js.Proxy(fabric.Rect, js.map({
-    'left' : 320 + 100,
+    'left' : movie.size.x/2 + 100,
     'top' : 50,
-    'width' : 640,
+    'width' : movie.size.x,
     'height' : 100,
     'fill' : '#000000',
     'opacity': 0.5,
@@ -61,9 +61,9 @@ void initPalette() {
   movieState.darkBorders.add(border);
   border = new js.Proxy(fabric.Rect, js.map({
     'left' : 50,
-    'top' : 280,
+    'top' : (movie.size.y + 200) / 2,
     'width' : 100,
-    'height' : 560,
+    'height' : movie.size.y + 200,
     'fill' : '#000000',
     'opacity': 0.5,
     'selectable' : false,
@@ -71,10 +71,10 @@ void initPalette() {
   js.retain(border);
   movieState.darkBorders.add(border);
   border = new js.Proxy(fabric.Rect, js.map({
-    'left' : 50 + 640 + 100,
-    'top' : 280,
+    'left' : 50 + movie.size.x + 100,
+    'top' : (movie.size.y + 200) / 2,
     'width' : 100,
-    'height' : 560,
+    'height' : movie.size.y + 200,
     'fill' : '#000000',
     'opacity': 0.5,
     'selectable' : false,
@@ -82,9 +82,9 @@ void initPalette() {
   js.retain(border);
   movieState.darkBorders.add(border);
   border = new js.Proxy(fabric.Rect, js.map({
-    'left' : 320 + 100,
-    'top' : 50 + 460,
-    'width' : 640,
+    'left' : movie.size.x/2 + 100,
+    'top' : 50 + movie.size.y + 100,
+    'width' : movie.size.x,
     'height' : 100,
     'fill' : '#000000',
     'opacity': 0.5,
@@ -92,6 +92,10 @@ void initPalette() {
   }));
   js.retain(border);
   movieState.darkBorders.add(border);
+  for (int a=0;a<movieState.darkBorders.length;a++) {
+    var border = movieState.darkBorders[a];
+    movieState.canvas.add(border);
+  }
 
   window.console.debug(movieState.canvas);
   movieState.canvas.on('object:modified', new js.Callback.many(objectModified));
@@ -173,10 +177,6 @@ void play() {
   movieState.animationStartTimeMS = 0.0;
   movieState.playing = true;
   js.scoped(() {
-  for (int a=0;a<movieState.darkBorders.length;a++) {
-    var border = movieState.darkBorders[a];
-    movieState.canvas.add(border);
-  }
   setAllSelected(false);
   movieState.canvas.remove(movieState.guidelines);
   });
@@ -194,10 +194,6 @@ void pause() {
     bgMusicElement.pause();
   }
   js.scoped(() {
-  for (int a=0;a<movieState.darkBorders.length;a++) {
-    var border = movieState.darkBorders[a];
-    movieState.canvas.remove(border);
-  }
   movieState.canvas.add(movieState.guidelines);
   });
   updateAnimation();
@@ -242,6 +238,8 @@ void addText() {
     'transparentCorners': false,
   });
   js.retain(text);
+  text.fontFamily = 'Impact';
+  text.textShadow = 'white 0 0 5px';
 
   var layer = new Layer();
   movie.layers.add(layer);
@@ -269,6 +267,7 @@ void addImage(String imageUrl, num x, num y) {
     var fabric = js.context.fabric;
     
     fabric.Image.fromURL(imageUrl, new js.Callback.many((var oImg) {
+      js.retain(oImg);
       print("LOADED IMAGE");
       oImg.left = x-oImg.width / 2;
       oImg.top = y-oImg.height / 2;
@@ -714,8 +713,8 @@ void updateAnimation() {
 
 void makeGif() {
   js.scoped(() {
-  movieState.canvas.setWidth(640);
-  movieState.canvas.setHeight(360);
+  movieState.canvas.setWidth(movie.size.x);
+  movieState.canvas.setHeight(movie.size.y);
   movieState.padding = 0;
   movieState.canvas.remove(movieState.guidelines);
   });
@@ -746,8 +745,8 @@ void makeGif() {
       + encode64(encoder2.stream().getData());
   js.scoped(() {
   movieState.canvas.add(movieState.guidelines);
-  movieState.canvas.setWidth(840);
-  movieState.canvas.setHeight(560);
+  movieState.canvas.setWidth(movie.size.x + 200);
+  movieState.canvas.setHeight(movie.size.y + 200);
   movieState.padding = 100;
   });
   

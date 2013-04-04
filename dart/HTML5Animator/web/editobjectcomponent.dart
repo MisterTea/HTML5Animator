@@ -33,8 +33,10 @@ class EditObjectComponent extends WebComponent {
   }
   
   void selectedTextChanged(Event e) {
-    print("TEXT CHANGED TO " + query('#selectedText').value);
-    getSelectedActor().updateAllRenderables({'text':query('#selectedText').value});
+    String newText = query('#selectedText').value.replaceAll("\\n","\n");
+    
+    print("TEXT CHANGED TO " + newText);
+    getSelectedActor().updateAllRenderables({'text':newText});
     updateAnimation();
   }
   
@@ -62,9 +64,39 @@ class EditObjectComponent extends WebComponent {
     movieState.selectedObjectId = null;
   }
   
+  int hexToNum(String hex) {
+    int val = 0;
+
+    int len = hex.length;
+    for (int i = 0; i < len; i++) {
+      int hexDigit = hex.codeUnits[i];
+      if (hexDigit >= 48 && hexDigit <= 57) {
+        val += (hexDigit - 48) * (1 << (4 * (len - 1 - i)));
+      } else if (hexDigit >= 65 && hexDigit <= 70) {
+        // A..F
+        val += (hexDigit - 55) * (1 << (4 * (len - 1 - i)));
+      } else if (hexDigit >= 97 && hexDigit <= 102) {
+        // a..f
+        val += (hexDigit - 87) * (1 << (4 * (len - 1 - i)));
+      } else {
+        throw new BadNumberFormatException("Bad hexidecimal value");
+      }
+    }
+
+    return val;
+  }
+  
   void bgColorChanged() {
     print("COLOR CHANGED TO " + query('#bgColorInput').value);
-    getSelectedActor().updateAllRenderables({'fill':query('#bgColorInput').value});
+    num colorIntensity =
+        (hexToNum(query('#bgColorInput').value.substring(1,3)) + 
+        hexToNum(query('#bgColorInput').value.substring(3,5)) + 
+        hexToNum(query('#bgColorInput').value.substring(5,7)))/3;
+    String shadowColor = (colorIntensity>96) ? "black" : "white";
+    getSelectedActor().updateAllRenderables({
+      'fill':query('#bgColorInput').value,
+      'textShadow':(shadowColor + ' 0 0 5px'),
+    });
     updateAnimation();
   }
 }

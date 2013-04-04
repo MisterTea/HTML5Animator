@@ -5,6 +5,7 @@
 
 .bgcolorSelect {
   display: inline-block;
+  width: 300px;
 }
 
 .canvasWrapper {
