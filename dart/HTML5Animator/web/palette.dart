@@ -148,15 +148,15 @@ void addText() {
   updateAnimation();
 }
 
-void addImage(String imageUrl) {
+void addImage(String imageUrl, num x, num y) {
   print("ADDING IMAGE "+imageUrl + ".");
   js.scoped(() {
     var fabric = js.context.fabric;
     
     fabric.Image.fromURL(imageUrl, new js.Callback.many((var oImg) {
       print("LOADED IMAGE");
-      oImg.left = oImg.width / 2;
-      oImg.top = oImg.height / 2;
+      oImg.left = x-oImg.width / 2;
+      oImg.top = y-oImg.height / 2;
 
       var layer = new Layer();
       movie.layers.add(layer);
