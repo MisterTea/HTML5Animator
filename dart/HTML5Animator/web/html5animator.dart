@@ -137,6 +137,9 @@ class MovieState {
   bool selectable = true;
   var backgroundObject = null;
   
+  // Application state:
+  bool isPhotoDialogShowing = false;
+  
   MovieState() {
   }
 }
