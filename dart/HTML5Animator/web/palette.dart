@@ -153,33 +153,34 @@ void addImage(String imageUrl) {
   js.scoped(() {
     var fabric = js.context.fabric;
     
-    fabric.Image.fromURL(imageUrl, new js.Callback.many(fabricImageLoaded));
+    fabric.Image.fromURL(imageUrl, new js.Callback.many((var oImg) {
+      print("LOADED IMAGE");
+      oImg.left = oImg.width / 2;
+      oImg.top = oImg.height / 2;
+
+      var layer = new Layer();
+      movie.layers.add(layer);
+
+      var actor = new Actor();
+      layer.actors.add(actor);
+
+      actor.id = "image" + randomString();
+
+      var renderable = new Renderable();
+      actor.keyFrames.add(renderable);
+
+      js.scoped(() {
+        renderable.fabricJson = js.context.JSON.stringify(oImg.toObject());
+      });
+      renderable.keyFrame = movieState.frame;
+      // $rootScope.canvas.add(oImg);
+
+      updateAnimation();
+    }));
   });
 }
 
 void fabricImageLoaded(var oImg) {
-  print("LOADED IMAGE");
-  oImg.left = oImg.width / 2;
-  oImg.top = oImg.height / 2;
-
-  var layer = new Layer();
-  movie.layers.add(layer);
-
-  var actor = new Actor();
-  layer.actors.add(actor);
-
-  actor.id = "image" + randomString();
-
-  var renderable = new Renderable();
-  actor.keyFrames.add(renderable);
-
-  js.scoped(() {
-    renderable.fabricJson = js.context.JSON.stringify(oImg.toObject());
-  });
-  renderable.keyFrame = movieState.frame;
-  // $rootScope.canvas.add(oImg);
-
-  updateAnimation();
 }
 
 Layer getLayerWithActorId(id) {
