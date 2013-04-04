@@ -657,7 +657,8 @@ void makeGif() {
   //print(encoder.start());
   print(encoder2.start());
   movieState.playing = true;
-  for (movieState.playFrame = 0; movieState.playFrame <= movie.lastKeyFrameTime && movieState.playFrame < movie.maxFrames; movieState.playFrame+=0.5) {
+  movieState.playFrame = 0;
+  for (; movieState.playFrame <= movie.lastKeyFrameTime && movieState.playFrame < movie.maxFrames; movieState.playFrame+=0.5) {
     updateAnimation();
     print("***");
     //print(encoder.addFrameFromId('palette'));

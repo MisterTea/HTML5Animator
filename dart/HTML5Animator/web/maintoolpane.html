@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Main Tool Pane</title>
+  <link rel="stylesheet" type="text/css" href="toolboxgrid.css">
+</head>
+<body>
+
+<element extends="div" name="x-maintoolpane"
+    constructor="MainToolPaneComponent">
+  <template>
+    <style scoped media="all">
+      @import "toolboxgrid.css"
+    </style>
+    <div class="x-maintoolpane toolboxGridContainer">
+      <div class="toolboxGrid">
+        <button class="toolboxGridEl" on-click="addImage()">Image</button>
+        <button class="toolboxGridEl" on-click="addText()">Text</button>
+        <button class="toolboxGridEl" on-click="addLine()">Line</button>
+        <button class="toolboxGridEl" on-click="addBox()">Rectangle</button>
+        <button class="toolboxGridEl" on-click="addEllipse()">Oval</button>
+        <button class="toolboxGridEl" on-click="addTriangle()">Triangle</button>
+      </div>
+    </div>
+  </template>
+  <script type="application/dart" src="maintoolpanecomponent.dart"></script>
+</element>
+
+</body>
+</html>
