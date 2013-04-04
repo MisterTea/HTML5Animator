@@ -1,6 +1,7 @@
 library timeline;
 
 import 'dart:html';
+import 'dart:math' as math;
 import 'html5animator.dart';
 import 'package:web_ui/watcher.dart' as watcher;
 import 'package:web_ui/web_ui.dart';
@@ -22,6 +23,7 @@ class TimelineComponent extends WebComponent {
     // Listen for changes to movie state and redraw.
     watcher.watch(() => movie.maxFrames, (_) => redrawFrames());
     watcher.watch(() => movieState.frame, (_) => redrawFrames());
+    watcher.watch(() => movie.keyFrames, (_) => redrawFrames());
   }
   
   void redrawFrames() {
@@ -32,8 +34,6 @@ class TimelineComponent extends WebComponent {
     var height = framesCanvas.height;
     
     CanvasRenderingContext2D context = framesCanvas.getContext('2d');
-
-    // Note: Half-pixel align for crisper lines.
     var startX = getFrameStartX();
     var endX = getFrameEndX();
     
@@ -41,15 +41,28 @@ class TimelineComponent extends WebComponent {
     context.fillStyle = '#aac';
     context.fillRect(startX + movieState.frame * FRAME_WIDTH_PX, 0, 
         FRAME_WIDTH_PX, height);
+    // TODO(Eric): Scroll the timeline if current frame is out of view.
     
     // Draw vertical lines for each frame.
     context.beginPath();
-    for (var x = startX; x <= endX; x += FRAME_WIDTH_PX) {
+    for (int i = 0; i < movie.maxFrames; i++) {
+      var x = startX + i * FRAME_WIDTH_PX;
       context.moveTo(x, 0);
       context.lineTo(x, height);
     }
     context.strokeStyle = '#999';
     context.stroke();
+
+    // Draw circles for any keyframes.
+    for (int keyFrame in movie.keyFrames) {
+      var x = startX + keyFrame * FRAME_WIDTH_PX + FRAME_WIDTH_PX / 2;
+      
+      context.beginPath();
+      context.arc(x, height / 2, 3, 0, 2 * math.PI, false);
+      context.closePath();
+      context.fillStyle = '#333';
+      context.fill();
+    }
     
     // Draw top and bottom border lines.
     context.beginPath();

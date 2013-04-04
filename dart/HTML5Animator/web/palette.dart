@@ -18,12 +18,14 @@ void initPalette() {
 
   renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":100,"top":100,"width":100,"height":100,"fill":"red","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
   renderable.keyFrame = 0;
+  movie.keyFrames.add(0);
 
   renderable = new Renderable();
   actor.keyFrames.add(renderable);
 
   renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":200,"top":100,"width":100,"height":100,"fill":"red","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
   renderable.keyFrame = 20;
+  movie.keyFrames.add(20);
 
   movieState.canvas = new js.Proxy(fabric.Canvas, "palette");
   js.retain(movieState.canvas);
@@ -146,12 +148,11 @@ void addText() {
   updateAnimation();
 }
 
-void addImage() {
-  print("ADDING IMAGE");
+void addImage(String imageUrl) {
+  print("ADDING IMAGE "+imageUrl + ".");
   js.scoped(() {
     var fabric = js.context.fabric;
     
-    var imageUrl = LOADED_IMAGE;
     fabric.Image.fromURL(imageUrl, new js.Callback.many(fabricImageLoaded));
   });
 }
@@ -214,7 +215,10 @@ Actor getActorFromId(id) {
   return null;
 }
 
-Renderable upsertKeyFrame(actor, fabricObject, frame) {
+Renderable upsertKeyFrame(actor, fabricObject, int frame) {
+  // TODO(Eric): Deal with keyframe removal.
+  movie.keyFrames.add(frame);
+  
   fabricObject.left -= movieState.padding;
   fabricObject.top -= movieState.padding;
   

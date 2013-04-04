@@ -7,6 +7,5 @@ import 'dart:io';
 import 'package:web_ui/component_build.dart';
 
 void main() {
-  build(new Options().arguments, ['web/html5animator.html',
-                                   'web/imagePalette.html']);
+  build(new Options().arguments, ['web/html5animator.html']);
 }

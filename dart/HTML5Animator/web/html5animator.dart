@@ -23,7 +23,7 @@ part "palette.dart";
 @observable
 class Renderable {
   String fabricJson;
-  num keyFrame;
+  int keyFrame;
   String easeAfter = "linear";
   bool destroy = false;
 }
@@ -50,20 +50,13 @@ class Layer {
 class Movie {
   String id;
   int maxFrames = 100;
-  String name;
-  String musicId;
-  List<Layer> layers;
-  num frameMs;
-  Point size;
-  String backgroundColor = "#ffffff";
-  
-  Movie() {
-    name = "My Movie";
-    musicId = null;
-    layers = [];
-    frameMs = 100;
-    size = new Point(640,360);
-  }
+  Set<int> keyFrames = toObservable(new Set());
+  String name = "My Movie";
+  String musicId = null;
+  List<Layer> layers = [];
+  num frameMs = 100;
+  Point size = new Point(640, 360);  
+  String backgroundColor = '#fff';
 }
 Movie movie = new Movie();
 
@@ -137,23 +130,23 @@ void onDropFn(MouseEvent e) {
 
   var files = e.dataTransfer.files;
   var f;
-  for (var i = 0; (f = files[i]) != null; i++) {
+  
+  var imageUri = e.dataTransfer.getData("text/uri-list");
+  if (imageUri != null && imageUri.length > 1){
+    addImage(imageUri);
+  } else{
+   for (var i = 0; (f = files[i]) != null; i++) {
     // Read the File objects in this FileList.
     print('FILE: ${f.size} *** ${f.name} *** $f');
     //window.console.debug("FILE: " + f.size + " *** " + f.name + " *** " + f.toString());
     
     FileReader reader = new FileReader();
     reader.onLoad.listen((var theFile) {
-        // Render thumbnail.
-        ImageElement img = new ImageElement();
-        img.src = reader.result;
-        LOADED_IMAGE = reader.result;
-        document.query('#droppedImage').children.add(img);
-        print('DROPPED IMAGE');
+        addImageToPalette(reader.result);
     });
-
     // Read in the image file as a data URL.
     reader.readAsDataUrl(f);
   }
+ }
 }
  

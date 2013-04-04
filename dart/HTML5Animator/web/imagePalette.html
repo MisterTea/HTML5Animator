@@ -12,12 +12,12 @@
         @import "css/image-palette.css"
       </style>
       <div class="x-image-palette">
-        <h3>Image Palette</h3>
         <span> <content select=".label-one"></content> </span>
         
-         <template iterate="url in image_urls">
-           <img src="{{url}}" class="palette-image"/>
-        </template> 
+         <template iterate="uri in image_uris">
+           <img src="{{new SafeUri.unsafe(uri)}}" class="x-image-palette-element"/>
+         </template>
+      
         <input type="text"
                bind-value="input_value"
                style="text-align:right">
