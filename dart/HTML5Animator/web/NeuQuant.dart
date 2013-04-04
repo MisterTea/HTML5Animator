@@ -89,7 +89,7 @@ part of html5animator;
     /* defs for decreasing alpha factor */
     /*private_static*/ static int alphabiasshift/*int*/ = 10; /* alpha starts at 1.0 */
     /*private_static*/ static int initalpha/*int*/ = (1 << alphabiasshift);
-    /*private*/ var alphadec/*int*/; /* biased by 10 bits */
+    /*private*/ int alphadec/*int*/; /* biased by 10 bits */
     
     /* radbias and alpharadbias used for radpower calculation */
     /*private_static*/ static int radbiasshift/*int*/ = 8;
@@ -120,7 +120,7 @@ part of html5animator;
     NeuQuant(var thepic/*ByteArray*/, num len/*int*/, num sample/*int*/)
     {
       
-      var i/*int*/;
+      int i/*int*/;
       var p/*Array*/;
       
       thepicture = thepic;
@@ -139,22 +139,21 @@ part of html5animator;
         freq.add(newfreq); /* 1/netsize */
         bias.add(0);
       }
-      
     }
     
     List<int> colorMap()/*ByteArray*/
     {
-      
-      var map/*ByteArray*/ = [];
-        var index/*Array*/ = new List(netsize);
-        for (var i/*int*/ = 0; i < netsize; i++)
-          index[network[i][3]] = i;
-        for (var l/*int*/ = 0; l < netsize; l++) {
-          var j/*int*/ = index[l];
-          map.add(network[j][0]);
-          map.add(network[j][1]);
-          map.add(network[j][2]);
+      List<int> map/*ByteArray*/ = [];
+        List<int> index/*Array*/ = new List<int>(netsize);
+        for (int i/*int*/ = 0; i < netsize; i++)
+          index[network[i][3].floor()] = i;
+        for (int l/*int*/ = 0; l < netsize; l++) {
+          int j/*int*/ = index[l];
+          map.add(network[j][0].floor());
+          map.add(network[j][1].floor());
+          map.add(network[j][2].floor());
         }
+
         return map;
       
     }
@@ -252,29 +251,29 @@ part of html5animator;
      
      {
        
-       var i/*int*/;
-       var j/*int*/;
-       var b/*int*/;
-       var g/*int*/;
-       var r/*int*/;
-       var radius/*int*/;
-       var rad/*int*/;
-       var alpha/*int*/;
-       var step/*int*/;
-       var delta/*int*/;
-       var samplepixels/*int*/;
+       int i/*int*/;
+       int j/*int*/;
+       int b/*int*/;
+       int g/*int*/;
+       int r/*int*/;
+       int radius/*int*/;
+       int rad/*int*/;
+       int alpha/*int*/;
+       int step/*int*/;
+       int delta/*int*/;
+       int samplepixels/*int*/;
        var p/*ByteArray*/;
-       var pix/*int*/;
-       var lim/*int*/;
+       int pix/*int*/;
+       int lim/*int*/;
        
        if (lengthcount < minpicturebytes) samplefac = 1;
        
-       alphadec = 30 + ((samplefac - 1) / 3);
+       alphadec = 30 + ((samplefac - 1) / 3).floor();
        p = thepicture;
        pix = 0;
        lim = lengthcount;
-       samplepixels = lengthcount / (3 * samplefac);
-       delta = samplepixels / ncycles;
+       samplepixels = (lengthcount / (3 * samplefac)).floor();
+       delta = (samplepixels / ncycles).floor();
        alpha = initalpha;
        radius = initradius;
        
@@ -334,8 +333,8 @@ part of html5animator;
          
          {
            
-           alpha -= alpha / alphadec;
-           radius -= radius / radiusdec;
+           alpha -= (alpha / alphadec).floor();
+           radius -= (radius / radiusdec).floor();
            rad = radius >> radiusbiasshift;
            
            if (rad <= 1) rad = 0;
@@ -487,16 +486,17 @@ part of html5animator;
     
     {
   
-      var i/*int*/;
-      var j/*int*/;
+      int i/*int*/;
+      int j/*int*/;
   
       for (i = 0; i < netsize; i++)
     {
         network[i][0] = (network[i][0].floor() >> netbiasshift);
-        network[i][0] = (network[i][1].floor() >> netbiasshift);
-        network[i][0] = (network[i][2].floor() >> netbiasshift);
+        network[i][1] = (network[i][1].floor() >> netbiasshift);
+        network[i][2] = (network[i][2].floor() >> netbiasshift);
         network[i][3] = i; /* record colour no */
-      }
+
+    }
     
     }
     

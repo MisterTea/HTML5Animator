@@ -12,21 +12,21 @@ part of html5animator;
   
   class LZWEncoder
   {
-    /*private_static*/ var EOF/*int*/ = -1;
-    /*private*/ var imgW/*int*/;
-    /*private*/ var imgH/*int*/;
+    /*private_static*/ int EOF/*int*/ = -1;
+    /*private*/ int imgW/*int*/;
+    /*private*/ int imgH/*int*/;
     /*private*/ var pixAry/*ByteArray*/;
-    /*private*/ var initCodeSize/*int*/;
-    /*private*/ var remaining/*int*/;
-    /*private*/ var curPixel/*int*/;
+    /*private*/ int initCodeSize/*int*/;
+    /*private*/ int remaining/*int*/;
+    /*private*/ int curPixel/*int*/;
     
     // GIFCOMPR.C - GIF Image compression routines
     // Lempel-Ziv compression based on 'compress'. GIF modifications by
     // David Rowley (mgardi@watdcsu.waterloo.edu)
     // General DEFINEs
     
-    /*private_static*/ static var BITS/*int*/ = 12;
-    /*private_static*/ static var HSIZE/*int*/ = 5003; // 80% occupancy
+    /*private_static*/ static int BITS/*int*/ = 12;
+    /*private_static*/ static int HSIZE/*int*/ = 5003; // 80% occupancy
     
     // GIF Image compression - modified 'compress'
     // Based on: compress.c - File compression ala IEEE Computer, June 1984.
@@ -37,19 +37,19 @@ part of html5animator;
     // James A. Woods (decvax!ihnp4!ames!jaw)
     // Joe Orost (decvax!vax135!petsd!joe)
     
-    /*private*/ var n_bits/*int*/; // number of bits/code
-    /*private*/ var maxbits/*int*/ = BITS; // user settable max # bits/code
-    /*private*/ var maxcode/*int*/; // maximum code, given n_bits
-    /*private*/ var maxmaxcode/*int*/ = 1 << BITS; // should NEVER generate this code
+    /*private*/ int n_bits/*int*/; // number of bits/code
+    /*private*/ int maxbits/*int*/ = BITS; // user settable max # bits/code
+    /*private*/ int maxcode/*int*/; // maximum code, given n_bits
+    /*private*/ int maxmaxcode/*int*/ = 1 << BITS; // should NEVER generate this code
     /*private*/ var htab/*Array*/ = new List();
     /*private*/ var codetab/*Array*/ = new List(256*1024);
-    /*private*/ var hsize/*int*/ = HSIZE; // for dynamic table sizing
-    /*private*/ var free_ent/*int*/ = 0; // first unused entry
+    /*private*/ int hsize/*int*/ = HSIZE; // for dynamic table sizing
+    /*private*/ int free_ent/*int*/ = 0; // first unused entry
     
     // block compression parameters -- after all codes are used up,
     // and compression rate changes, start over.
     
-    /*private*/ var clear_flg/*Boolean*/ = false;
+    /*private*/ bool clear_flg/*Boolean*/ = false;
     
     // Algorithm: use open addressing double hashing (no chaining) on the
     // prefix code / next character combination. We do a variant of Knuth's
@@ -63,9 +63,9 @@ part of html5animator;
     // file size for noticeable speed improvement on small files. Please direct
     // questions about this implementation to ames!jaw.
     
-    /*private*/ var g_init_bits/*int*/;
-    /*private*/ var ClearCode/*int*/;
-    /*private*/ var EOFCode/*int*/;
+    /*private*/ int g_init_bits/*int*/;
+    /*private*/ int ClearCode/*int*/;
+    /*private*/ int EOFCode/*int*/;
     
     // output
     // Output the given code.
@@ -81,17 +81,17 @@ part of html5animator;
     // fit in it exactly). Use the VAX insv instruction to insert each
     // code in turn. When the buffer fills up empty it and start over.
     
-    /*private*/ var cur_accum/*int*/ = 0;
-    /*private*/ var cur_bits/*int*/ = 0;
-    /*private*/ var masks/*Array*/ = [ 0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF ];
+    /*private*/ int cur_accum/*int*/ = 0;
+    /*private*/ int cur_bits/*int*/ = 0;
+    /*private*/ List<int> masks/*Array*/ = [ 0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF ];
     
     // Number of characters so far in this 'packet'
-    /*private*/ var a_count/*int*/;
+    /*private*/ int a_count/*int*/;
     
     // Define the storage for the packet accumulator
     /*private*/ var accum/*ByteArray*/ = new List(256*1024);
     
-    LZWEncoder(num width/*int*/, num height/*int*/, var pixels/*ByteArray*/, num color_depth/*int*/)
+    LZWEncoder(int width/*int*/, int height/*int*/, var pixels/*ByteArray*/, int color_depth/*int*/)
     {
       
       imgW = width;
@@ -131,16 +131,16 @@ part of html5animator;
       
     }
     
-    void compress(num init_bits/*int*/, ByteArray outs/*ByteArray*/)/*void*/
+    void compress(int init_bits/*int*/, ByteArray outs/*ByteArray*/)/*void*/
     
     {
-      var fcode/*int*/;
-      var i/*int*/ /* = 0 */;
-      var c/*int*/;
-      var ent/*int*/;
-      var disp/*int*/;
-      var hsize_reg/*int*/;
-      var hshift/*int*/;
+      int fcode/*int*/;
+      int i/*int*/ /* = 0 */;
+      int c/*int*/;
+      int ent/*int*/;
+      int disp/*int*/;
+      int hsize_reg/*int*/;
+      int hshift/*int*/;
       
       // Set up the globals: g_init_bits - initial number of bits
       g_init_bits = init_bits;
@@ -226,7 +226,8 @@ part of html5animator;
     // Flush the packet to disk, and reset the accumulator
     void flush_char(ByteArray outs/*ByteArray*/)/*void*/
     {
-      
+      print('FLUSHING BYTES');
+      print(a_count);
       if (a_count > 0)
       {
         outs.writeByte(a_count);

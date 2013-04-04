@@ -140,8 +140,8 @@
 		}
 		
 		var colorMap = function colorMap()/*ByteArray*/
-		{
-			
+		{			
+		    	
 			var map/*ByteArray*/ = [];
 		    var index/*Array*/ = new Array(netsize);
 		    for (var i/*int*/ = 0; i < netsize; i++)
@@ -339,6 +339,7 @@
 			   
 		   }
 		   
+		   
 	   }
 	   
 	   /*
@@ -489,6 +490,7 @@
 	      network[i][1] >>= netbiasshift;
 	      network[i][2] >>= netbiasshift;
 	      network[i][3] = i; /* record colour no */
+
 	    }
 		
 	  }
@@ -579,7 +581,6 @@
 		  n[0] -= (alpha * (n[0] - b)) / initalpha;
 		  n[1] -= (alpha * (n[1] - g)) / initalpha;
 		  n[2] -= (alpha * (n[2] - r)) / initalpha;
-		
 	  }
 	  
 	  /*

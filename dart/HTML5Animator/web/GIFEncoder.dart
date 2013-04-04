@@ -10,16 +10,17 @@ part of html5animator;
 var chr = [];
 
 class ByteArray {
-    List<num> bin = [];
+    List<int> bin = [];
     
     String getData() {
       String v = '';
-      for(int i = 0; i < bin.length; i++)
-        v += chr[this.bin[i].floor()];
+      for(int i = 0; i < bin.length; i++) {
+        v += chr[this.bin[i]];
+      }
       return v;
     }
     
-    void writeByte(num byte) {
+    void writeByte(int byte) {
       bin.add(byte);
     }
 
@@ -28,14 +29,14 @@ class ByteArray {
         this.writeByte(string.codeUnits[i]);
     }
     
-    void writeBytes(var array, num offset, num length){
+    void writeBytes(List<int> array, int offset, int length){
       if (offset == null) {
         offset = 0;
       }
       if (length == null) {
         length = array.length;
       }
-      for(num i = offset; i < length; i++)
+      for(int i = offset; i < length; i++)
         this.writeByte(array[i]);
     }
 }
@@ -51,26 +52,26 @@ class ByteArray {
       }
     }
         
-    /*private*/ var width/*int*/; // image size
-      /*private*/ var height/*int*/;
+    /*private*/ int width/*int*/; // image size
+      /*private*/ int height/*int*/;
       /*private*/ var transparent/***/ = null; // transparent color if given
-      /*private*/ var transIndex/*int*/; // transparent index in color table
-      /*private*/ var repeat/*int*/ = -1; // no repeat
-      /*private*/ var delay/*int*/ = 0; // frame delay (hundredths)
-      /*private*/ var started/*Boolean*/ = false; // ready to output frames
+      /*private*/ int transIndex/*int*/; // transparent index in color table
+      /*private*/ int repeat/*int*/ = -1; // no repeat
+      /*private*/ int delay/*int*/ = 0; // frame delay (hundredths)
+      /*private*/ bool started/*Boolean*/ = false; // ready to output frames
       /*private*/ var out/*ByteArray*/;
       /*private*/ var image/*Bitmap*/; // current frame
-      /*private*/ var pixels/*ByteArray*/; // BGR byte array from frame
+      /*private*/ List<int> pixels/*ByteArray*/; // BGR byte array from frame
       /*private*/ var indexedPixels/*ByteArray*/; // converted frame indexed to palette
-      /*private*/ var colorDepth/*int*/; // number of bit planes
-      /*private*/ var colorTab/*ByteArray*/; // RGB palette
+      /*private*/ int colorDepth/*int*/; // number of bit planes
+      /*private*/ List<int> colorTab/*ByteArray*/; // RGB palette
       /*private*/ var usedEntry/*Array*/ = new List(256*1024); // active palette entries
-      /*private*/ var palSize/*int*/ = 7; // color table size (bits-1)
-      /*private*/ var dispose/*int*/ = -1; // disposal code (-1 = use default)
-      /*private*/ var closeStream/*Boolean*/ = false; // close stream when finished
-      /*private*/ var firstFrame/*Boolean*/ = true;
-      /*private*/ var sizeSet/*Boolean*/ = false; // if false, get size from first frame
-      /*private*/ var sample/*int*/ = 10; // default sample interval for quantizer
+      /*private*/ int palSize/*int*/ = 7; // color table size (bits-1)
+      /*private*/ int dispose/*int*/ = -1; // disposal code (-1 = use default)
+      /*private*/ bool closeStream/*Boolean*/ = false; // close stream when finished
+      /*private*/ bool firstFrame/*Boolean*/ = true;
+      /*private*/ bool sizeSet/*Boolean*/ = false; // if false, get size from first frame
+      /*private*/ int sample/*int*/ = 10; // default sample interval for quantizer
     
     /**
     * Sets the delay time between each frame, or changes it for subsequent frames
@@ -79,7 +80,7 @@ class ByteArray {
     * @param ms
     */
     
-    void setDelay(num ms)
+    void setDelay(int ms)
     {
       delay = (ms / 10).round();
     }
@@ -93,7 +94,7 @@ class ByteArray {
     * int disposal code.
     */
     
-    void setDispose(num code/*int*/)/*void*/ 
+    void setDispose(int code/*int*/)/*void*/ 
     {
       
       if (code >= 0) dispose = code;
@@ -110,7 +111,7 @@ class ByteArray {
     * @return
     */
     
-    void setRepeat(num iter/*int*/)/*void*/ 
+    void setRepeat(int iter/*int*/)/*void*/ 
     {
       
       if (iter >= 0) repeat = iter;
@@ -248,7 +249,7 @@ class ByteArray {
     * @return
     */
     
-    void setQuality(num quality/*int*/)/*void*/
+    void setQuality(int quality/*int*/)/*void*/
     {
       
         if (quality < 1) quality = 1;
@@ -265,7 +266,7 @@ class ByteArray {
     * int frame width.
     */
     
-    void setSize(num w/*int*/, num h/*int*/)/*void*/
+    void setSize(int w/*int*/, int h/*int*/)/*void*/
     {
       
       if (started && !firstFrame) return;
@@ -317,16 +318,16 @@ class ByteArray {
     void analyzePixels()/*void*/
     {
         
-      var len/*int*/ = pixels.length;
-        var nPix/*int*/ = len / 3;
+      int len/*int*/ = pixels.length;
+      int nPix/*int*/ = (len / 3).floor();
         indexedPixels = [];
-        var nq/*NeuQuant*/ = new NeuQuant(pixels, len, sample);
+        NeuQuant nq/*NeuQuant*/ = new NeuQuant(pixels, len, sample);
         // initialize quantizer
         colorTab = nq.process(); // create reduced palette
         // map image pixels to new palette
-        var k/*int*/ = 0;
-        for (var j/*int*/ = 0; j < nPix; j++) {
-          var index/*int*/ = nq.map(pixels[k++] & 0xff, pixels[k++] & 0xff, pixels[k++] & 0xff);
+        int k/*int*/ = 0;
+        for (int j/*int*/ = 0; j < nPix; j++) {
+          int index/*int*/ = nq.map(pixels[k++] & 0xff, pixels[k++] & 0xff, pixels[k++] & 0xff);
           usedEntry[index] = true;
           indexedPixels.add(index);
         }
@@ -378,21 +379,22 @@ class ByteArray {
     void getImagePixels()/*void*/
     {
         
-        var w/*int*/ = width;
-        var h/*int*/ = height;
-        pixels = [];
+        int w/*int*/ = width;
+        int h/*int*/ = height;
+        pixels = new List<int>(h*w*3);
         var data = image;
         
-        for ( var i/*int*/ = 0; i < h; i++ )
+        int x=0;
+        for ( int i/*int*/ = 0; i < h; i++ )
         {
           
-          for (var j/*int*/ = 0; j < w; j++ )
+          for (int j/*int*/ = 0; j < w; j++ )
           {
             
-              var b = (i*w*4)+j*4;
-              pixels.add(data[b]);
-              pixels.add(data[b+1]);
-              pixels.add(data[b+2]);
+            int b = (i*w*4)+j*4;
+              pixels[x++] = (data[b]);
+              pixels[x++] = (data[b+1]);
+              pixels[x++] = (data[b+2]);
             
           }
           
@@ -527,7 +529,7 @@ class ByteArray {
     void writePixels()/*void*/
     {
       
-        var myencoder/*LZWEncoder*/ = new LZWEncoder(width, height, indexedPixels, colorDepth);
+      LZWEncoder myencoder/*LZWEncoder*/ = new LZWEncoder(width, height, indexedPixels, colorDepth);
         myencoder.encode(out);
       
     }
