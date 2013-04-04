@@ -23,7 +23,7 @@ part "palette.dart";
 @observable
 class Renderable {
   String fabricJson;
-  num keyFrame;
+  int keyFrame;
   String easeAfter = "linear";
   bool destroy = false;
 }
@@ -50,20 +50,13 @@ class Layer {
 class Movie {
   String id;
   int maxFrames = 100;
-  String name;
-  String musicId;
-  List<Layer> layers;
-  num frameMs;
-  Point size;
-  String backgroundColor = "#ffffff";
-  
-  Movie() {
-    name = "My Movie";
-    musicId = null;
-    layers = [];
-    frameMs = 100;
-    size = new Point(640,360);
-  }
+  Set<int> keyFrames = toObservable(new Set());
+  String name = "My Movie";
+  String musicId = null;
+  List<Layer> layers = [];
+  num frameMs = 100;
+  Point size = new Point(640, 360);  
+  String backgroundColor = '#fff';
 }
 Movie movie = new Movie();
 
