@@ -647,22 +647,22 @@ void makeGif() {
   //encoder.setRepeat(0); // auto-loop
   //encoder.setDelay(10);
   encoder2.setRepeat(0); // auto-loop
-  encoder2.setDelay(10);
+  encoder2.setDelay(5);
   print("***");
   //print(encoder.start());
   print(encoder2.start());
-  movieState.frame = 0;
-  for (; movieState.frame <= movie.lastKeyFrameTime && movieState.frame < movie.maxFrames; movieState.frame++) {
+  movieState.playing = true;
+  for (movieState.playFrame = 0; movieState.playFrame <= movie.lastKeyFrameTime && movieState.playFrame < movie.maxFrames; movieState.playFrame+=0.5) {
     updateAnimation();
     print("***");
     //print(encoder.addFrameFromId('palette'));
     print(encoder2.addFrameFromId('palette'));
   }
+  movieState.playing = false;
   //encoder.finish();
   encoder2.finish();
   document.query('#gifImage').src = 'data:image/gif;base64,'
       + encode64(encoder2.stream().getData());
-  print(document.getElementById('gifImage').src);
   js.scoped(() {
   movieState.canvas.add(movieState.guidelines);
   movieState.canvas.setWidth(840);

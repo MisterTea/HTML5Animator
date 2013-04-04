@@ -102,7 +102,7 @@ part of html5animator;
     * Types and Global Variables --------------------------
     */
     
-    /*private*/ var thepicture/*ByteArray*/;/* the input image itself */
+    /*private*/ List<int> thepicture/*ByteArray*/;/* the input image itself */
     /*private*/ int lengthcount/*int*/; /* lengthcount = H*W*3 */
     /*private*/ int samplefac/*int*/; /* sampling factor 1..30 */
     
@@ -115,9 +115,9 @@ part of html5animator;
     
     /* bias and freq arrays for learning */
     /*private*/ var freq/*Array*/ = new List();
-    /*private*/ var radpower/*Array*/ = new List();
+    /*private*/ var radpower/*Array*/ = new List<int>();
     
-    NeuQuant(var thepic/*ByteArray*/, num len/*int*/, num sample/*int*/)
+    NeuQuant(List<int> thepic/*ByteArray*/, num len/*int*/, num sample/*int*/)
     {
       
       int i/*int*/;
@@ -262,7 +262,7 @@ part of html5animator;
        int step/*int*/;
        int delta/*int*/;
        int samplepixels/*int*/;
-       var p/*ByteArray*/;
+       List<int> p/*ByteArray*/;
        int pix/*int*/;
        int lim/*int*/;
        
@@ -281,7 +281,7 @@ part of html5animator;
        if (rad <= 1) rad = 0;
        
        radpower.clear();
-       for (i = 0; i < rad; i++) radpower.add( alpha * (((rad * rad - i * i) * radbias) / (rad * rad)) );
+       for (i = 0; i < rad; i++) radpower.add( (alpha * (((rad * rad - i * i) * radbias) / (rad * rad))).floor() );
        
        
        if (lengthcount < minpicturebytes) step = 3;
@@ -306,6 +306,7 @@ part of html5animator;
          
        }
        
+       print("BEGIN LEARN");
        i = 0;
        
        while (i < samplepixels)
@@ -318,7 +319,6 @@ part of html5animator;
          j = contest(b, g, r);
          
          altersingle(alpha, j, b, g, r);
-         
          if (rad != 0) alterneigh(rad, j, b, g, r); /* alter neighbours */
          
          pix += step;
@@ -339,11 +339,12 @@ part of html5animator;
            
            if (rad <= 1) rad = 0;
            
-           for (j = 0; j < rad; j++) radpower[j] = alpha * (((rad * rad - j * j) * radbias) / (rad * rad));
+           for (j = 0; j < rad; j++) radpower[j] = (alpha * (((rad * rad - j * j) * radbias) / (rad * rad))).floor();
            
          }
          
        }
+       print("END LEARN");
        
      }
      
@@ -357,13 +358,13 @@ part of html5animator;
     
      {
        
-       var i/*int*/;
-       var j/*int*/;
-       var dist/*int*/;
-       var a/*int*/;
-       var bestd/*int*/;
+       int i/*int*/;
+       int j/*int*/;
+       int dist/*int*/;
+       int a/*int*/;
+       int bestd/*int*/;
        var p/*Array*/;
-       var best/*int*/;
+       int best/*int*/;
        
        bestd = 1000; /* biggest possible dist is 256*3 */
        best = -1;
@@ -469,7 +470,9 @@ part of html5animator;
     List<int> process()/*ByteArray*/
     {
      
+      print("BEGIN PIXELS");
       learn();
+      print("END PIXELS");
       unbiasnet();
       inxbuild();
       return colorMap();
@@ -510,12 +513,12 @@ part of html5animator;
     
     {
       
-      var j/*int*/;
-      var k/*int*/;
-      var lo/*int*/;
-      var hi/*int*/;
-      var a/*int*/;
-      var m/*int*/;
+      int j/*int*/;
+      int k/*int*/;
+      int lo/*int*/;
+      int hi/*int*/;
+      int a/*int*/;
+      int m/*int*/;
       
       var p/*Array*/;
       
@@ -548,7 +551,7 @@ part of html5animator;
             p[1] -= (a * (p[1] - g)) / alpharadbias;
             p[2] -= (a * (p[2] - r)) / alpharadbias;
             
-            } catch (e/*Error*/) {} // prevents 1.3 miscompilation
+            } catch (e/*Error*/) {print("GOT ERROR");} // prevents 1.3 miscompilation
             
         }
         
@@ -565,7 +568,7 @@ part of html5animator;
             p[1] -= (a * (p[1] - g)) / alpharadbias;
             p[2] -= (a * (p[2] - r)) / alpharadbias;
             
-          } catch (e/*Error*/) {}
+          } catch (e/*Error*/) {print("GOT ERROR");}
           
         }
         
@@ -601,15 +604,15 @@ part of html5animator;
       /* for frequently chosen neurons, freq[i] is high and bias[i] is negative */
       /* bias[i] = gamma*((1/netsize)-freq[i]) */
       
-      var i/*int*/;
-      var dist/*int*/;
-      var a/*int*/;
-      var biasdist/*int*/;
-      var betafreq/*int*/;
-      var bestpos/*int*/;
-      var bestbiaspos/*int*/;
-      var bestd/*int*/;
-      var bestbiasd/*int*/;
+      int i/*int*/;
+      int dist/*int*/;
+      int a/*int*/;
+      int biasdist/*int*/;
+      int betafreq/*int*/;
+      int bestpos/*int*/;
+      int bestbiaspos/*int*/;
+      int bestd/*int*/;
+      int bestbiasd/*int*/;
       var n/*Array*/;
       
       bestd = 10000000;
@@ -622,17 +625,17 @@ part of html5animator;
       {
         
         n = network[i];
-        dist = n[0] - b;
+        dist = n[0].floor() - b;
         
         if (dist < 0) dist = -dist;
         
-        a = n[1] - g;
+        a = n[1].floor() - g;
         
         if (a < 0) a = -a;
         
         dist += a;
         
-        a = n[2] - r;
+        a = n[2].floor() - r;
         
         if (a < 0) a = -a;
         

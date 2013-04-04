@@ -1,11 +1,12 @@
 part of html5animator;
 
 String encode64(String input) {
-  String output = "";
   int i = 0;
   int l = input.length;
+  List<String> output = new List<String>(l*4);
   String key = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
   int chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+  int a=0;
   while (i < l) {
     chr1 = input.codeUnits[i++];
     chr2 = input.length>i ? input.codeUnits[i++] : -999;
@@ -21,9 +22,12 @@ String encode64(String input) {
       enc3 = ((chr2 & 15) << 2);
       enc4 = 64;
     }
-    output = output + key[enc1] + key[enc2] + key[enc3] + key[enc4];
+    output[a++] = key[enc1];
+    output[a++] = key[enc2];
+    output[a++] = key[enc3];
+    output[a++] = key[enc4];
   }
-  return output;
+  return output.join("");
 }
 
 

@@ -162,7 +162,9 @@ class ByteArray {
           image = im;
         }
         getImagePixels(); // convert to correct format if necessary
+        print("START PIXELS");
         analyzePixels(); // build color table & map pixels
+        print("END PIXELS");
         
         if (firstFrame) 
         {
