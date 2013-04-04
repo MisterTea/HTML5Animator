@@ -7968,6 +7968,8 @@ fabric.util.string = {
 
       this.renderAll();
 
+      console.log("OBJECT SELECTED");
+      console.log(object);
       this.fire('object:selected', { target: object, e: e });
       object.fire('selected', { e: e });
       return this;

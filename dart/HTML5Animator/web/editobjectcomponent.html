@@ -12,6 +12,10 @@
     <div class="x-editobject editobject">
       <div ng-show="getEditObject()">
         <div>EDITING {{movieState.selectedObjectId}}</div>
+        <div class="bgcolorSelect">
+          BG Color:
+          <input id="bgColorInput" type="color" on-change="bgColorChanged()">
+        </div>
         <div>
           <label>Text:</label>
           <input type="text" id="selectedText" on-key-up="selectedTextChanged($event)" placeholder="Enter a URL here" />

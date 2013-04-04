@@ -3,7 +3,7 @@ part of html5animator;
 String encode64(String input) {
   int i = 0;
   int l = input.length;
-  List<String> output = new List<String>(l*4);
+  List<String> output = new List<String>(((l*4 + 6) / 3.0).ceil());
   String key = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
   int chr1, chr2, chr3, enc1, enc2, enc3, enc4;
   int a=0;
@@ -27,7 +27,7 @@ String encode64(String input) {
     output[a++] = key[enc3];
     output[a++] = key[enc4];
   }
-  return output.join("");
+  return output.sublist(0,a).join("");
 }
 
 

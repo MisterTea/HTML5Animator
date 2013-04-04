@@ -50,6 +50,16 @@ class Actor {
       keyFrames[i].update(updates);
     }
   }
+  
+  void deleteKeyFrame(int frame) {
+    for (Renderable keyFrame in keyFrames) {
+      if (keyFrame.keyFrame == frame) {
+        keyFrames.remove(keyFrame);
+        break;
+      }
+    }
+    updateAnimation();
+  }
 }
 
 @observable

@@ -24,6 +24,12 @@ class EditObjectComponent extends WebComponent {
     if (v.containsKey('text')) {
       element.value = v['text'];
     }
+    print("UPDATING");
+    print(v.containsKey('fill'));
+    if (v.containsKey('fill')) {
+      print(v['fill']);
+      query('#bgColorInput').value = v['fill'];
+    }
   }
   
   void selectedTextChanged(Event e) {
@@ -48,7 +54,18 @@ class EditObjectComponent extends WebComponent {
   }
   
   void deleteKeyFrame() {
+    js.scoped(() {
+      getSelectedActor().deleteKeyFrame(movieState.frame);
+      movie.updateKeyFrames();
+    });
     print("DELETE KEYFRAME");
+    movieState.selectedObjectId = null;
+  }
+  
+  void bgColorChanged() {
+    print("COLOR CHANGED TO " + query('#bgColorInput').value);
+    getSelectedActor().updateAllRenderables({'fill':query('#bgColorInput').value});
+    updateAnimation();
   }
 }
 

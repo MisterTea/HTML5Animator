@@ -16,19 +16,20 @@ void initPalette() {
   var renderable = new Renderable();
   actor.keyFrames.add(renderable);
 
-  renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":100,"top":100,"width":100,"height":100,"fill":"red","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
+  renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":100,"top":100,"width":100,"height":100,"fill":"#ff0000","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
   renderable.keyFrame = 0;
   movie.keyFrames.add(0);
 
   renderable = new Renderable();
   actor.keyFrames.add(renderable);
 
-  renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":200,"top":100,"width":100,"height":100,"fill":"red","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
+  renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":200,"top":100,"width":100,"height":100,"fill":"#ff0000","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
   renderable.keyFrame = 20;
   movie.keyFrames.add(20);
 
   movieState.canvas = new js.Proxy(fabric.Canvas, "palette");
   js.retain(movieState.canvas);
+  movieState.canvas.selection = false;
 
   // Create guidelines
   movieState.guidelines = new js.Proxy(fabric.Rect, js.map({
@@ -105,20 +106,42 @@ void initPalette() {
 }
 
 void objectModified(var params) {
-    var fabricObject = params.target;
+  var fabricObjects = [];
+  try {
+    print(params.target.objects);
+    for (int a=0;a<params.target.objects.length;a++) {
+      fabricObjects.add(params.target.objects[a]);
+    }
+  } catch (e) {
+    fabricObjects.add(params.target);
+  }
     window.console.debug("MODIFIED");
-    window.console.debug(fabricObject);
-    var actor = getActorFromId(fabricObject.id);
-    window.console.debug(actor);
+    print(fabricObjects.length);
+    for (int i = 0; i < fabricObjects.length; i++) {
+      window.console.debug(fabricObjects[i]);
+      var actor = getActorFromId(fabricObjects[i].id);
+      window.console.debug(actor);
 
-    upsertKeyFrame(actor, fabricObject, movieState.frame);
+      upsertKeyFrame(actor, fabricObjects[i], movieState.frame);
+    }
 }
 
 void objectSelected(var params) {
-  var fabricObject = params.target;
+  print("IN DART");
+  print(params);
+  print(params.target);
+  var fabricObjects = [];
+  try {
+    print(params.target.objects);
+    for (int a=0;a<params.target.objects.length;a++) {
+      fabricObjects.add(params.target.objects[a]);
+    }
+  } catch (e) {
+    fabricObjects.add(params.target);
+  }
   window.console.debug("SELECTED");
-  window.console.debug(fabricObject);
-  movieState.selectedObjectId = fabricObject.id;
+  window.console.debug(fabricObjects);
+  movieState.selectedObjectId = fabricObjects[0].id;
 }
 
 void selectionCleared(var params) {
@@ -178,7 +201,7 @@ void animloop(num highResTime) {
   movieState.frame = movieState.playFrame.floor();
   updateAnimation();
   
-  if (movieState.frame>movie.lastKeyFrameTime || movieState.frame >= movie.maxFrames) {
+  if (movieState.frame>movie.lastKeyFrameTime+10 || movieState.frame >= movie.maxFrames+10) {
     movieState.frame = movieState.anchorFrame;
     pause();
   }
@@ -513,8 +536,8 @@ void createFabricObject(serializedObject, id) {
     movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'text') {
     var fabricObject = fabric.Text.fromObject(serializedObjectJs);
-    fabricObject.perPixelTargetFind = true;
-    fabricObject.targetFindTolerance = 4;
+    //fabricObject.perPixelTargetFind = true;
+    //fabricObject.targetFindTolerance = 4;
     js.retain(fabricObject);
     fabricObject.left += movieState.padding;
     fabricObject.top += movieState.padding;
@@ -652,12 +675,12 @@ void makeGif() {
   //encoder.setRepeat(0); // auto-loop
   //encoder.setDelay(10);
   encoder2.setRepeat(0); // auto-loop
-  encoder2.setDelay(5);
+  encoder2.setDelay(50);
   print("***");
   //print(encoder.start());
   print(encoder2.start());
   movieState.playing = true;
-  for (movieState.playFrame = 0; movieState.playFrame <= movie.lastKeyFrameTime && movieState.playFrame < movie.maxFrames; movieState.playFrame+=0.5) {
+  for (movieState.playFrame = 0; movieState.playFrame <= movie.lastKeyFrameTime+10 && movieState.playFrame < movie.maxFrames+10; movieState.playFrame+=0.5) {
     updateAnimation();
     print("***");
     //print(encoder.addFrameFromId('palette'));
