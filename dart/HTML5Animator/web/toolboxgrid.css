@@ -2,6 +2,8 @@
   border: 1px solid #000;
   float: right;
   height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
   width: 245px;
 }
 

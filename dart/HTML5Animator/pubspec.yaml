@@ -4,3 +4,4 @@ dependencies:
   js: any
   browser: any
   web_ui: any
+  serialization: any

@@ -147,15 +147,27 @@
   <div id="paletteHeader" class="paletteHeader">
     <input class="movieName" type="text" bind-value="movie.name"
         placeholder="Add a movie name">
+    
+    <a class="button gifButton" on-click="save()">Save</a>
     <a class="button gifButton" on-click="makeGif()">To GIF</a>
     <div class="bgcolorSelect">
       BG Color:
       <input class="colorInput" type="color" bind-value="movie.backgroundColor">
       <select style="display: inline-block; width:150px;" id="backgroundImageSelect" on-change="backgroundImageChanged()">
         <option value="none">None</option>
+        <option value="template-asianfather.jpg">Asian Father</option>
+        <option value="template-evil_kid.jpg">Evil Kid</option>
+        <option value="template-fry_squint.jpg">Fry Squint</option>
         <option value="template-hideyo.jpg">Hide Yo Kids</option>
+        <option value="template-insanitywolf.jpg">Insanity Wolf</option>
+        <option value="template-iraqiinformationminister.jpg">Iraqi Information Minister</option>
+        <option value="template-jackiechan.jpg">Jackie Chan</option>
         <option value="template-picardsmilewonderwtf.jpg">Picard Smile/Wonder/WTF</option>
-        <option value="audi">Audi</option>
+        <option value="template-scumbag.jpg">Scumbag Steve</option>
+        <option value="template-spiderman_waiting.jpg">Spiderman Waiting</option>
+        <option value="template-suddenclarityclarence.jpg">Clarity Clarence</option>
+        <option value="template-themoreyouknow.jpg">The More You Know</option>
+        <option value="template-xx.jpg">XX</option>
       </select>
     </div>
   </div>

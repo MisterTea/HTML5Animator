@@ -18,14 +18,14 @@ void initPalette() {
 
   renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":100,"top":100,"width":100,"height":100,"fill":"#ff0000","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
   renderable.keyFrame = 0;
-  movie.keyFrames.add(0);
+  movieState.keyFrames.add(0);
 
   renderable = new Renderable();
   actor.keyFrames.add(renderable);
 
   renderable.fabricJson = '{"type":"rect","originX":"center","originY":"center","left":200,"top":100,"width":100,"height":100,"fill":"#ff0000","overlayFill":null,"stroke":null,"strokeWidth":1,"strokeDashArray":null,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"selectable":true,"hasControls":true,"hasBorders":true,"hasRotatingPoint":true,"transparentCorners":true,"perPixelTargetFind":false,"shadow":null,"visible":true,"rx":0,"ry":0}';
   renderable.keyFrame = 20;
-  movie.keyFrames.add(20);
+  movieState.keyFrames.add(20);
 
   movieState.canvas = new js.Proxy(fabric.Canvas, "palette");
   js.retain(movieState.canvas);
@@ -485,12 +485,12 @@ Actor getActorFromId(String id) {
 
 Renderable upsertKeyFrame(actor, fabricObject, int frame) {
   // TODO(Eric): Deal with keyframe removal.
-  movie.keyFrames.add(frame);
+  movieState.keyFrames.add(frame);
   
-  movie.lastKeyFrameTime = -1;
-  var it = movie.keyFrames.iterator;
+  movieState.lastKeyFrameTime = -1;
+  var it = movieState.keyFrames.iterator;
   while (it.moveNext()) {
-    movie.lastKeyFrameTime = Math.max(movie.lastKeyFrameTime, it.current);
+    movieState.lastKeyFrameTime = Math.max(movieState.lastKeyFrameTime, it.current);
   }
 
   print("UPDATING " + actor.id);
