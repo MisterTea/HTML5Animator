@@ -2,10 +2,25 @@
   margin: 20px;
 }
 
+.bgcolorSelect {
+  display: inline-block;
+}
+
 .canvasWrapper {
   overflow: hidden;
   padding: 2px;
 }
+
+.paletteHeader .colorInput {
+  cursor: pointer;
+  width: 40px;
+}
+
+.gifButton {
+  margin: 6px 10px 0 10px;
+}
+
+.paletteHeader .movieName { width: 300px; }
 
 #timelinecomponent {
   display: inline-block;

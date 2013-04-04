@@ -99,8 +99,9 @@ void initPalette() {
 
   movieState.canvas.on('selection:cleared', new js.Callback.many(selectionCleared));
   
-  // Update animation when frame changes.
+  // Update animation when various movie state changes.
   watcher.watch(() => movieState.frame, (_) => updateAnimation());
+  watcher.watch(() => movie.backgroundColor, (_) => updateAnimation());
 }
 
 void objectModified(var params) {

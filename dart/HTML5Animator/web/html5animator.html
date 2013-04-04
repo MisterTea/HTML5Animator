@@ -187,44 +187,15 @@
   </div>
 
   <div style="float: right; width: 50px;">&nbsp;</div>
-  <div
-    ng-controller="EditPanelController"
-    style="float: right; width: auto; border: 2px solid; box-shadow: 10px 10px 5px #888888;">
-    <div>ON FRAME {{movieState.frame}}</div>
-    Background Color: <input type="color" bind-value="movie.backgroundColor">
-    <br />
-    <a
-      class="button"
-      on-click="prevFrame()">Previous Frame</a>
-    <br />
-    <a
-      class="button"
-      on-click="nextFrame()">Next Frame</a>
-    <br />
-    <a
-      class="button"
-      on-click="play()">Play</a>
-    <br />
-    <a
-      class="button"
-      on-click="pause()">Stop</a>
-    <br />
-    <a
-      class="button"
-      ng-click="save()">Save</a>
-    <br />
-    <a
-      class="button"
-      ng-click="load()">load</a>
-    <br />
-    <a
-      class="button"
-      on-click="makeGif()">To animated GIF</a>
-    <br />
-  </div>
   
-  <div id="paletteHeader" style="width:300px">
-      <input type="text" bind-value="movie.name" placeholder="Add a movie name">
+  <div id="paletteHeader" class="paletteHeader">
+    <input class="movieName" type="text" bind-value="movie.name"
+        placeholder="Add a movie name">
+    <a class="button gifButton" on-click="makeGif()">Download Animated GIF</a>
+    <div class="bgcolorSelect">
+      BG Color:
+      <input class="colorInput" type="color" bind-value="movie.backgroundColor">
+    </div>
   </div>
   
   <div class="canvasWrapper"

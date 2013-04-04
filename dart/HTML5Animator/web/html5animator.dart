@@ -57,7 +57,7 @@ class Movie {
   List<Layer> layers = [];
   num frameMs = 100;
   Point size = new Point(640, 360);  
-  String backgroundColor = '#fff';
+  String backgroundColor = '#ffffff';
 }
 Movie movie = new Movie();
 
