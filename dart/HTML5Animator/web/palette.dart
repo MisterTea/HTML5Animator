@@ -539,9 +539,7 @@ Renderable upsertKeyFrame(actor, fabricObject, int frame) {
   }
 }
 
-String NEXT_ID = "";
-void createFabricObject(serializedObject, id) {
-  NEXT_ID = id;
+bool createFabricObject(serializedObject, id) {
   var fabric = js.context.fabric;
   var serializedObjectJs = js.map(serializedObject);
   window.console.log(serializedObject);
@@ -604,22 +602,24 @@ void createFabricObject(serializedObject, id) {
     movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'image') {
     // Images must load asynchronously
-    fabric.Image.fromObject(serializedObjectJs, new js.Callback.many(fabricImageCreated));
+    fabric.Image.fromObject(serializedObjectJs, new js.Callback.many((var fabricObject) {
+      js.retain(fabricObject);
+      fabricObject.perPixelTargetFind = true;
+      fabricObject.targetFindTolerance = 4;
+      fabricObject.id = id;
+      fabricObject.left += movieState.padding;
+      fabricObject.top += movieState.padding;
+      movieState.objectIdMap[id] = fabricObject;
+      movieState.canvas.add(fabricObject);
+      updateAnimation();
+    }));
+    
+    // If we decide to load an image, we will call updateAnimation again, so halt this update.
+    return true;
   } else {
     throw "Invalid fabric object type " + serializedObject;
   }
-}
-
-void fabricImageCreated(var fabricObject) {
-    js.retain(fabricObject);
-    fabricObject.perPixelTargetFind = true;
-    fabricObject.targetFindTolerance = 4;
-    fabricObject.id = NEXT_ID;
-    fabricObject.left += movieState.padding;
-    fabricObject.top += movieState.padding;
-    movieState.objectIdMap[NEXT_ID] = fabricObject;
-    movieState.canvas.add(fabricObject);
-    updateAnimation();
+  return false;
 }
 
 void updateAnimation() {
@@ -634,7 +634,7 @@ void updateAnimation() {
   for ( var actor_i = 0; actor_i < movie.layers.length; actor_i++) {
     for ( var actor_j = 0; actor_j < movie.layers[actor_i].actors.length; actor_j++) {
       var actor = movie.layers[actor_i].actors[actor_j];
-      window.console.debug(actor.id);
+      window.console.debug("UPDATE-ANIMATION " + actor.id);
 
       var removeObject = true;
       if (actor.keyFrames[0].keyFrame <= movieState.playFrame) {
@@ -656,12 +656,13 @@ void updateAnimation() {
         } else {
 
           if (!(movieState.objectIdMap.containsKey(actor.id))) {
+            bool haltUpdate;
             if (keyFrameAfter == -1) {
-              createFabricObject(
+              haltUpdate = createFabricObject(
                   JSON.parse(actor.keyFrames[keyFrameBefore].fabricJson),
                   actor.id);
             } else {
-              createFabricObject(
+              haltUpdate = createFabricObject(
                   tween(
                       movieState.playFrame
                           - actor.keyFrames[keyFrameBefore].keyFrame,
@@ -671,6 +672,9 @@ void updateAnimation() {
                       JSON.parse(actor.keyFrames[keyFrameAfter].fabricJson),
                       actor.keyFrames[keyFrameBefore].easeAfter),
                   actor.id);
+            }
+            if (haltUpdate) {
+              return;
             }
 
             window.console.debug("ADDING OBJECT");
@@ -707,7 +711,7 @@ void updateAnimation() {
       if (removeObject) {
         if (movieState.objectIdMap.containsKey(actor.id)) {
           window.console.debug("REMOVING OBJECT");
-          window.console.debug(actor);
+          window.console.debug(actor.id);
           movieState.canvas.remove(movieState.objectIdMap[actor.id]);
           movieState.objectIdMap.remove(actor.id);
         }
