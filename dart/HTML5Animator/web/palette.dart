@@ -105,8 +105,8 @@ void initPalette() {
   movieState.canvas.on('selection:cleared', new js.Callback.many(selectionCleared));
   
   // Update animation when various movie state changes.
-  watcher.watch(() => movieState.frame, (_) => updateAnimation());
-  watcher.watch(() => movie.backgroundColor, (_) => updateAnimation());
+  watcher.watch(() => movieState.frame, (_) => updateAnimation(false));
+  watcher.watch(() => movie.backgroundColor, (_) => updateAnimation(false));
 }
 
 void objectModified(var params) {
@@ -196,7 +196,7 @@ void pause() {
   js.scoped(() {
   movieState.canvas.add(movieState.guidelines);
   });
-  updateAnimation();
+  updateAnimation(false);
 }
 
 void startMusic(AudioElement bgMusicElement) {
@@ -222,11 +222,14 @@ void animloop(num highResTime) {
     return;
   }
   window.requestAnimationFrame(animloop);
+  if(IN_UPDATE == true) {
+    //TODO: Handle when IN_UPDATE takes more than a frame.
+  }
+  updateAnimation(false);
 
   // Render
   movieState.playFrame = ((highResTime - movieState.animationStartTimeMS) / 100);
   movieState.frame = movieState.playFrame.floor();
-  updateAnimation();
   
   if (movieState.frame>movieState.lastKeyFrameTime+10 || movieState.frame >= movie.maxFrames+10) {
     movieState.frame = movieState.anchorFrame;
@@ -267,7 +270,7 @@ void addText() {
   // $rootScope.canvas.add(oImg);
   });
   
-  updateAnimation();
+  updateAnimation(false);
 }
 
 void addImage(String imageUrl, num x, num y) {
@@ -306,7 +309,7 @@ void addImage(String imageUrl, num x, num y) {
       movieState.keyFrames.add(movieState.frame);
       // $rootScope.canvas.add(oImg);
 
-      updateAnimation();
+      updateAnimation(false);
     }));
   });
 }
@@ -342,7 +345,7 @@ void addLine() {
   // $rootScope.canvas.add(oImg);
   });
   
-  updateAnimation();
+  updateAnimation(false);
 }
 
 void addBox() {
@@ -379,7 +382,7 @@ void addBox() {
   // $rootScope.canvas.add(oImg);
   });
   
-  updateAnimation();
+  updateAnimation(false);
 }
 
 void addEllipse() {
@@ -416,7 +419,7 @@ void addEllipse() {
   // $rootScope.canvas.add(oImg);
   });
   
-  updateAnimation();
+  updateAnimation(false);
 }
 
 void addTriangle() {
@@ -453,7 +456,7 @@ void addTriangle() {
   // $rootScope.canvas.add(oImg);
   });
   
-  updateAnimation();
+  updateAnimation(false);
 }
 
 Layer getLayerWithActorId(id) {
@@ -602,6 +605,7 @@ bool createFabricObject(serializedObject, id) {
     movieState.canvas.add(fabricObject);
   } else if (serializedObject['type'] == 'image') {
     // Images must load asynchronously
+    print("LOADING IMAGE ASYNC");
     fabric.Image.fromObject(serializedObjectJs, new js.Callback.many((var fabricObject) {
       js.retain(fabricObject);
       fabricObject.perPixelTargetFind = true;
@@ -611,7 +615,7 @@ bool createFabricObject(serializedObject, id) {
       fabricObject.top += movieState.padding;
       movieState.objectIdMap[id] = fabricObject;
       movieState.canvas.add(fabricObject);
-      updateAnimation();
+      updateAnimation(true);
     }));
     
     // If we decide to load an image, we will call updateAnimation again, so halt this update.
@@ -622,7 +626,13 @@ bool createFabricObject(serializedObject, id) {
   return false;
 }
 
-void updateAnimation() {
+bool IN_UPDATE = false;
+void updateAnimation(bool partialUpdate) {
+  if (IN_UPDATE && partialUpdate == false) {
+    print("ABORTING UPDATE: IMAGE IS LOADING");
+    return;
+  }
+  IN_UPDATE = true;
   print(movie.backgroundColor);
   js.scoped(() {
   // Frame changed, redraw
@@ -722,6 +732,7 @@ void updateAnimation() {
   movieState.canvas.backgroundColor = movie.backgroundColor;
   movieState.canvas.renderAll();
   movieState.canvas.calcOffset();
+  IN_UPDATE = false;
   });
 }
 
@@ -735,7 +746,7 @@ void makeGif() {
     movieState.canvas.remove(movieState.darkBorders[i]);
   }
   });
-  updateAnimation();
+  updateAnimation(false);
   //js.scoped(() {
   //var encoder = new js.Proxy(js.context.GIFEncoder);
   var encoder2 = new GIFEncoder();
@@ -750,7 +761,7 @@ void makeGif() {
   movieState.playFrame = 0;
   //TODO: use requestanimframe;
   for (; movieState.playFrame <= movieState.lastKeyFrameTime+10 && movieState.playFrame < movie.maxFrames+10; movieState.playFrame+=0.5) {
-    updateAnimation();
+    updateAnimation(false);
     print("***");
     //print(encoder.addFrameFromId('palette'));
     print(encoder2.addFrameFromId('palette'));
@@ -770,5 +781,5 @@ void makeGif() {
   movieState.padding = 100;
   });
   
-  updateAnimation();
+  updateAnimation(false);
 }

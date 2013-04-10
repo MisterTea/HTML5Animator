@@ -80,7 +80,7 @@ class Layer {
     }
     actors.remove(actor);
     movieState.updateKeyFrames();
-    updateAnimation();
+    updateAnimation(false);
   }
 }
 
@@ -108,7 +108,7 @@ class Movie {
       movieState.objectIdMap.remove(actor.id);
     }
     movieState.updateKeyFrames();
-    updateAnimation();
+    updateAnimation(false);
   }
 }
 Movie movie = new Movie();
@@ -188,7 +188,7 @@ void main() {
   window.onDrop.listen(onDropFn);
   
   window.onDragOver.listen(onDragOverFn);
-  updateAnimation();
+  updateAnimation(false);
 }
 
 void onDragOverFn(MouseEvent e) {
@@ -258,7 +258,7 @@ void backgroundImageChanged() {
       movieState.canvas.setHeight(movie.size.y + 200);
 
       updateScaffold();      
-      updateAnimation();
+      updateAnimation(false);
       return;
     }
     
@@ -280,7 +280,7 @@ void backgroundImageChanged() {
       movieState.canvas.setHeight(movie.size.y + 200);
       
       updateScaffold();      
-      updateAnimation();
+      updateAnimation(false);
     }));
   });
 }
